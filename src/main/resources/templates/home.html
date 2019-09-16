@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="utf-8">
+    <title>Stratego</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <link rel="stylesheet" th:href="@{/css/styles.css}"/>
+
+</head>
+<body>
+
+<div class="header">
+    <div class="greeting">
+<!--        <span>Hi, {{user.email}}!</span>-->
+<!--        <a href="/">Settings</a>-->
+<!--        <a href="/">Logout</a>-->
+        <span>Welcome!</span>
+        <a href="/login">Login</a>
+        <a href="/signup">Sign Up</a>
+    </div>
+</div>
+
+<div class="footer">
+    <div class="center-text">
+        This is a temporary footer!
+    </div>
+</div>
+
+<h1>Welcome!</h1>
+
+<p>Click <a th:href="@{/hello}">here</a> to see a greeting.</p>
+</body>
+</html>
