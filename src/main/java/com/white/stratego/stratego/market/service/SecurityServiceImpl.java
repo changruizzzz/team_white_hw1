@@ -1,4 +1,4 @@
-package com.white.stratego.stratego.Market.service;
+package com.white.stratego.stratego.market.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

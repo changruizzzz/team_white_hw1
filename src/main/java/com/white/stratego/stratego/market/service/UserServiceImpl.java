@@ -1,8 +1,8 @@
-package com.white.stratego.stratego.Market.service;
+package com.white.stratego.stratego.market.service;
 
-import com.white.stratego.stratego.Market.model.User;
-import com.white.stratego.stratego.Market.repository.RoleRepository;
-import com.white.stratego.stratego.Market.repository.UserRepository;
+import com.white.stratego.stratego.market.model.User;
+import com.white.stratego.stratego.market.repository.RoleRepository;
+import com.white.stratego.stratego.market.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;

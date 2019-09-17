@@ -1,4 +1,4 @@
-package com.white.stratego.stratego.Market.model;
+package com.white.stratego.stratego.market.model;
 
 import javax.persistence.*;
 import java.util.Set;

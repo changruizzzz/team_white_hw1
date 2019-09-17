@@ -1,14 +1,14 @@
-package com.white.stratego.stratego.Market.controller;
+package com.white.stratego.stratego.market.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import com.white.stratego.stratego.Market.model.User;
-import com.white.stratego.stratego.Market.service.SecurityService;
-import com.white.stratego.stratego.Market.service.UserService;
-import com.white.stratego.stratego.Market.validator.UserValidator;
+import com.white.stratego.stratego.market.model.User;
+import com.white.stratego.stratego.market.service.SecurityService;
+import com.white.stratego.stratego.market.service.UserService;
+import com.white.stratego.stratego.market.validator.UserValidator;
 
 @Controller
 public class UserController {

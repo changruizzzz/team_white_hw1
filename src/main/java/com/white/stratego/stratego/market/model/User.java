@@ -1,4 +1,4 @@
-package com.white.stratego.stratego.Market.model;
+package com.white.stratego.stratego.market.model;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -22,6 +22,9 @@ public class User {
 
     @ManyToMany
     private Set<Role> roles;
+
+    @ManyToMany
+    private Set<Role> saved_units;
 
     public Long getId() {
         return id;

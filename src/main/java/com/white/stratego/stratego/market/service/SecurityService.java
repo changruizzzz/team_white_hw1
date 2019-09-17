@@ -1,4 +1,4 @@
-package com.white.stratego.stratego.Market.service;
+package com.white.stratego.stratego.market.service;
 
 public interface SecurityService {
 

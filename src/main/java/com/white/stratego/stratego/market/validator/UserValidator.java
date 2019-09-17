@@ -1,7 +1,7 @@
-package com.white.stratego.stratego.Market.validator;
+package com.white.stratego.stratego.market.validator;
 
-import com.white.stratego.stratego.Market.model.User;
-import com.white.stratego.stratego.Market.service.UserService;
+import com.white.stratego.stratego.market.model.User;
+import com.white.stratego.stratego.market.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -24,18 +24,22 @@ public class UserValidator implements Validator{
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "NotEmpty");
         if (user.getUsername().length() < 6 || user.getUsername().length() > 32) {
             errors.rejectValue("username", "Size.userForm.username");
+            System.err.println(1);
         }
         if (userService.findByUsername(user.getUsername()) != null) {
             errors.rejectValue("username", "Duplicate.userForm.username");
+            System.err.println(2);
         }
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "NotEmpty");
         if (user.getPassword().length() < 8 || user.getPassword().length() > 32) {
             errors.rejectValue("password", "Size.userForm.password");
+            System.err.println(3);
         }
 
         if (!user.getPasswordConfirm().equals(user.getPassword())) {
             errors.rejectValue("passwordConfirm", "Diff.userForm.passwordConfirm");
+            System.err.println(4);
         }
     }
 }
