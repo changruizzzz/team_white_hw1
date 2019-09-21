@@ -1,3 +1,4 @@
+package com.white.stratego.stratego.game;
 
 public class Piece implements Comparable<Piece> {
     private int rank;
@@ -7,7 +8,7 @@ public class Piece implements Comparable<Piece> {
     private boolean isFlag;
     private boolean isBomb;
     private boolean dead;
-    private boolean moveable;
+    private boolean movable;
     private Movement movement;
 
     /**
@@ -21,7 +22,7 @@ public class Piece implements Comparable<Piece> {
         y = -1;
         this.visible = false;
         this.dead = false;
-        this.moveable = true;
+        this.movable = true;
         this.isBomb = false;
         this.isFlag = false;
     }
@@ -33,7 +34,7 @@ public class Piece implements Comparable<Piece> {
         y = -1;
         this.visible = false;
         this.dead = false;
-        this.moveable = false;
+        this.movable = false;
         this.isFlag = true;
         this.isBomb = false;
     }
@@ -45,7 +46,7 @@ public class Piece implements Comparable<Piece> {
         y = -1;
         this.visible = false;
         this.dead = false;
-        this.moveable = false;
+        this.movable = false;
         this.isFlag = false;
         this.isBomb = true;
     }
@@ -66,12 +67,12 @@ public class Piece implements Comparable<Piece> {
         isBomb = bomb;
     }
 
-    public boolean isMoveable() {
-        return moveable;
+    public boolean isMovable() {
+        return movable;
     }
 
-    public void setMoveable(boolean moveable) {
-        this.moveable = moveable;
+    public void setMovable(boolean movable) {
+        this.movable = movable;
     }
 
     public int getRank() {

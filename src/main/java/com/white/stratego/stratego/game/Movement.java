@@ -1,3 +1,5 @@
+package com.white.stratego.stratego.game;
+
 public class Movement {
    public int moveUp(int x, int y){
        return y++;

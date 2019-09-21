@@ -6,8 +6,14 @@
 </head>
 <body>
 <h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
+<tr th:each="game: ${games}">
+    <td th:text="${game.id}"></td>
+    <td th:text="${game.user.username}"></td>
+    <td><a th:href="@{/delete/{id}(id=${game.id})}">delete</a></td>
+</tr>
 <form th:action="@{/logout}" method="post">
     <input type="submit" value="Sign Out"/>
 </form>
+<div><a href="/create">Create a game!!!</a></div>
 </body>
 </html>

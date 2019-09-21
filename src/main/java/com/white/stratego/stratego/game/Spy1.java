@@ -1,3 +1,5 @@
+package com.white.stratego.stratego.game;
+
 public class Spy1 extends Piece {
 
     /**

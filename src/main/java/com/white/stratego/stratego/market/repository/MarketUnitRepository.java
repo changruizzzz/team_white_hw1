@@ -8,5 +8,6 @@ public interface MarketUnitRepository extends JpaRepository<MarketUnit, Long>{
 
     Set<MarketUnit> findBySavedBy(User user);
     Set<MarketUnit> findByCreatedBy(User user);
+    void deleteMarketUnitsById(long id);
     MarketUnit findById(long id);
 }
