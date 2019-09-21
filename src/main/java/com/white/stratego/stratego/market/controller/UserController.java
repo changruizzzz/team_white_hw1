@@ -46,13 +46,21 @@ public class UserController {
 
     @RequestMapping("/login")
     public String login(Model model, String error, String logout, Authentication authentication) {
+        System.err.println("in");
         if(authentication != null && authentication.isAuthenticated())
-            return "redirect:/dashboard";
-        if (error != null)
-            model.addAttribute("error", "Your username and password is invalid.");
 
-        if (logout != null)
+            return "redirect:/dashboard";
+        if (error != null) {
+            System.err.println("11");
+            model.addAttribute("error", "Your username and password is invalid.");
+        }
+
+
+        if (logout != null) {
+            System.err.println("22");
             model.addAttribute("message", "You have been logged out successfully.");
+        }
+
 
         return "login";
     }
