@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 @SpringBootApplication
 public class StrategoApplication {
 
+
     public static void main(String[] args) {
         SpringApplication.run(StrategoApplication.class, args);
     }

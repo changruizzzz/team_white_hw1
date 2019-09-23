@@ -193,9 +193,7 @@ border-style: groove;
 
     position: relative;
     display: block;
-    width: 100%;
     height: 62px;
-    background:gre;
     border-radius: 31px;
     padding: 0 35px 0 35px;
 }
@@ -206,3 +204,22 @@ border-style: groove;
 
 .m-b-12 {
     margin-bottom: 12px;}
+
+.m-b-30{
+    margin-bottom: 30px;
+}
+
+.btn-exit-ic{
+    position: relative;
+    left:1350px;
+}
+
+.bo1 {border-bottom: 1px solid #929292;}
+
+.txt3 {
+    font-family: Oswald-Regular;
+    font-size: 16px;
+    color: #333333;
+    line-height: 1.2;
+    text-transform: uppercase;
+}
