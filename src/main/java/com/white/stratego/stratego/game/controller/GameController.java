@@ -1,14 +1,15 @@
 package com.white.stratego.stratego.game.controller;
 
 import com.white.stratego.stratego.game.Game;
-import com.white.stratego.stratego.market.model.MarketUnit;
+import com.white.stratego.stratego.game.Statistics;
+import com.white.stratego.stratego.game.repository.GameRepository;
+import com.white.stratego.stratego.game.repository.StatisticsRepository;
 import com.white.stratego.stratego.market.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import com.white.stratego.stratego.market.repository.MarketUnitRepository;
 import com.white.stratego.stratego.market.model.User;
 
 import java.util.Set;
@@ -17,10 +18,13 @@ import java.util.Set;
 public class GameController {
 
     @Autowired
-    private MarketUnitRepository marketUnitRepository;
+    private GameRepository gameRepository;
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private StatisticsRepository statisticsRepository;
 
     @RequestMapping("/create")
     public String newGame(Authentication authentication) {
@@ -28,7 +32,13 @@ public class GameController {
         g.setIf_public(false);
         User user = userRepository.findByUsername(authentication.getName());
         g.setUser(user);
-        marketUnitRepository.save((MarketUnit)g);
+        Statistics stats = statisticsRepository.findByUser(user);
+        if(stats == null) {
+            stats = new Statistics();
+            stats.setUser(user);
+            statisticsRepository.save(stats);
+        }
+        gameRepository.save(g);
 
         return "redirect:/dashboard";
     }
@@ -36,7 +46,7 @@ public class GameController {
     @RequestMapping("/delete/{id}")
     public String newGame(@PathVariable long id) {
         System.err.println("???");
-        marketUnitRepository.deleteById(id);
+        gameRepository.deleteById(id);
 
         return "redirect:/dashboard";
     }
@@ -51,7 +61,7 @@ public class GameController {
     @RequestMapping({"/dashboard"})
     public String dashboard(Authentication authentication, Model model) {
         User user = userRepository.findByUsername(authentication.getName());
-        Set<MarketUnit> games = marketUnitRepository.findByCreatedBy(user);
+        Set<Game> games = gameRepository.findByCreatedBy(user);
         model.addAttribute("games", games);
         return "dashboard";
     }
