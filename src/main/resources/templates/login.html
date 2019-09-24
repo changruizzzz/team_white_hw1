@@ -1,22 +1,76 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Spring Security Example </title>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/a.css}">
+    <title>Stratego</title>
+    <link rel="icon" th:href="@{/resources/images/icon.png}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="../static/resources/fonts/font-awesome-4.7.0/css/font-awesome.min.css" th:href="@{/resources/fonts/font-awesome-4.7.0/css/font-awesome.min.css}">
+    <link rel="stylesheet" type="text/css" href="../static/resources/fonts/Linearicons-Free-v1.0.0/icon-font.min.css" th:href="@{/resources/fonts/Linearicons-Free-v1.0.0/icon-font.min.css}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../static/resources/css/loginSign.css" th:href="@{/resources/css/loginSign.css}">
+    <link rel="stylesheet" type="text/css" href="../static/resources/css/styles.css" th:href="@{/resources/css/styles.css}"/>
 </head>
-<body>
-<div th:if="${param.error}">
-    Invalid username and password.
-</div>
-<div th:if="${param.logout}">
-    You have been logged out.
-</div>
-<form th:action="@{/login}" method="post">
-    <div><label> User Name : <input type="text" name="username"/> </label></div>
-    <div><label> Password: <input type="password" name="password"/> </label></div>
 
-    <div><input type="submit" value="Sign In"/></div>
-</form>
+<body>
+
+<div class="container">
+        <div class="row title">
+                <div class="col">
+                    <span class="login-title txt1 row">
+                            Login
+                        </span>
+
+                    <div class="change-sign-in txt2">
+                            <span class="">
+                                New to Stratego?
+                            </span>
+
+                        <a href="/signup" th:href="@{/signup}" class="txt3">
+                            Sign up
+                        </a>
+                    </div>
+                </div>
+
+        </div>
+        <div class="row">
+
+            <form th:action="@{/login}" method="post" class="login-email col">
+                <div class="input-info" >
+                    <input type="text" placeholder="Username" name="username">
+                </div>
+                <div class="input-info" >
+                    <input type="password" placeholder="Password" name="password">
+                </div>
+                <div class="">
+                    <button class="login-btn">
+                        Submit
+                    </button>
+                </div>
+            </form>
+
+            <div class="col">
+                <div class="login-social">
+                    <div>
+                        <a href="#" class="btn-login-with row bg1 m-b-12">
+                            <i class="fa fa-facebook-official"></i>
+                            Login with Facebook
+                        </a>
+                        <a href="#" class="btn-login-with row bg2">
+                            <i class="fa fa-twitter"></i>
+                            Login with Twitter
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+<!--<script src="js/main.js"></script>-->
+<!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>-->
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>-->
+<!--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>-->
 </body>
 </html>

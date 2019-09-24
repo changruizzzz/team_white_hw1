@@ -1,3 +1,4 @@
+package com.white.stratego.stratego.game;
 
 public class Piece implements Comparable<Piece> {
     private int rank;
@@ -7,13 +8,26 @@ public class Piece implements Comparable<Piece> {
     private boolean isFlag;
     private boolean isBomb;
     private boolean dead;
-    private boolean moveable;
+    private boolean movable;
     private Movement movement;
 
     /**
      * if the user choose put chess by themselves
      * or implement a random method for user choose random mode later
      */
+    // Empty Piece
+    public Piece(){
+        this.rank = 0;
+        this.visible = false;
+        x = -1;
+        y = -1;
+        this.visible = false;
+        this.dead = false;
+        this.movable = false;
+        this.isBomb = false;
+        this.isFlag = false;
+    }
+
     public Piece(int rank, boolean visible, boolean dead, boolean moveable, boolean isBomb, boolean isFlag){
         this.rank = rank;
         this.visible = false;
@@ -21,7 +35,7 @@ public class Piece implements Comparable<Piece> {
         y = -1;
         this.visible = false;
         this.dead = false;
-        this.moveable = true;
+        this.movable = true;
         this.isBomb = false;
         this.isFlag = false;
     }
@@ -33,7 +47,7 @@ public class Piece implements Comparable<Piece> {
         y = -1;
         this.visible = false;
         this.dead = false;
-        this.moveable = false;
+        this.movable = false;
         this.isFlag = true;
         this.isBomb = false;
     }
@@ -45,11 +59,14 @@ public class Piece implements Comparable<Piece> {
         y = -1;
         this.visible = false;
         this.dead = false;
-        this.moveable = false;
+        this.movable = false;
         this.isFlag = false;
         this.isBomb = true;
     }
-
+    public Piece emptyPiece() {
+        Piece emptyP = new Piece(0, false, false, false, false, false);
+        return emptyP;
+    }
     public boolean isFlag() {
         return isFlag;
     }
@@ -66,12 +83,12 @@ public class Piece implements Comparable<Piece> {
         isBomb = bomb;
     }
 
-    public boolean isMoveable() {
-        return moveable;
+    public boolean isMovable() {
+        return movable;
     }
 
-    public void setMoveable(boolean moveable) {
-        this.moveable = moveable;
+    public void setMovable(boolean movable) {
+        this.movable = movable;
     }
 
     public int getRank() {
@@ -123,7 +140,7 @@ public class Piece implements Comparable<Piece> {
     }
 
     public void moveUp(){
-
+        //changeBoard();
     }
 
     public void moveLeft(){
@@ -133,7 +150,9 @@ public class Piece implements Comparable<Piece> {
     public void moveRight(){
 
     }
+    public void moveDown() {
 
+    }
 
     public void skill(){
 
@@ -165,4 +184,9 @@ public class Piece implements Comparable<Piece> {
     public int compareTo(Piece o) {
         return this.rank - o.rank;
     }
+    // if rank of comp is negative and player is positive - compare must be written like this
+//    @Override
+//    public int compareTo(Piece o) {
+//        return this.rank + o.rank;
+//    }
 }

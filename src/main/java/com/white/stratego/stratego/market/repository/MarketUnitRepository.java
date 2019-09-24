@@ -4,9 +4,10 @@ import com.white.stratego.stratego.market.model.MarketUnit;
 import com.white.stratego.stratego.market.model.User;
 import java.util.Set;
 
-public interface MarketUnitRepository extends JpaRepository<MarketUnit, Long>{
+public interface MarketUnitRepository<T extends MarketUnit> extends JpaRepository<MarketUnit, Long>{
 
-    Set<MarketUnit> findBySavedBy(User user);
-    Set<MarketUnit> findByCreatedBy(User user);
-    MarketUnit findById(long id);
+    Set<T> findBySavedBy(User user);
+    Set<T> findByCreatedBy(User user);
+    void deleteMarketUnitsById(long id);
+    T findById(long id);
 }

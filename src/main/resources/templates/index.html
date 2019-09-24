@@ -1,37 +1,39 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8">
     <title>Stratego</title>
-<!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>-->
-    <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-    <link rel="shortcut icon" type="image/png" th:href="@{/images/medal.png}"/>
-    <link rel="stylesheet" th:href="@{/css/styles.css}"/>
-
+    <link rel="icon" href="../static/resources/images/icon.png" th:href="@{/resources/images/icon.png}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="../static/resources/fonts/font-awesome-4.7.0/css/font-awesome.min.css" th:href="@{/resources/fonts/font-awesome-4.7.0/css/font-awesome.min.css}">
+    <link rel="stylesheet" type="text/css" href="../static/resources/fonts/Linearicons-Free-v1.0.0/icon-font.min.css" th:href="@{/resources/fonts/Linearicons-Free-v1.0.0/icon-font.min.css}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../static/resources/css/index.css" th:href="@{/resources/css/index.css}">
+    <link href="https://fonts.googleapis.com/css?family=Varela+Round&display=swap" rel="stylesheet">
 </head>
+
 <body>
-
-<div class="header">
-    <div class="greeting">
-<!--        <div sec:authorize="isAuthenticated()">-->
-<!--            This contediv sec:authorize o authenticated users.-->
-<!--        </div>-->
-
-<!--        <a href="/">Settings</a>-->
-<!--        <a href="/">Logout</a>-->
-        <span>Welcome!</span>
-        <a href="/login">Login</a>
-        <a href="/signup">Sign Up</a>
+<nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+    <div class="container">
+        <img id="logo" src="../static/resources/images/icon.png" th:src="@{/resources/images/icon.png}"/>
+        <a class="navbar-brand txt" href="/">Stratego</a>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link txt" href="/login" th:href="@{/login}">Login</a>
+            </li>
+        </ul>
     </div>
-</div>
+</nav>
 
-<div class="footer">
-    <div class="center-text">
-        This is a temporary footer!
+<header class="masthead">
+    <div class="container d-flex h-100 align-items-center">
+        <div class="mx-auto text-center">
+            <h1 class="mx-auto my-0 text-uppercase">The classic game of battlefield strategy!</h1>
+            <h2 class="text-color mx-auto mt-2 mb-5">Will you capture the flag and win the battle? Test your skills with this fatastic game.</h2>
+            <a href="/login" th:href="@{/login}" class="btn btn-primary">Start Game</a>
+        </div>
     </div>
-</div>
+</header>
 
 
-<!--<p>Click <a th:href="@{/hello}">here</a> to see a greeting.</p>-->
 </body>
 </html>

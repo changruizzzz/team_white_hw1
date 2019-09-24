@@ -1,6 +1,7 @@
 package com.white.stratego.stratego.market.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -40,23 +41,28 @@ public class UserController {
 
         securityService.autoLogin(userForm.getUsername(), userForm.getPasswordConfirm());
 
-        return "redirect:/home";
+        return "redirect:/dashboard";
     }
 
     @RequestMapping("/login")
-    public String login(Model model, String error, String logout) {
-        if (error != null)
-            model.addAttribute("error", "Your username and password is invalid.");
+    public String login(Model model, String error, String logout, Authentication authentication) {
+        System.err.println("in");
+        if(authentication != null && authentication.isAuthenticated())
 
-        if (logout != null)
+            return "redirect:/dashboard";
+        if (error != null) {
+            System.err.println("11");
+            model.addAttribute("error", "Your username and password is invalid.");
+        }
+
+
+        if (logout != null) {
+            System.err.println("22");
             model.addAttribute("message", "You have been logged out successfully.");
+        }
+
 
         return "login";
-    }
-
-    @GetMapping({"/", "/home"})
-    public String home(Model model) {
-        return "home";
     }
 
 }

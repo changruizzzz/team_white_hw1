@@ -1,0 +1,113 @@
+body {
+    font-family: 'Varela Round', sans-serif !important;
+}
+
+.navbar {
+    height: 48px;
+    -webkit-box-shadow: 0 3px 5px rgba(100, 100, 100, 0.2);
+    -moz-box-shadow:    0 3px 5px rgba(100, 100, 100, 0.2);
+    box-shadow:         0 3px 5px rgba(100, 100, 100, 0.2);
+    z-index: 1000;
+
+}
+
+.avatar img{
+    width: 32px;
+    height: 32px;
+    margin-right: 10px;
+}
+
+.stratego-container {
+    width: 100%;
+    background-color: #f0f4f7;
+    position: absolute;
+    top: 48px;
+    bottom: 0;
+    padding: 40px 60px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.stratego-col {
+    display: inline-block;
+    vertical-align: top;
+
+}
+
+.card {
+    margin-bottom: 30px;
+    border-radius: 10px;
+    box-shadow: none;
+    min-width: 270px;
+}
+.card-header {
+    border-radius: 10px 10px 0 0 !important;
+    background-color: white;
+}
+
+.card-header a {
+    font-weight: lighter;
+    color: #3899ec;
+    font-size: 14px;
+    float: right;
+}
+
+.card-header a:hover {
+    color: #68a9e3;
+}
+svg > g > g:last-child { pointer-events: none }
+
+#piechart-container {
+    margin: 0 auto 10px auto;
+    width: 180px;
+    height: 180px;
+    /*margin-bottom: 10px;*/
+}
+
+#piechart-legends {
+    padding: 5px 10px 0 10px;
+    width: 180px;
+    margin: 0 auto;
+    border-width: 1px 0 0 0;
+    border-color: #f2f2f2;
+    border-style: solid;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+#piechart-legends li {
+    list-style: none;
+    display: inline;
+    padding: 0;
+}
+
+#game-history-card {
+    width: 800px;
+}
+
+.piechart-legend {
+    display: flex;
+    flex-direction: column;
+}
+.piechart-legend div{
+    margin: 0 auto;
+}
+.piechart-legend span {
+    font-size: 10px
+;
+}
+
+a.link-disabled {
+    pointer-events: none;
+    cursor: default;
+    color: #e0e0e0;
+}
+.new-game .link-disabled span {
+    font-size: 12px;
+}
+
+#logo {
+    height: 20px;
+    width: 20px;
+    margin-right: 5px;
+}
