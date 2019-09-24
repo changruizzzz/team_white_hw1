@@ -13,7 +13,7 @@ public class Board {
      * @param  side_color blue (human) or red (computer) player represented by character 'b' or 'r'
      * @return      the board setup with Pieces
      */
-    public Piece[][] setupBoard(int[] setup, char side_color) {
+    public void setupBoard(int[] setup, char side_color) {
         int start = 0;
         clearBoard();
 
@@ -47,13 +47,69 @@ public class Board {
                 board[i][j] = newPiece;
             }
         }
-        return board;
+    }
+    // setup empty middle pieces
+    public void setupMiddle() {
+        for (int i = 4; i < 6; i++) {
+            for (int j = 0; j < 10; j++) {
+                board[i][j] = new Piece();
+            }
+        }
     }
     private void clearBoard() {
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
                 board[i][j] = new Piece(0, false, false, true, false, false);
             }
+        }
+    }
+
+    private void makeMove(Piece p, char direction, int i) {
+        int x1 = p.getX();
+        int y1 = p.getY();
+        int x2 = -1;
+        int y2 = -1;
+        switch (direction) {
+            case 'u':
+                x2 = x1;
+                y2 = y1 + i;
+                break;
+            case 'd':
+                x2 = x1;
+                y2 = y1 - i;
+                break;
+            case 'l':
+                x2 = x1 - i;
+                y2 = y1;
+                break;
+            case 'r':
+                x2 = x1 + i;
+                y2 = y1;
+                break;
+        }
+        if (checkIfOccupied(y2,x2) == false) {
+            // swap moving piece with empty space
+            Piece tmp = board[x1][y1];
+            board[y1][x1] = board[y2][x2];
+            board[y2][x2] = tmp;
+        } else {
+            // make an attack - it will create either one or two extra empty spaces
+            // if ranks are equal = 2 empty spaces, otherwise one extra
+            board[y1][x1].attack(board[y2][x2]);
+            setEmpty(x1,y1);
+        }
+    }
+
+    private void setEmpty(int x1, int y1) {
+        Piece emptyP = new Piece();
+        board[y1][x1] = emptyP;
+    }
+
+    private boolean checkIfOccupied(int x2, int y2) {
+        if (board[y2][x2].getRank() == 0) {
+            return false;
+        } else {
+            return true;
         }
     }
 
