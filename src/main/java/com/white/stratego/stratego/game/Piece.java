@@ -15,6 +15,19 @@ public class Piece implements Comparable<Piece> {
      * if the user choose put chess by themselves
      * or implement a random method for user choose random mode later
      */
+    // Empty Piece
+    public Piece(){
+        this.rank = 0;
+        this.visible = false;
+        x = -1;
+        y = -1;
+        this.visible = false;
+        this.dead = false;
+        this.movable = false;
+        this.isBomb = false;
+        this.isFlag = false;
+    }
+
     public Piece(int rank, boolean visible, boolean dead, boolean moveable, boolean isBomb, boolean isFlag){
         this.rank = rank;
         this.visible = false;
@@ -50,7 +63,10 @@ public class Piece implements Comparable<Piece> {
         this.isFlag = false;
         this.isBomb = true;
     }
-
+    public Piece emptyPiece() {
+        Piece emptyP = new Piece(0, false, false, false, false, false);
+        return emptyP;
+    }
     public boolean isFlag() {
         return isFlag;
     }
@@ -124,7 +140,7 @@ public class Piece implements Comparable<Piece> {
     }
 
     public void moveUp(){
-
+        //changeBoard();
     }
 
     public void moveLeft(){
@@ -134,7 +150,9 @@ public class Piece implements Comparable<Piece> {
     public void moveRight(){
 
     }
+    public void moveDown() {
 
+    }
 
     public void skill(){
 
@@ -166,4 +184,9 @@ public class Piece implements Comparable<Piece> {
     public int compareTo(Piece o) {
         return this.rank - o.rank;
     }
+    // if rank of comp is negative and player is positive - compare must be written like this
+//    @Override
+//    public int compareTo(Piece o) {
+//        return this.rank + o.rank;
+//    }
 }
