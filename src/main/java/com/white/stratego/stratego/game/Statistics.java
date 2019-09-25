@@ -1,6 +1,9 @@
 package com.white.stratego.stratego.game;
 
 import com.white.stratego.stratego.market.model.User;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
@@ -8,6 +11,7 @@ import javax.persistence.*;
 public class Statistics {
 
     @OneToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
     @Id

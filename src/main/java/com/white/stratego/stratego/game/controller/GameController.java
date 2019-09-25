@@ -5,13 +5,16 @@ import com.white.stratego.stratego.game.Statistics;
 import com.white.stratego.stratego.game.repository.GameRepository;
 import com.white.stratego.stratego.game.repository.StatisticsRepository;
 import com.white.stratego.stratego.market.repository.UserRepository;
+import com.white.stratego.stratego.market.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.core.oidc.user.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import com.white.stratego.stratego.market.model.User;
 
+import java.util.Map;
 import java.util.Set;
 
 @Controller
@@ -25,6 +28,9 @@ public class GameController {
 
     @Autowired
     private StatisticsRepository statisticsRepository;
+
+    @Autowired
+    private UserServiceImpl userService;
 
     @RequestMapping("/create")
     public String newGame(Authentication authentication) {
@@ -45,7 +51,6 @@ public class GameController {
 
     @RequestMapping("/delete/{id}")
     public String newGame(@PathVariable long id) {
-        System.err.println("???");
         gameRepository.deleteById(id);
 
         return "redirect:/dashboard";
@@ -60,9 +65,13 @@ public class GameController {
 
     @RequestMapping({"/dashboard"})
     public String dashboard(Authentication authentication, Model model) {
-        User user = userRepository.findByUsername(authentication.getName());
+
+        User user = userService.findByAuthentication(authentication);
+        if(!user.getIsActive())
+            return "redirect:/verify";
         Set<Game> games = gameRepository.findByCreatedBy(user);
         model.addAttribute("games", games);
+        model.addAttribute("user", user);
         return "dashboard";
     }
 

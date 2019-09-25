@@ -17,6 +17,12 @@ public class User {
 
     private String password;
 
+    private String avatar_url;
+
+    private String name;
+
+    private Boolean isActive;
+
     @Transient
     private String passwordConfirm;
 
@@ -25,6 +31,11 @@ public class User {
 
     @ManyToMany
     private Set<Role> saved_units;
+
+    public User() {
+        super();
+        this.isActive = false;
+    }
 
     public Long getId() {
         return id;
@@ -44,6 +55,14 @@ public class User {
 
     public String getEmail() {
         return email;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setEmail(String email) {
@@ -74,5 +93,48 @@ public class User {
         this.roles = roles;
     }
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private VerificationToken verificationToken;
+
+    public String getAvatar_url() {
+        return avatar_url;
+    }
+
+    public void setAvatar_url(String avatar_url) {
+        this.avatar_url = avatar_url;
+    }
+
+    public Set<Role> getSaved_units() {
+        return saved_units;
+    }
+
+    public void setSaved_units(Set<Role> saved_units) {
+        this.saved_units = saved_units;
+    }
+
+    public String getNickname() {
+        if (name != null) {
+            return name;
+        }
+        else {
+            return username;
+        }
+    }
+
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean active) {
+        isActive = active;
+    }
+
+    public VerificationToken getVerificationToken() {
+        return verificationToken;
+    }
+
+    public void setVerificationToken(VerificationToken verificationToken) {
+        this.verificationToken = verificationToken;
+    }
 
 }
