@@ -129,7 +129,7 @@
                     <ul>
                     <li th:each="game: ${games}">
                         <span th:text="${game.id}"></span>
-                        <span th:text="${game.user.username}"></span>
+                        <span th:text="${user.username}"></span>
                         <span><a th:href="@{/delete/{id}(id=${game.id})}">delete</a></span>
                     </li>
                     </ul>

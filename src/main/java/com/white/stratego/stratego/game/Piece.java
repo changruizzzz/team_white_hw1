@@ -4,11 +4,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.io.Serializable;
 
-public class Piece implements Comparable<Piece> {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+public class Piece implements Comparable<Piece> , Serializable {
+
     private int rank;
     private boolean visible;
     private int x;
@@ -68,23 +67,23 @@ public class Piece implements Comparable<Piece> {
         Piece emptyP = new Piece(0, false, false, false, false, false);
         return emptyP;
     }
-    public boolean isFlag() {
+    public boolean getIsFlag() {
         return isFlag;
     }
 
-    public void setFlag(boolean flag) {
+    public void setIsFlag(boolean flag) {
         isFlag = flag;
     }
 
-    public boolean isBomb() {
+    public boolean getIsBomb() {
         return isBomb;
     }
 
-    public void setBomb(boolean bomb) {
+    public void setIsBomb(boolean bomb) {
         isBomb = bomb;
     }
 
-    public boolean isMovable() {
+    public boolean getMovable() {
         return movable;
     }
 
@@ -96,7 +95,7 @@ public class Piece implements Comparable<Piece> {
         return rank;
     }
 
-    public boolean isDead() {
+    public boolean getDead() {
         return dead;
     }
 
@@ -108,7 +107,7 @@ public class Piece implements Comparable<Piece> {
         this.rank = rank;
     }
 
-    public boolean isVisible() {
+    public boolean getVisible() {
         return visible;
     }
 
@@ -132,6 +131,7 @@ public class Piece implements Comparable<Piece> {
     public int getY() {
         return y;
     }
+
 
     public void setY(int y) {
         this.y = y;

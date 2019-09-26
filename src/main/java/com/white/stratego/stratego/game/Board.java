@@ -263,7 +263,7 @@ public class Board {
             for (int i = 0; i < 10; i+=1) {
                 for (int j = 0; j < 10; j+=1) {
                     Piece myP = board[i][j];
-                    if ((myP.getRank() * r > 0) && myP.isMovable()) {
+                    if ((myP.getRank() * r > 0) && myP.getMovable()) {
                         String attackFirst = immediateAttack(myP, side);
                         String attack = checkAvailAttack(myP, side);
                         String moves = checkAvailMoves(myP);
@@ -291,7 +291,7 @@ public class Board {
             for (int i = 9; i > 0; i-=1) {
                 for (int j = 0; j < 10; j+=1) {
                     Piece myP = board[i][j];
-                    if ((myP.getRank() * r > 0) && myP.isMovable()) {
+                    if ((myP.getRank() * r > 0) && myP.getMovable()) {
                         String attackFirst = immediateAttack(myP, side);
                         String attack = checkAvailAttack(myP, side);
                         String moves = checkAvailMoves(myP);
@@ -403,7 +403,7 @@ public class Board {
         if (coord != edge && !isEmpty(tmpX,tmpY)) {
             Piece tmpP = board[tmpX][tmpY];
             int rank = tmpP.getRank();
-            if ((rank * r < 0) && (tmpP.isVisible() == visible)) {
+            if ((rank * r < 0) && (tmpP.getVisible() == visible)) {
                 if ((visible == true) && (rank < p.getRank()) || ((rank == 10) && (p.getRank() == 1))) {
                     result += direction;
                 } else if (visible == false) {

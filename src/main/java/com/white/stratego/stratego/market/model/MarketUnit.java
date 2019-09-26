@@ -14,7 +14,7 @@ public abstract class MarketUnit {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "userId", nullable = true)
+    @JoinColumn(name = "userId", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User createdBy;
 
@@ -46,14 +46,6 @@ public abstract class MarketUnit {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public User getUser() {
-        return createdBy;
-    }
-
-    public void setUser(User user) {
-        this.createdBy = user;
     }
 
     public Set<User> getSaved_by() {
