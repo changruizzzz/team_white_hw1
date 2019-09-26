@@ -6,8 +6,7 @@
     <link rel="icon" href="../static/resources/images/icon.png" th:href="@{/resources/images/icon.png}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--===============================================================================================-->
-<!--    <link rel="stylesheet" type="text/css" href="../static/resources/fonts/font-awesome-4.7.0/css/font-awesome.min.css" th:href="@{/resources/fonts/font-awesome-4.7.0/css/font-awesome.min.css}">-->
-<!--    <link rel="stylesheet" type="text/css" href="../static/resources/fonts/Linearicons-Free-v1.0.0/icon-font.min.css" th:href="@{/resources/fonts/Linearicons-Free-v1.0.0/icon-font.min.css}">-->
+    <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.10/css/mdb.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
@@ -56,6 +55,7 @@
 </head>
 <body>
     <nav class="mb-1 navbar navbar-expand-sm navbar-light">
+        <img id="logo" src="../static/resources/images/icon.png" th:src="@{/resources/images/icon.png}"/>
         <a class="navbar-brand" href="#">Stratego</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-555"
                 aria-controls="navbarSupportedContent-555" aria-expanded="false" aria-label="Toggle navigation">
@@ -66,9 +66,9 @@
                 <li class="nav-item avatar dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-55" data-toggle="dropdown"
                        aria-haspopup="true" aria-expanded="false">
-                        <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-2.jpg" class="rounded-circle z-depth-0"
-                             alt="avatar image">
-                        <span th:inline="text">[[${#httpServletRequest.remoteUser}]]</span>
+                        <img class="rounded-circle z-depth-0"
+                             th:src="${user.avatar_url == null || user.avatar_url.isEmpty()} ? '/resources/images/default.png':${user.avatar_url}">
+                        <span th:text="${user.getNickname()}"></span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right dropdown-secondary"
                          aria-labelledby="navbarDropdownMenuLink-55">

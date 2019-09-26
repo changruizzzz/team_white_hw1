@@ -6,7 +6,6 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "game")
 public class Game extends MarketUnit{
     private Board board = new Board();
     boolean humanWin = false;

@@ -1,0 +1,203 @@
+<!doctype html>
+<title>Example</title>
+<style>
+div {
+  padding:0px;
+  }
+table {
+  border-collapse: collapse;
+  border: 1px solid black;
+}
+tr {
+  padding: 0px;
+  margin: 0px;
+}
+td {
+  padding: 0px;
+  margin: 0px;
+  width: 40px;
+  height: 40px;
+  position: relative;
+  font-size: 4vh;
+  color: white;
+  background-color: #578030;
+  border: 1px solid black;
+  text-align: center;
+  vertical-align:middle;
+  overflow: hidden;
+}
+.lake {
+  background-color: #1064ad;
+}
+.river {
+  background-color: #1064ad;
+
+}
+.row {
+    text-align: center;
+    height:420px;
+  background-color: #96cf61;
+    height: 100%;
+}
+.block {
+    float: left;
+    margin-right: 10px;
+    padding: 5px;
+    min-width: 50px;
+    background-color: #96cf61;
+    height: 100%;
+
+}
+.block div {
+   height: 10%;
+  }
+.clear {
+    clear: both;
+}
+.red {
+  color: red;
+  }
+.blue {
+  color: blue;
+  }
+div #instructions {
+    text-align: right;
+    height: 100%;
+  }
+</style>
+<div class="row">
+<div class="block" id="instructions">
+  <div>10: Marshal -- <span class="red">1</span> - <span class="blue">1</span></div>
+  <div>9: General -- <span class="red">1</span> - <span class="blue">1</span></div>
+  <div>8: Colonels -- <span class="red">2</span> - <span class="blue">2</span></div>
+  <div>7: Majors -- <span class="red">3</span> - <span class="blue">3</span></div>
+  <div>6: Captains -- <span class="red">4</span> - <span class="blue">4</span></div>
+  <div>5: Lieutenants -- <span class="red">4</span> - <span class="blue">4</span></div>
+  <div>4: Sergeants -- <span class="red">4</span> - <span class="blue">4</span></div>
+  <div>3: Miners -- <span class="red">5</span> - <span class="blue">5</span></div>
+  <div>2: Scouts -- <span class="red">8</span> - <span class="blue">8</span></div>
+  <div>1: Spy -- <span class="red">1</span> - <span class="blue">1</span></div>
+</div>
+<div class="block">
+<table>
+<tr>
+  <td>1</td>
+  <td>2</td>
+  <td>3</td>
+  <td>4</td>
+  <td>5</td>
+  <td>6</td>
+  <td>7</td>
+  <td>8</td>
+  <td>9</td>
+  <td>10</td>
+</tr>
+<tr>
+  <td>1</td>
+  <td>2</td>
+  <td>3</td>
+  <td>4</td>
+  <td>5</td>
+  <td>6</td>
+  <td>7</td>
+  <td>8</td>
+  <td>9</td>
+  <td>10</td>
+</tr>
+<tr>
+  <td>1</td>
+  <td>2</td>
+  <td>3</td>
+  <td>4</td>
+  <td>5</td>
+  <td>6</td>
+  <td>7</td>
+  <td>8</td>
+  <td>9</td>
+  <td>10</td>
+</tr>
+<tr>
+  <td>1</td>
+  <td>2</td>
+  <td>3</td>
+  <td>4</td>
+  <td>5</td>
+  <td>6</td>
+  <td>7</td>
+  <td>8</td>
+  <td>9</td>
+  <td>10</td>
+</tr>
+<tr>
+  <td>1</td>
+  <td>2</td>
+  <td colspan="2" rowspan="2" class="lake">Lake</td>
+  <td class="river">5</td>
+  <td class="river">6</td>
+  <td colspan="2" rowspan="2" class="lake">Lake</td>
+  <td class="river">9</td>
+  <td class="river">10</td>
+</tr>
+<tr>
+  <td class="river">1</td>
+  <td class="river">2</td>
+  <td>5</td>
+  <td>6</td>
+  <td>9</td>
+  <td>10</td>
+</tr>
+<tr>
+  <td>1</td>
+  <td>2</td>
+  <td>3</td>
+  <td>4</td>
+  <td>5</td>
+  <td>6</td>
+  <td>7</td>
+  <td>8</td>
+  <td>9</td>
+  <td>10</td>
+</tr>
+<tr>
+  <td>1</td>
+  <td>2</td>
+  <td>3</td>
+  <td>4</td>
+  <td>5</td>
+  <td>6</td>
+  <td>7</td>
+  <td>8</td>
+  <td>9</td>
+  <td>10</td>
+</tr>
+<tr>
+  <td>1</td>
+  <td>2</td>
+  <td>3</td>
+  <td>4</td>
+  <td>5</td>
+  <td>6</td>
+  <td>7</td>
+  <td>8</td>
+  <td>9</td>
+  <td>10</td>
+</tr>
+<tr>
+  <td>1</td>
+  <td>2</td>
+  <td>3</td>
+  <td>4</td>
+  <td>5</td>
+  <td>6</td>
+  <td>7</td>
+  <td>8</td>
+  <td>9</td>
+  <td>10</td>
+</tr>
+</table>
+</div>
+  <div class="row" id="actions">
+    information about last moves will be here
+  </div>
+</div>
+</div>

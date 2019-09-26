@@ -1,0 +1,58 @@
+.container {
+  display: inline-flex;
+  float: left;
+  text-align: center;
+  align-content: center;
+}
+.leftBoard {
+  position: relative;
+}
+
+.square {
+  background: transparent;
+  background-size: cover;
+  border: 1px solid black;
+  float: left;
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 34px;
+  height: 50px;
+  margin-right: -1px;
+  margin-top: -1px;
+  padding: 0;
+  text-align: center;
+  width: 50px;
+}
+
+.square:focus {
+    outline: none;
+}
+
+.board-row:after {
+  clear: both;
+  content: "";
+  display: table;
+}
+
+.player2-square {
+  background-color: RGB(234, 240, 206);
+}
+
+.player1-square {
+  background-color: RGB(187, 190, 100);
+}
+
+.lake-square {
+  background-color: RGB(50, 135, 168);
+  border: 1px solid transparent;
+}
+
+.player-turn-box {
+  width: 30px;
+  height: 30px;
+}
+
+.fallenPieces {
+    display: inline-block;
+    line-height: 80px;
+}
