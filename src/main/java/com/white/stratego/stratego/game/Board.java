@@ -1,14 +1,34 @@
 package com.white.stratego.stratego.game;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.lang.Math;
 
 @Entity
 public class Board {
-    Piece[][] board = new Piece[10][10];
+    private Piece[][] board = new Piece[10][10];
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
     public Board() {
         clearBoard();
     }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setBoard(Piece[][] board) {
+        this.board = board;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
     /**
      * Returns an array of Pieces object that represents the game board.
      * Positive rank will be set for human player and negative for computer

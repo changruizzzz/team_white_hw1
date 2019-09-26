@@ -1,6 +1,15 @@
 package com.white.stratego.stratego.game;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
 public class Piece implements Comparable<Piece> {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
     private int rank;
     private boolean visible;
     private int x;
@@ -9,7 +18,7 @@ public class Piece implements Comparable<Piece> {
     private boolean isBomb;
     private boolean dead;
     private boolean movable;
-    private Movement movement;
+
 
     /**
      * if the user choose put chess by themselves
@@ -129,13 +138,6 @@ public class Piece implements Comparable<Piece> {
         this.y = y;
     }
 
-    public Movement getMovement() {
-        return movement;
-    }
-
-    public void setMovement(Movement movement) {
-        this.movement = movement;
-    }
 
     public void moveUp(){
         //changeBoard();
