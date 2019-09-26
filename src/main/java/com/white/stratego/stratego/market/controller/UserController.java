@@ -92,5 +92,9 @@ public class UserController {
         }
     }
 
+    @RequestMapping("/try")
+    public String try1() {
+        return "try";
+    }
 
 }
