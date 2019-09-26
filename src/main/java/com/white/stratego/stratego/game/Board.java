@@ -1,6 +1,8 @@
 package com.white.stratego.stratego.game;
+import javax.persistence.Entity;
 import java.lang.Math;
 
+@Entity
 public class Board {
     Piece[][] board = new Piece[10][10];
 
@@ -268,7 +270,7 @@ public class Board {
             for (int i = 9; i > 0; i-=1) {
                 for (int j = 0; j < 10; j+=1) {
                     Piece myP = board[i][j];
-                    if (myP.getRank() * r > 0) {
+                    if ((myP.getRank() * r > 0) && myP.isMovable()) {
                         String attackFirst = immediateAttack(myP, side);
                         String attack = checkAvailAttack(myP, side);
                         String moves = checkAvailMoves(myP);
