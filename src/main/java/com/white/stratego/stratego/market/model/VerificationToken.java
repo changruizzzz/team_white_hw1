@@ -1,5 +1,6 @@
 package com.white.stratego.stratego.market.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -22,10 +23,12 @@ public class VerificationToken {
     private LocalDateTime issuedDateTime;
     private LocalDateTime confirmedDateTime;
 
+    @JsonBackReference
     @OneToOne()
     @JoinColumn(name = "user_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
+
 
     public VerificationToken(){
         this.token = UUID.randomUUID().toString();

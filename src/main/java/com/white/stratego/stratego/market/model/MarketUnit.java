@@ -14,7 +14,7 @@ public abstract class MarketUnit {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "post_id", nullable = false)
+    @JoinColumn(name = "userId", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User createdBy;
 
@@ -24,6 +24,21 @@ public abstract class MarketUnit {
 
     private boolean if_public;
 
+    public User getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(User createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public Set<User> getSavedBy() {
+        return savedBy;
+    }
+
+    public void setSavedBy(Set<User> savedBy) {
+        this.savedBy = savedBy;
+    }
 
     public Long getId() {
         return id;
@@ -31,14 +46,6 @@ public abstract class MarketUnit {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public User getUser() {
-        return createdBy;
-    }
-
-    public void setUser(User user) {
-        this.createdBy = user;
     }
 
     public Set<User> getSaved_by() {

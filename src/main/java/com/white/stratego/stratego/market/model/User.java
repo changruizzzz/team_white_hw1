@@ -1,5 +1,8 @@
 package com.white.stratego.stratego.market.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import net.minidev.json.annotate.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -93,6 +96,7 @@ public class User {
         this.roles = roles;
     }
 
+    @JsonManagedReference
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private VerificationToken verificationToken;
 

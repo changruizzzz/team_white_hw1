@@ -2,8 +2,10 @@ package com.white.stratego.stratego.game.controller;
 
 import com.white.stratego.stratego.game.Game;
 import com.white.stratego.stratego.game.Statistics;
+import com.white.stratego.stratego.game.repository.BoardRepository;
 import com.white.stratego.stratego.game.repository.GameRepository;
 import com.white.stratego.stratego.game.repository.StatisticsRepository;
+import com.white.stratego.stratego.game.service.GameService;
 import com.white.stratego.stratego.market.repository.UserRepository;
 import com.white.stratego.stratego.market.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,12 +34,26 @@ public class GameController {
     @Autowired
     private UserServiceImpl userService;
 
+    @Autowired
+    private GameService gameService;
+
+    @Autowired
+    private BoardRepository boardRepository;
+
     @RequestMapping("/create")
     public String newGame(Authentication authentication) {
         Game g = new Game();
+        gameService.gameStart(g);
+        //Save here?
+        System.err.println(g.getBoard());
+        System.out.println(boardRepository);
+        System.err.println(g.getInitialBoard());
+        boardRepository.save(g.getInitialBoard());
+        boardRepository.save(g.getBoard());
         g.setIf_public(false);
-        User user = userRepository.findByUsername(authentication.getName());
-        g.setUser(user);
+
+        User user = userService.findByAuthentication(authentication);
+        g.setCreatedBy(user);
         Statistics stats = statisticsRepository.findByUser(user);
         if(stats == null) {
             stats = new Statistics();
