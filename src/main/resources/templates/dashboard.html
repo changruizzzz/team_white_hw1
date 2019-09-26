@@ -66,8 +66,8 @@
                 <li class="nav-item avatar dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-55" data-toggle="dropdown"
                        aria-haspopup="true" aria-expanded="false">
-                        <img alt="https://mdbootstrap.com/img/Photos/Avatars/avatar-2.jpg" class="rounded-circle z-depth-0"
-                             th:src="${user.avatar_url}">
+                        <img class="rounded-circle z-depth-0"
+                             th:src="${user.avatar_url == null || user.avatar_url.isEmpty()} ? '/resources/images/default.png':${user.avatar_url}">
                         <span th:text="${user.getNickname()}"></span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right dropdown-secondary"

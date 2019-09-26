@@ -1,8 +1,10 @@
 package com.white.stratego.stratego.market.service;
 
 import com.white.stratego.stratego.market.model.User;
+import com.white.stratego.stratego.market.model.VerificationToken;
 import com.white.stratego.stratego.market.repository.RoleRepository;
 import com.white.stratego.stratego.market.repository.UserRepository;
+import com.white.stratego.stratego.market.repository.VerificationTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -21,7 +23,8 @@ public class UserServiceImpl implements UserService{
     private RoleRepository roleRepository;
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
-
+    @Autowired
+    private VerificationTokenRepository verificationTokenRepository;
     @Override
     public void save(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
@@ -88,5 +91,9 @@ public class UserServiceImpl implements UserService{
             userRepository.save(user);
         }
         return user;
+    }
+
+    public User findByToken(String token) {
+        return verificationTokenRepository.findByToken(token).get(0).getUser();
     }
 }

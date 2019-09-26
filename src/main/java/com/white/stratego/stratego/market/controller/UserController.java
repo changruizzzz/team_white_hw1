@@ -45,7 +45,6 @@ public class UserController {
 
         userService.save(userForm);
 
-        securityService.autoLogin(userForm.getEmail(), userForm.getPasswordConfirm());
         verificationTokenService.createVerification(userForm.getEmail());
         return "redirect:/verify";
     }
@@ -79,12 +78,18 @@ public class UserController {
 
     @RequestMapping("/verify/{token}")
     public String verifyEmail(@PathVariable String token) {
-
+        System.err.println("ok");
         ResponseEntity<String> response = verificationTokenService.verifyEmail(token);
-        if (response.getStatusCode().is2xxSuccessful())
-            return "redirect:/dashboard";
-        else
+        if (response.getStatusCode().is2xxSuccessful()) {
+            System.err.println("1");
+            User user = userService.findByToken(token);
+            System.err.println("user");
+            return "verifySuccess";
+        }
+        else {
+            System.err.println(2);
             return "verify";
+        }
     }
 
 
