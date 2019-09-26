@@ -1,8 +1,13 @@
 package com.white.stratego.stratego.game;
 
-public class boardSetups {
-    int[] setup = {1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 8, 8, 9, 10, 11, 13, 13, 13, 13, 13, 13};
-
+public class BoardSetups {
+    int[] setup;
+    public BoardSetups() {
+        setup = new int[]{1,2,2,2,2,2,2,3,3,3,
+                3,3,4,4,4,4,4,5,5,5,
+                5,6,6,6,6,7,7,7,8,8,
+                9,10,11,13,13,13,13,13,13};
+    }
     // shuffling the array using Knuth's shuffle method
     private void randomSet() {
         int n = 40;
@@ -25,9 +30,9 @@ public class boardSetups {
      */
     private void set1() {
         setup = new int[]{6,2,2,5,2,6,3,10,2,6,
-                          5,4,13,1,9,2,7,7,8,2,
-                          4,13,4,7,8,5,13,5,6,4,
-                          2,3,13,2,3,13,11,13,3,3};
+                5,4,13,1,9,2,7,7,8,2,
+                4,13,4,7,8,5,13,5,6,4,
+                2,3,13,2,3,13,11,13,3,3};
     };
     /*
     This is another setup he has used often on tournaments. It's outspoken aggressive
@@ -36,9 +41,9 @@ public class boardSetups {
      */
     private void set2() {
         setup = new int[]{10,6,5,3,2,6,2,2,2,6,
-                          4,2,8,8,9,2,4,13,13,5,
-                          7,2,7,1,6,5,13,4,5,2,
-                          7,3,3,3,4,13,11,13,13,3};
+                4,2,8,8,9,2,4,13,13,5,
+                7,2,7,1,6,5,13,4,5,2,
+                7,3,3,3,4,13,11,13,13,3};
     }
     /*
     Another setup he used often. Harder It's harder to defend the flag in the corner,
@@ -46,18 +51,18 @@ public class boardSetups {
      */
     private void set3() {
         setup = new int[]{6,2,4,9,6,2,2,10,2,6,
-                          5,2,7,5,13,2,7,7,8,3,
-                          4,8,1,3,13,2,6,5,5,13,
-                          3,13,4,13,4,2,3,3,13,11};
+                5,2,7,5,13,2,7,7,8,3,
+                4,8,1,3,13,2,6,5,5,13,
+                3,13,4,13,4,2,3,3,13,11};
     }
     /*
     It's a good all-round setup.
      */
     private void set4() {
         setup = new int[]{2,8,5,2,6,2,9,3,2,6,
-                          10,2,7,8,2,6,13,5,13,5,
-                          6,4,7,1,7,5,13,4,13,4,
-                          3,2,3,3,4,13,11,13,3,2};
+                10,2,7,8,2,6,13,5,13,5,
+                6,4,7,1,7,5,13,4,13,4,
+                3,2,3,3,4,13,11,13,3,2};
     }
     /*
     The flag on this position is something he often used against stronger opponents,
@@ -65,9 +70,9 @@ public class boardSetups {
      */
     private void set5() {
         setup = new int[]{9,6,2,4,2,2,2,3,6,2,
-                          3,2,8,7,13,5,10,7,5,8,
-                          13,6,1,7,5,2,6,5,13,4,
-                          4,2,3,13,4,3,3,13,11,13};
+                3,2,8,7,13,5,10,7,5,8,
+                13,6,1,7,5,2,6,5,13,4,
+                4,2,3,13,4,3,3,13,11,13};
     }
     /*
     This is an old setup that he invented on his first world championships.
@@ -76,18 +81,18 @@ public class boardSetups {
      */
     private void set6() {
         setup = new int[]{2,6,5,9,2,6,2,10,6,2,
-                          7,2,13,1,8,4,2,7,8,4,
-                          5,4,13,2,7,3,5,6,5,13,
-                          3,13,4,2,3,13,3,3,13,11};
+                7,2,13,1,8,4,2,7,8,4,
+                5,4,13,2,7,3,5,6,5,13,
+                3,13,4,2,3,13,3,3,13,11};
     }
     /*
     This setup comes from Philip Atzemoglou
      */
     private void set7() {
         setup = new int[]{10,7,3,4,13,13,4,3,7,9,
-                          7,2,8,2,6,5,2,8,2,1,
-                          13,6,2,5,4,13,6,2,3,2,
-                          11,13,5,3,13,4,3,6,2,5};
+                7,2,8,2,6,5,2,8,2,1,
+                13,6,2,5,4,13,6,2,3,2,
+                11,13,5,3,13,4,3,6,2,5};
     }
     /*
     This setup from Anthony. This is a variation of the Shoreline Bluff.
@@ -102,10 +107,10 @@ public class boardSetups {
     to learn that it was in the first row after I defeat them.
      */
     private void set8() {
-        setup = new int[]{12,2,13,11,13,13,4,2,2,2,
-                          7,9,8,13,10,7,13,3,8,7,
-                          5,4,6,6,3,3,6,2,6,5,
-                          2,4,3,5,2,1,4,13,5,3};
+        setup = new int[]{2,2,13,11,13,13,4,2,2,2,
+                7,9,8,13,10,7,13,3,8,7,
+                5,4,6,6,3,3,6,2,6,5,
+                2,4,3,5,2,1,4,13,5,3};
     }
     /*
     This setup comes from Brandon Clark
@@ -116,9 +121,9 @@ public class boardSetups {
      */
     private void set9() {
         setup = new int[]{4,3,5,7,4,2,5,7,4,3,
-                          13,13,10,8,13,13,8,9,13,13,
-                          5,1,6,4,6,3,2,6,2,2,
-                          11,7,6,2,2,2,5,2,3,3};
+                13,13,10,8,13,13,8,9,13,13,
+                5,1,6,4,6,3,2,6,2,2,
+                11,7,6,2,2,2,5,2,3,3};
     }
     //The following is from Mike Rowles.
     /*
@@ -129,18 +134,18 @@ public class boardSetups {
      */
     private void set10() {
         setup = new int[]{13,9,10,2,4,5,4,5,5,13,
-                          8,1,13,6,4,2,2,13,5,6,
-                          13,7,3,3,8,7,2,7,4,2,
-                          11,13,3,3,3,6,2,2,6,2};
+                8,1,13,6,4,2,2,13,5,6,
+                13,7,3,3,8,7,2,7,4,2,
+                11,13,3,3,3,6,2,2,6,2};
     }
     /*
     B29.
      */
     private void set11() {
         setup = new int[]{6,2,9,13,4,4,2,2,4,4,
-                          8,10,2,8,13,5,2,5,2,3,
-                          13,3,1,7,6,13,3,6,5,2,
-                          11,13,7,3,7,6,13,3,2,5};
+                8,10,2,8,13,5,2,5,2,3,
+                13,3,1,7,6,13,3,6,5,2,
+                11,13,7,3,7,6,13,3,2,5};
     }
     /*
     This setup comes from Johnny O'Donnell.
@@ -150,9 +155,9 @@ public class boardSetups {
      */
     private void set12() {
         setup = new int[]{13,9,1,8,2,5,3,8,2,5,
-                          4,13,3,6,7,10,2,2,7,2,
-                          13,4,13,2,2,5,4,6,2,6,
-                          11,13,4,13,6,3,3,3,5,7};
+                4,13,3,6,7,10,2,2,7,2,
+                13,4,13,2,2,5,4,6,2,6,
+                11,13,4,13,6,3,3,3,5,7};
     }
     /*
     This setup comes from Bill East.
@@ -167,9 +172,9 @@ public class boardSetups {
      */
     private void set13() {
         setup = new int[]{2,2,3,7,13,13,4,4,13,13,
-                          9,8,1,3,6,8,6,6,7,4,
-                          13,10,5,3,3,7,6,5,5,5,
-                          11,13,2,2,2,2,2,2,3,4};
+                9,8,1,3,6,8,6,6,7,4,
+                13,10,5,3,3,7,6,5,5,5,
+                11,13,2,2,2,2,2,2,3,4};
     }
     // returns setup array either by number (1-13),
     // or randomly in range [1,13], or set the board randomly if n is not in range [0,13]
