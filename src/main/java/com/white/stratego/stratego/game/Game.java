@@ -3,17 +3,21 @@ import java.util.Scanner;
 import com.white.stratego.stratego.market.model.MarketUnit;
 
 import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-@Entity
+@Entity(name="game")
 public class Game extends MarketUnit{
+    @OneToOne
     private Board board = new Board();
     boolean humanWin = false;
     boolean compWin = false;
     boolean humanTurn = true;
+    @OneToOne
     public Board initialBoard;
+    @OneToOne
     public Board currentBoard;
-    public Board finalBoard;
+
 //    GameUser human = new GameUser();
 //    GameUser comp = new GameUser();
 

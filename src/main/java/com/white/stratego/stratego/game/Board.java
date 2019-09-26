@@ -5,8 +5,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.lang.Math;
 
-@Entity
+@Entity(name="board")
 public class Board {
+
     private Piece[][] board = new Piece[10][10];
 
     @Id
