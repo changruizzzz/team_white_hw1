@@ -1,6 +1,15 @@
 package com.white.stratego.stratego.game;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
 public class Piece implements Comparable<Piece> {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
     private int rank;
     private boolean visible;
     private int x;
@@ -9,7 +18,7 @@ public class Piece implements Comparable<Piece> {
     private boolean isBomb;
     private boolean dead;
     private boolean movable;
-    private Movement movement;
+
 
     /**
      * if the user choose put chess by themselves
@@ -21,7 +30,6 @@ public class Piece implements Comparable<Piece> {
         this.visible = false;
         x = -1;
         y = -1;
-        this.visible = false;
         this.dead = false;
         this.movable = false;
         this.isBomb = false;
@@ -30,38 +38,32 @@ public class Piece implements Comparable<Piece> {
 
     public Piece(int rank, boolean visible, boolean dead, boolean moveable, boolean isBomb, boolean isFlag){
         this.rank = rank;
-        this.visible = false;
+        this.visible = visible;
         x = -1;
         y = -1;
-        this.visible = false;
-        this.dead = false;
-        this.movable = true;
-        this.isBomb = false;
-        this.isFlag = false;
+        this.dead = dead;
+        this.movable = moveable;
+        this.isBomb = isBomb;
+        this.isFlag = isFlag;
     }
 
     public Piece(boolean visible, boolean dead, boolean isFlag){
-        this.rank = rank;
-        this.visible = false;
+        this.rank = 0;
+        this.visible = visible;
         x = -1;
         y = -1;
-        this.visible = false;
-        this.dead = false;
-        this.movable = false;
-        this.isFlag = true;
-        this.isBomb = false;
+        this.dead = dead;
+        this.isFlag = isFlag;
     }
 
     public Piece(boolean visible, boolean dead, boolean isBomb, boolean isFlag){
-        this.rank = rank;
-        this.visible = false;
+        this.rank = 0;
+        this.visible = visible;
         x = -1;
         y = -1;
-        this.visible = false;
-        this.dead = false;
-        this.movable = false;
-        this.isFlag = false;
-        this.isBomb = true;
+        this.dead = dead;
+        this.isFlag = isFlag;
+        this.isBomb = isBomb;
     }
     public Piece emptyPiece() {
         Piece emptyP = new Piece(0, false, false, false, false, false);
@@ -123,6 +125,11 @@ public class Piece implements Comparable<Piece> {
         this.x = x;
     }
 
+    public void setXY(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
     public int getY() {
         return y;
     }
@@ -131,13 +138,6 @@ public class Piece implements Comparable<Piece> {
         this.y = y;
     }
 
-    public Movement getMovement() {
-        return movement;
-    }
-
-    public void setMovement(Movement movement) {
-        this.movement = movement;
-    }
 
     public void moveUp(){
         //changeBoard();
@@ -158,35 +158,68 @@ public class Piece implements Comparable<Piece> {
 
     }
 
-    public void attack(Piece o){
+    public int attack(Piece o){
+        System.out.printf("%d attacks %d\n",this.rank,o.rank);
         if(!(this.isFlag || this.isBomb)) {
-            if (compareTo(o) == 0) {
+            // if current player attacks a bomb - current player wins,
+            // return +/-11 will be a signal of the end of the game
+            if (Math.abs(o.rank) == 11) {
+                int w = this.rank > 0 ? 11 : -11;
+                return w;
+            } else if (Math.abs(this.rank) == 1 && Math.abs(o.rank) == 10) {
+                return 1;
+            } else if (Math.abs(this.rank) == 3 && Math.abs(o.rank) == 13) {
+                return 1;
+            }
+            int fight = compareTo(o);
+            if (fight == 0) {
                 o.setDead(true);
                 this.setDead(true);
                 this.setVisible(true);
                 o.setVisible(true);
-            } else if (compareTo(o) > 0) {
+                return 0;
+            } else if (fight > 0) {
+                // attacker won the fight
                 this.x = o.x;
                 this.y = o.y;
                 o.setDead(true);
                 this.setVisible(true);
-
+                return 1;
             } else {
-                o.x = this.x;
-                o.y = this.y;
-                o.setDead(true);
+                // attacker lost the fight
+                this.setDead(true);
                 o.setVisible(true);
+                return -1;
             }
         }
+        return 0;
     }
 
+    //   @Override
+//    public int compareTo(Piece o) {
+//        return this.rank - o.rank;
+//    }
+    // if rank of comp is negative and player is positive - compare must be written like this
     @Override
     public int compareTo(Piece o) {
-        return this.rank - o.rank;
+        return Math.abs(this.rank) - Math.abs(o.rank);
     }
-    // if rank of comp is negative and player is positive - compare must be written like this
-//    @Override
-//    public int compareTo(Piece o) {
-//        return this.rank + o.rank;
-//    }
+    public String topLine() {
+        String hum_com = this.rank > 0 ? " " : this.rank == 0 ? " " : "-";
+        int r = Math.abs(this.rank);
+        String rank = r == 0 ? "  " : r < 10 ?  (r + " ") : r == 10 ? "10" : r == 11 ? "F " : r == 13 ? "B " : "  ";
+        String top = " " + hum_com + rank+" ";
+        return top;
+    }
+    public String bottomLine() {
+        //make variable that shows if the piece has been moved
+        String v = this.visible ? "v" : " ";
+        String m = this.movable ? "m" : " ";
+        String bottom = " " + v + m + "  ";
+        return bottom;
+    }
+    @Override
+    public String toString() {
+        return topLine() + "\n" + bottomLine();
+    }
 }

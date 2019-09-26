@@ -12,6 +12,9 @@ public class StrategoApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(StrategoApplication.class, args);
+//        Game myGame = new Game();
+//        myGame.gameStart();
+//        System.out.println(myGame.getBoard());
     }
 
 }
