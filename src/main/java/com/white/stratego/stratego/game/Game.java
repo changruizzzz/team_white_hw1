@@ -15,8 +15,8 @@ public class Game extends MarketUnit{
     boolean humanTurn = true;
     @OneToOne
     public Board initialBoard;
-    @OneToOne
-    public Board currentBoard;
+
+
 
 //    GameUser human = new GameUser();
 //    GameUser comp = new GameUser();

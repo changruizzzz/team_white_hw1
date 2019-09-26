@@ -35,9 +35,11 @@ public class GameController {
     @RequestMapping("/create")
     public String newGame(Authentication authentication) {
         Game g = new Game();
+        g.gameStart();
         g.setIf_public(false);
         User user = userRepository.findByUsername(authentication.getName());
         g.setUser(user);
+        g.setCreatedBy(user);
         Statistics stats = statisticsRepository.findByUser(user);
         if(stats == null) {
             stats = new Statistics();
