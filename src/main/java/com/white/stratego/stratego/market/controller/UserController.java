@@ -97,4 +97,8 @@ public class UserController {
         return "try";
     }
 
+    @RequestMapping("/verifySuccess")
+    public String verifySuccess(){
+        return "verifySuccess";
+    }
 }

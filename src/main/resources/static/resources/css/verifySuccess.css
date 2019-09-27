@@ -1,0 +1,42 @@
+.verify-Success-wrapper {
+    position: relative;
+    width: 100%;
+    height: auto;
+    min-height: 35rem;
+    padding: 15rem 0;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+    background-size: cover;
+}
+
+.verify-Success-wrapper h1 {
+    font-family: 'Varela Round';
+    line-height: 6.5rem;
+    color: black;
+}
+
+.verify-Success-wrapper h2 {
+    font-family: 'Varela Round';
+    max-width: 25rem;
+    font-size: 1rem;
+}
+
+.btn {
+    box-shadow: 0 0.1875rem 0.1875rem 0 rgba(0, 0, 0, 0.1) !important;
+    padding: 1.25rem 2rem;
+    font-family: 'Varela Round';
+    font-size: 80%;
+    text-transform: uppercase;
+    letter-spacing: .15rem;
+    border: 0;
+}
+
+.btn-primary {
+    background-color: #64a19d;
+    border-radius: 25px;
+}
+
+.btn-primary:hover {
+    background-color: #4f837f;
+}

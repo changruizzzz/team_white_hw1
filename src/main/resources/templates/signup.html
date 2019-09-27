@@ -41,12 +41,24 @@
         </div>
 
     </div>
-    <div class="row">
+    <div class="col">
+        <div class="col">
+            <div class="login-social">
+                <div>
+                    <a href="#" class="btn-login-with row bg1 m-b-12">
+                        <i class="fa fa-facebook-official"></i>
+                        Login with Facebook
+                    </a>
+                    <a href="#" class="btn-login-with row bg2">
+                        <i class="fa fa-google"></i>
+                        Login with Google
+                    </a>
+                </div>
+            </div>
+
+        </div>
 
         <form th:action="@{/signup}" method="post" class="login-email col">
-            <div class="input-info" >
-                <input type="text" placeholder="Username" name="username">
-            </div>
             <div class="input-info" >
                 <input type="text" placeholder="Email" name="email">
             </div>
@@ -56,28 +68,12 @@
             <div class="input-info" >
                 <input type="password" placeholder="Please Input Password Again" name="passwordConfirm">
             </div>
-            <div class="login-btn-wrapper">
-                <button class="btn login-btn">
+            <div class="login-btn-wrap">
+                <button class="btn-primary btn">
                     Submit
                 </button>
             </div>
         </form>
-
-        <div class="col">
-            <div class="login-social">
-                <div>
-                    <a href="#" class="btn-login-with row bg1 m-b-12">
-                        <i class="fa fa-facebook-official"></i>
-                        Login with Facebook
-                    </a>
-                    <a href="#" class="btn-login-with row bg2">
-                        <i class="fa fa-twitter"></i>
-                        Login with Twitter
-                    </a>
-                </div>
-            </div>
-
-        </div>
     </div>
 
 </div>

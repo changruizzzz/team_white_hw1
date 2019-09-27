@@ -150,13 +150,10 @@ button {
 /*    cursor: pointer;*/
 /*}*/
 
-.bg1 {background-color: #3b5998;}
-.bg2 {background-color: #1da1f2;}
-
 .btn-login-with {
     font-family: Oswald-Medium;
     font-size: 16px;
-    color: #fff;
+    /*color: #fff;*/
     line-height: 1.2;
 
     display: -webkit-box;
@@ -171,16 +168,37 @@ button {
     border-radius: 25px;
 }
 
+.btn-social-login{
+    font-family: Oswald-Medium;
+    font-size: 16px;
+    line-height: 1.2;
+    display: flex;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    justify-content: center;
+    align-items: center;
+    width: 60%;
+    border-radius: 25px;
+    text-align: center;
+}
+
+.btn-social-login i{
+    font-size: 20px;
+    margin-right: 10px;
+}
+
 .btn-login-with i {
     font-size: 20px;
     margin-right: 10px;
 }
 
-.btn-login-with:hover {
-    color: #fff;
-    background-color: #333333;
-    transition: all 0.3s;
-}
+/*.btn-login-with:hover {*/
+    /*!*color: #fff;*!*/
+    /*!*background-color: #333333;*!*/
+    /*transition: all 0.3s;*/
+/*}*/
 
 
 .input-info {
@@ -238,5 +256,3 @@ button {
     text-align: center;
 
 }
-
-.btn
