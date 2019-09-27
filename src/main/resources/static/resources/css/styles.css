@@ -111,6 +111,16 @@ a.link-disabled {
     width: 20px;
     margin-right: 5px;
 }
+.social-img{
+    height: 20px;
+    width: 20px;
+    margin-right: 5px;
+}
+#fb{
+    height: 25px;
+    width: 25px;
+    margin-right: 3px;
+}
 
 .btn {
     box-shadow: 0 0.1875rem 0.1875rem 0 rgba(0, 0, 0, 0.1) !important;
@@ -129,4 +139,10 @@ a.link-disabled {
 
 .btn-primary:hover {
     background-color: #4f837f;
+}
+
+.divider{
+    content: "\00B7";
+    width: 20px;
+    height: 20px;
 }

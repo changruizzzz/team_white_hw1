@@ -101,4 +101,9 @@ public class UserController {
     public String verifySuccess(){
         return "verifySuccess";
     }
+
+    @RequestMapping("/verifySendEmail")
+    public String verifySendEmail(){
+        return "verifySendEmail";
+    }
 }
