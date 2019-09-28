@@ -8,30 +8,30 @@ export default class Game extends Component {
 
     constructor(props) {
         super(props);
-        this.initBoard = new boardInitialization()
-        this.initBoard.boardInit()
+        // this.initBoard = new boardInitialization()
+        // this.initBoard.boardInit()
         this.state = {
-            squares: this.initBoard.squares,   // initialized with 100 squares, but only pieces are places.
+            squares: [],   // initialized with 100 squares, but only pieces are places.
                                               // Square style has not set yet.
             player1FallenPieces: [],          // used to store player1 defeated pieces
             player2FallenPieces: [],          // used to store player2 defeated pieces
-            player: 1,                        // tells player's turn
+            player: null,                        // tells player's turn
             info: "",                         // shows warning or instruction
             selectedObj: -1,                  // remains less than 0 when no piece is selected.
                                               // stores the selected piece index
 
             // Flag rank: 0 ; Bomb rank: 11; Total 12 pieces
-            player1Pieces: this.initBoard.player1Pieces,  //Record the number of each piece of player1 on the board;
+            player1Pieces: Array(12).fill(0),  //Record the number of each piece of player1 on the board;
                                                                   // Pieces are sorted by ranks
-            player2Pieces: this.initBoard.player2Pieces,  //Record the number of each piece of player2 on the board;
+            player2Pieces: Array(12).fill(0),  //Record the number of each piece of player2 on the board;
                                                                   // Pieces are sorted by ranks
 
-            winner: -1                                            // -1: No players win
+            winner: null,                                          // null: No players win
                                                                   // 1: player 1 wins
                                                                   // 2: player 2 wins
                                                                   // 3: tie
+            modifyingMode: false,
         };
-
     }
     /***************************************/
     /*
@@ -47,7 +47,13 @@ export default class Game extends Component {
     // }
     /*****************************************/
 
-    checkWinner = () => {
+    /*
+     * A team will lose if a team's flag is captured, or all
+     * this team's movable pieces are removed. If both teams
+     * reach the failure conditions, player 1 will get a draw
+     * game.
+     */
+    checkWinner() {
         const p1Pieces = this.state.player1Pieces
         const p2Pieces = this.state.player2Pieces
         let winner = -1
@@ -76,23 +82,47 @@ export default class Game extends Component {
         this.setState({winner: winner}, () => this.checkMatch())
     }
 
-    checkMatch = () => {
+    checkMatch() {
         const winner = this.state.winner
         if (winner === 1 || winner === 2) {
             let meg = "Player " + winner + " wins!"
             this.setState({info: meg})
-            this.setState({player: -1})
+            this.setState({player: null})
         }else if (winner === 3) {
             let meg = "Tie"
             this.setState({info: meg})
-            this.setState({player: -1})
+            this.setState({player: null})
         }
     }
 
     handleSurrender = () => {
         const winner = 2
-        this.setState({ winner }, () => this.checkMatch())
+        this.setState({ winner,  player: null}, () => this.checkMatch())
     }
+
+    handleNewGame = () => {
+        this.initBoard = new boardInitialization()
+        this.initBoard.boardInit()
+        this.setState({squares: this.initBoard.squares,
+                            player1Pieces: this.initBoard.player1Pieces,
+                            player2Pieces: this.initBoard.player2Pieces,
+                            player1FallenPieces: this.initBoard.player1FallenPieces,
+                            player2FallenPieces: this.initBoard.player2FallenPieces,
+                            player: null,
+                            info: "",
+                            modifyingMode: true})
+
+    }
+
+    handlePlay = () => {
+        const squares = this.state.squares.slice()
+        this.initBoard.setup(2, squares)
+        this.setState({squares,
+                            player2Pieces: this.initBoard.player2Pieces,
+                            player: 1,
+                            modifyingMode: false})
+    }
+
     /*
      * Move pieces on the board and change a piece
      * shade style when it is clicked
@@ -412,7 +442,9 @@ export default class Game extends Component {
     render() {
         return (
             <div className="container">
-                <LeftPane setup={this.handleSetup}  onSurrender={this.handleSurrender} className="leftPane" player1Pieces={this.state.player1Pieces}
+                <LeftPane setup={this.handleSetup} onSurrender={this.handleSurrender} onNewGame={this.handleNewGame}
+                          onPlay={this.handlePlay} winner={this.state.winner} player={this.state.player} modifyingMode={this.state.modifyingMode}
+                          className="leftPane" player1Pieces={this.state.player1Pieces}
                           player2Pieces={this.state.player2Pieces}/>
                 <div>
                     <h2 className="title">Stratego</h2>
@@ -424,7 +456,7 @@ export default class Game extends Component {
                 <div>
                     <div className="game-info">
                         <h3>Turn</h3>
-                        <div className="player-turn-box" style={{backgroundColor: this.state.player === 1? 'red' : 'blue'}}/>
+                        {/*<div className="player-turn-box" style={{backgroundColor: this.state.player === 1? 'red' : 'blue'}}/>*/}
 
                         <div className="game-info">{this.state.info}</div>
 
