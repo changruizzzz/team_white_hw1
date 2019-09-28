@@ -36,15 +36,15 @@ export default class boardInitialization {
          */
         const squares = Array(100).fill(null)
 
-        // squares[75] = new Flag(2)
+        // squares[15] = new Flag(2)
         // this.player2Pieces[0] += 1
-        // squares[77] = new Scout(2)
+        // squares[25] = new Scout(2)
         // this.player2Pieces[2] += 1
 
-        // squares[93] = new Flag(1)
-        // this.player1Pieces[0] += 1
-        // squares[96] = new Marshal(1)
-        // this.player1Pieces[10] += 1
+        squares[93] = new Flag(1)
+        this.player1Pieces[0] += 1
+        squares[96] = new Marshal(1)
+        this.player1Pieces[10] += 1
         // squares[83] = new Bomb(1)
         // squares[94] = new Bomb(1)
         // squares[91] = new Lieutenant(1)
@@ -58,7 +58,6 @@ export default class boardInitialization {
         // squares[15] = new Miner(2)
         // this.setup(1, squares)
         // let ranksArray = [1, 1, 8, 5, 4, 4, 4, 3, 2, 1, 1, 6]
-        this.setup(1, squares)
 
         this.squares = squares
     }
@@ -66,7 +65,7 @@ export default class boardInitialization {
     /*
      * Setup pieces randomly of specified player
      */
-    setup(player, squares) {
+    setUp(player, squares) {
         this.squares = Array(100).fill(null)
         player === 1?
             this.player1Pieces = Array(12).fill(0):
