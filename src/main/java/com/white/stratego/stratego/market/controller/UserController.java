@@ -73,7 +73,7 @@ public class UserController {
 //        String email = user.getEmail();
 //        System.err.println(email);
 
-        return "verify";
+        return "verifySendEmail";
     }
 
     @RequestMapping("/verify/{token}")

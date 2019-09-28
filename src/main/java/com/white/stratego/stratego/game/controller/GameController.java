@@ -85,6 +85,7 @@ public class GameController {
         }
         model.addAttribute("games", games);
         model.addAttribute("user", user);
+        model.addAttribute("stats", statisticsRepository.findByUser(user));
         return "dashboard";
     }
 
@@ -93,7 +94,7 @@ public class GameController {
     public MoveResponse processMove(@RequestBody MoveRequest request, @PathVariable long id) {
 
         Game game = gameRepository.findById(id);
-        
+
         return new MoveResponse();
 
     }

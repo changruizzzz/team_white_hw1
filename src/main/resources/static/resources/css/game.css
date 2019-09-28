@@ -1,0 +1,82 @@
+.piece {
+    height: 50px;
+    width: 50px;
+    margin: 0;
+    background-size: 100% 100%;
+}
+
+#board {
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+#board td {
+    border: 1px black solid;
+    padding: 3px;
+}
+
+.container {
+    margin-top: 100px;
+}
+
+.spy {
+    background-image: url("http://vector.gissen.nl/stratego-spy.svg");
+}
+
+.flag {
+    background-image: url("http://vector.gissen.nl/stratego-flag.svg");
+}
+
+.bomb {
+    background-image: url("http://vector.gissen.nl/stratego-bomb.svg");
+}
+
+.captain {
+    background-image: url("http://vector.gissen.nl/stratego-captain.svg");
+}
+
+.colonel {
+    background-image: url("http://vector.gissen.nl/stratego-colonel.svg");
+}
+
+.general {
+    background-image: url("http://vector.gissen.nl/stratego-general.svg");
+}
+
+.lieutenant {
+    background-image: url("http://vector.gissen.nl/stratego-lieutenant.svg");
+}
+
+.major {
+    background-image: url("http://vector.gissen.nl/stratego-major.svg");
+}
+
+.marshal {
+    background-image: url("http://vector.gissen.nl/stratego-marshal.svg");
+}
+
+.miner {
+    background-image: url("http://vector.gissen.nl/stratego-miner.svg");
+}
+
+.scout {
+    background-image: url("http://vector.gissen.nl/stratego-scout.svg");
+}
+
+.sergeant {
+    background-image: url("http://vector.gissen.nl/stratego-sergeant.svg");
+}
+
+.cover {
+    height: 100%;
+    width: 100%;
+}
+
+.red {
+    background-color: rgba(255, 0, 0, 0.2);
+}
+
+.blue {
+    background-color: rgba(0, 110, 255, 0.2);
+}
+

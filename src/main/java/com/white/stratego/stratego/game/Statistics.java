@@ -18,6 +18,8 @@ public class Statistics {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private int total;
+
     private int win;
 
     private int loss;
@@ -62,5 +64,13 @@ public class Statistics {
 
     public void setUnfinished(int unfinished) {
         this.unfinished = unfinished;
+    }
+
+    public int getTotal() {
+        return total;
+    }
+
+    public void setTotal(int total) {
+        this.total = total;
     }
 }

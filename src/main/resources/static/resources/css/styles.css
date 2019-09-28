@@ -8,7 +8,6 @@ body {
     -moz-box-shadow:    0 3px 5px rgba(100, 100, 100, 0.2);
     box-shadow:         0 3px 5px rgba(100, 100, 100, 0.2);
     z-index: 1000;
-
 }
 
 .avatar img{
@@ -31,8 +30,8 @@ body {
 .stratego-col {
     display: inline-block;
     vertical-align: top;
-
 }
+
 
 .card {
     margin-bottom: 30px;
@@ -40,6 +39,7 @@ body {
     box-shadow: none;
     min-width: 270px;
 }
+
 .card-header {
     border-radius: 10px 10px 0 0 !important;
     background-color: white;
@@ -55,18 +55,20 @@ body {
 .card-header a:hover {
     color: #68a9e3;
 }
+
 svg > g > g:last-child { pointer-events: none }
 
 #piechart-container {
     margin: 0 auto 10px auto;
     width: 180px;
     height: 180px;
-    /*margin-bottom: 10px;*/
+    display: flex;
+    align-items: center;
 }
 
 #piechart-legends {
     padding: 5px 10px 0 10px;
-    width: 180px;
+    width: 220px;
     margin: 0 auto;
     border-width: 1px 0 0 0;
     border-color: #f2f2f2;
@@ -75,6 +77,12 @@ svg > g > g:last-child { pointer-events: none }
     justify-content: space-evenly;
 }
 
+#piechart-default {
+    margin: auto;
+    font-weight: lighter;
+    text-align: center;
+    font-size: 14px;
+}
 #piechart-legends li {
     list-style: none;
     display: inline;
@@ -82,7 +90,12 @@ svg > g > g:last-child { pointer-events: none }
 }
 
 #game-history-card {
-    width: 800px;
+    width: 100%;
+    height: 80%;
+}
+
+#game-history-card .card-subtitle {
+    text-align: center;
 }
 
 .piechart-legend {
