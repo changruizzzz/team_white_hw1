@@ -29,7 +29,15 @@ export default class LeftPane extends Component {
 
     return (
       <div>
-        {pane} <UserMenu setup={this.props.setup} onSurrender={this.props.onSurrender}/>
+        {pane}
+        <UserMenu setUp={this.props.setUp}
+                  onSurrender={this.props.onSurrender}
+                  onNewGame={this.props.onNewGame}
+                  onPlay={this.props.onPlay}
+                  winner={this.props.winner}
+                  player={this.props.player}
+                  customMode={this.props.customMode}
+        />
       </div>
     );
   }

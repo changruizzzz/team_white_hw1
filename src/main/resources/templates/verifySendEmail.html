@@ -12,6 +12,8 @@
     <link rel="stylesheet" type="text/css" href="../static/resources/css/verifySuccess.css" th:href="@{/resources/css/verifySuccess.css}">
     <link rel="stylesheet" type="text/css" href="../static/resources/css/util.css" th:href="@{/resources/css/util.css}">
     <link rel="stylesheet" type="text/css" href="../static/resources/css/styles.css" th:href="@{/resources/css/styles.css}"/>
+    <link rel="stylesheet" type="text/css" href="../static/resources/css/loginSign.css" th:href="@{/resources/css/loginSign.css}">
+    <link href="https://fonts.googleapis.com/css?family=Varela+Round&display=swap" rel="stylesheet">
 
 </head>
 
@@ -24,28 +26,19 @@
     </ul>
 </nav>
 
-<header class="verify-Success-wrapper">
-    <div class="container d-flex h-100 align-items-center mx-auto text-center">
+<header class="verify-Success-wrapper send-email-wrapper">
+    <div class="verify-send container d-flex h-100 align-items-center mx-auto text-center">
         <form th:action="@{/verifySendEmail}" method="post" class="send-form col">
             <div class="mt-3 mb-3" >
-                <h1 class="mx-auto my-0 text-uppercase">Authentication required</h1>
+                <h1 class="mx-auto my-0 text-uppercase">activation required</h1>
                 <h2 class="text-color mx-auto mt-3 mb-5">Please check your email to activate your account.</h2>
             </div>
-            <div class="input-info row" >
-                <div class="send-input-info col-xs-6">
-                    <input type="text" placeholder="Enter Email" name="email-check">
-                </div>
-                <div class="col-xs-6 send-email-btn ">
-                    <button class="btn-primary btn">
-                        Submit
-                    </button>
-                </div>
-            </div>
 
-            <div class="verify-resend-link">
-                <a  href="#">Resend Email</a>
+            <div class="mx-auto send-email-btn verify-resend-link ">
+                <button class="btn-primary btn mt-3">
+                    Resend Email
+                </button>
             </div>
-
         </form>
     </div>
 </header>

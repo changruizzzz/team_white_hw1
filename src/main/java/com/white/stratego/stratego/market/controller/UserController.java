@@ -1,5 +1,5 @@
 package com.white.stratego.stratego.market.controller;
-
+import java.util.*;
 import com.white.stratego.stratego.market.service.UserServiceImpl;
 import com.white.stratego.stratego.market.service.VerificationTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,8 +45,13 @@ public class UserController {
 
         userService.save(userForm);
 
-        verificationTokenService.createVerification(userForm.getEmail());
-        return "redirect:/verify";
+        User user = verificationTokenService.createVerification(userForm.getEmail());
+        if(user == null)
+            return "redirect:/verifyNeedSignUpEmail";
+        else if(user.getIsActive())
+            return "redirect:/verifyNeedLogInEmail";
+        else
+            return "redirect:/verify";
     }
 
     @RequestMapping("/login")
@@ -76,7 +81,7 @@ public class UserController {
         return "verifySendEmail";
     }
 
-    @RequestMapping("/verify/{token}")
+    @RequestMapping("/verifySendEmail/{token}")
     public String verifyEmail(@PathVariable String token) {
         System.err.println("ok");
         ResponseEntity<String> response = verificationTokenService.verifyEmail(token);
@@ -88,7 +93,7 @@ public class UserController {
         }
         else {
             System.err.println(2);
-            return "verify";
+            return "verifySendEmail";
         }
     }
 
@@ -106,4 +111,21 @@ public class UserController {
     public String verifySendEmail(){
         return "verifySendEmail";
     }
+
+    @RequestMapping(value = "/verifyNeedSignUpEmail/", method = RequestMethod.POST)
+    public Map<String, String> verifySignUpEmail(){
+        HashMap<String, String> map = new HashMap<>();
+        map.put("message","success");
+        return map;
+    }
+
+    @RequestMapping(value = "/verifyNeedLogInEmail/", method = RequestMethod.POST)
+    public Map<String, String> verifyNeedLogInEmail(){
+        HashMap<String, String> map = new HashMap<>();
+        map.put("message","success");
+        return map;
+
+
+    }
+
 }

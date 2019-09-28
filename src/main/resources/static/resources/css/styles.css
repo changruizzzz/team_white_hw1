@@ -134,6 +134,10 @@ a.link-disabled {
     width: 25px;
     margin-right: 3px;
 }
+#rocket{
+    height: 100px;
+    width: 75px;
+}
 
 .btn {
     box-shadow: 0 0.1875rem 0.1875rem 0 rgba(0, 0, 0, 0.1) !important;

@@ -16,6 +16,8 @@ export default class boardInitialization {
         this.squares = Array(100).fill(null)
         this.player1Pieces = Array(12).fill(0)
         this.player2Pieces = Array(12).fill(0)
+        this.player1FallenPieces = []
+        this.player2FallenPieces = []
     }
     boardInit() {
         /*
@@ -34,10 +36,10 @@ export default class boardInitialization {
          */
         const squares = Array(100).fill(null)
 
-        squares[75] = new Flag(2)
-        this.player2Pieces[0] += 1
-        squares[77] = new Scout(2)
-        this.player2Pieces[2] += 1
+        // squares[15] = new Flag(2)
+        // this.player2Pieces[0] += 1
+        // squares[25] = new Scout(2)
+        // this.player2Pieces[2] += 1
 
         squares[93] = new Flag(1)
         this.player1Pieces[0] += 1
@@ -63,13 +65,12 @@ export default class boardInitialization {
     /*
      * Setup pieces randomly of specified player
      */
-    setup(player, squares) {
+    setUp(player, squares) {
         this.squares = Array(100).fill(null)
         player === 1?
             this.player1Pieces = Array(12).fill(0):
             this.player2Pieces = Array(12).fill(0)
         let ranksArray = [1, 1, 8, 5, 4, 4, 4, 3, 2, 1, 1, 6]//length: 12
-        // let ranksMap = [[0,1], [1,1], [2,8], [3,5], [4,4], [5,4], [6,4], [7,3], [8,2], [9,1], [10,1], [11,6]]
         let flagInd, bomb1Ind, bomb2Ind, bomb3Ind
         if (player === 1) {
             //Initialize flag and three bombs pieces
@@ -102,12 +103,12 @@ export default class boardInitialization {
             squares[bomb2Ind] = this.getObject(player, 11, ranksArray)
             squares[bomb3Ind] = this.getObject(player, 11, ranksArray)
             for (let i = 0; i < 40; i++) {
-                if (squares[i] !== null) {
+                if (squares[i] == null) {
                     let randomRank = Math.floor(Math.random() * (ranksArray.length))
                     //Remove 0 amount from array
                     while (ranksArray[randomRank] === 0) {
-                        ranksArray.splice(randomRank, 1)
-                        randomRank = Math.floor(Math.random() * (ranksArray.length))
+                        randomRank += 1
+                        randomRank = randomRank >= ranksArray.length? 0 : randomRank
                     }
                     squares[i] = this.getObject(player, randomRank, ranksArray)
                 }
@@ -118,7 +119,7 @@ export default class boardInitialization {
     }
 
     /*
-     * @Return relative piece object of specified player
+     * @Return a new piece object of the corresponding rank of specified player
      */
     getObject(player, rank, ranksArray) {
         if (rank < 0 && rank > 11) {
@@ -129,7 +130,6 @@ export default class boardInitialization {
         switch (rank) {
             case 0:
                 obj = new Flag(player); break
-
             case 1:
                 obj = new Spy(player); break
             case 2:

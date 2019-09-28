@@ -3,35 +3,37 @@ import "../stratego.css";
 import LeftPane from "./leftPane";
 import Board from "./board";
 import FallenPieces from "./fallenPieces";
-import boardInitialization from "./boardInitialization";
+import boardInitialization from "../helper/boardInitialization";
+import {enums} from "../helper/enums";
 export default class Game extends Component {
 
     constructor(props) {
         super(props);
-        this.initBoard = new boardInitialization()
-        this.initBoard.boardInit()
+        // this.initBoard = new boardInitialization()
+        // this.initBoard.boardInit()
+
         this.state = {
-            squares: this.initBoard.squares,   // initialized with 100 squares, but only pieces are places.
+            squares: [],   // initialized with 100 squares, but only pieces are places.
                                               // Square style has not set yet.
             player1FallenPieces: [],          // used to store player1 defeated pieces
             player2FallenPieces: [],          // used to store player2 defeated pieces
-            player: 1,                        // tells player's turn
+            player: null,                        // tells player's turn
             info: "",                         // shows warning or instruction
             selectedObj: -1,                  // remains less than 0 when no piece is selected.
                                               // stores the selected piece index
 
             // Flag rank: 0 ; Bomb rank: 11; Total 12 pieces
-            player1Pieces: this.initBoard.player1Pieces,  //Record the number of each piece of player1 on the board;
+            player1Pieces: Array(12).fill(0),  //Record the number of each piece of player1 on the board;
                                                                   // Pieces are sorted by ranks
-            player2Pieces: this.initBoard.player2Pieces,  //Record the number of each piece of player2 on the board;
+            player2Pieces: Array(12).fill(0),  //Record the number of each piece of player2 on the board;
                                                                   // Pieces are sorted by ranks
 
-            winner: -1                                            // -1: No players win
+            winner: null,                                          // null: No player wins
                                                                   // 1: player 1 wins
                                                                   // 2: player 2 wins
                                                                   // 3: tie
+            customMode: false,
         };
-
     }
     /***************************************/
     /*
@@ -47,7 +49,13 @@ export default class Game extends Component {
     // }
     /*****************************************/
 
-    checkWinner = () => {
+    /*
+     * A team will lose if a team's flag is captured, or all
+     * this team's movable pieces are removed. If both teams
+     * reach the failure conditions, player 1 will get a draw
+     * game.
+     */
+    checkWinner() {
         const p1Pieces = this.state.player1Pieces
         const p2Pieces = this.state.player2Pieces
         let winner = -1
@@ -76,22 +84,107 @@ export default class Game extends Component {
         this.setState({winner: winner}, () => this.checkMatch())
     }
 
-    checkMatch = () => {
+    checkMatch() {
         const winner = this.state.winner
         if (winner === 1 || winner === 2) {
             let meg = "Player " + winner + " wins!"
             this.setState({info: meg})
-            this.setState({player: -1})
+            this.setState({player: null})
         }else if (winner === 3) {
             let meg = "Tie"
             this.setState({info: meg})
-            this.setState({player: -1})
+            this.setState({player: null})
         }
     }
 
     handleSurrender = () => {
         const winner = 2
-        this.setState({ winner }, () => this.checkMatch())
+        this.setState({ winner,  player: null}, () => this.checkMatch())
+    }
+
+    handleNewGame = () => {
+        this.initBoard = new boardInitialization()
+        this.initBoard.boardInit()
+        this.setState({squares: this.initBoard.squares,
+                            player1Pieces: this.initBoard.player1Pieces,
+                            player2Pieces: this.initBoard.player2Pieces,
+                            player1FallenPieces: this.initBoard.player1FallenPieces,
+                            player2FallenPieces: this.initBoard.player2FallenPieces,
+                            player: null,
+                            info: "",
+                            customMode: true
+        })
+
+    }
+
+    handlePlay = () => {
+        const squares = this.state.squares.slice()
+        this.initBoard.setUp(2, squares)
+        this.setState({squares,
+                            player2Pieces: this.initBoard.player2Pieces,
+                            player: 1,
+                            customMode: false})
+    }
+
+    handleCustomSetUp = (dest) => {
+        const squares = this.state.squares.slice()
+        const src = this.state.selectedObj
+        //No piece has been selected yet
+        if (src < 0) {
+            //the index of selected square is out of range
+            if (dest > 99 || dest < 60) {
+                this.setState({
+                    info: "Wrong selection. Choose valid source and destination again."
+                });
+                if (squares[dest]) {
+                    squares[dest].style = { ...squares[dest].style, backgroundColor: "" }
+                }
+
+                //Select correct piece
+            } else if (squares[dest]){
+                //Change background shade
+                squares[dest].style = {
+                    ...squares[dest].style,
+                    backgroundColor: "RGB(111,143,114)"
+                }
+                this.setState({
+                    info: "Choose destination for the selected piece",
+                    selectedObj: dest
+                })
+            }
+        }else {
+            //Remove source piece background shade
+            squares[src].style = {
+                ...squares[src].style,
+                backgroundColor: ""
+            };
+            //If source and destination have same piece, unselect the piece
+            if (src === dest) {
+                this.setState({
+                    info: "",
+                    selectedObj: -1
+                })
+                //There is no piece in the destination,
+                //or there is a piece which is from different team from the source piece
+            } else {
+                if (dest > 99 || dest < 60) {
+                    this.setState({
+                        info: "Wrong selection. Choose valid source and destination again."
+                    });
+                }else {
+                    const temp = squares[dest]
+                    squares[dest] = squares[src]
+                    squares[src] = temp
+                    this.setState({
+                        squares,
+                        selectedObj: -1,
+                    })
+                }
+            }
+        }
+    }
+    handleClick = (dest) => {
+        this.state.customMode? this.handleCustomSetUp(dest): this.handleMovement(dest)
     }
     /*
      * Move pieces on the board and change a piece
@@ -100,13 +193,13 @@ export default class Game extends Component {
      * @param { number } dest - index of clicked square on the board
      *
      */
-    handleClick = (dest) => {
+    handleMovement = (dest) => {
         if (this.state.player !== 1  && this.state.player !== 2) {
             return
         }
         const squares = this.state.squares.slice()
         const src = this.state.selectedObj
-        //No piece has been selected
+        //No piece has been selected yet
         if (src < 0) {
             //Select empty square or wrong team piece
             if (!squares[dest] || squares[dest].player !== this.state.player) {
@@ -117,6 +210,7 @@ export default class Game extends Component {
                         " pieces."
                 });
                 if (squares[dest]) {
+                    console.log("change Style")
                     squares[dest].style = { ...squares[dest].style, backgroundColor: "" }
                 }
 
@@ -133,7 +227,7 @@ export default class Game extends Component {
                 })
             }
 
-            //If one piece is selected, check the destination
+            //If one piece has been selected, check the destination
         } else {
             //Remove source piece background shade
             squares[src].style = {
@@ -149,6 +243,10 @@ export default class Game extends Component {
                 //There is no piece in the destination,
                 //or there is a piece which is from different team from the source piece
             } else {
+                if (this.state.customMode) {
+                    const isCustomMovable = this.isCustomeMovable(src, dest)
+
+                }
                 const player1FallenPieces = this.state.player1FallenPieces.slice()
                 const player2FallenPieces = this.state.player2FallenPieces.slice()
                 const isMovable = this.isMovable(src, dest)
@@ -401,18 +499,20 @@ export default class Game extends Component {
         }
 
     }
-    handleSetup = () => {
+    handleSetUp = () => {
         let squares = this.state.squares.slice()
         for (let i = 60; i < 100; i++) {
             squares[i] = null
         }
-        this.initBoard.setup(1, squares)
+        this.initBoard.setUp(1, squares)
         this.setState({squares: squares, player1Pieces: this.initBoard.player1Pieces})
     }
     render() {
         return (
             <div className="container">
-                <LeftPane setup={this.handleSetup}  onSurrender={this.handleSurrender} className="leftPane" player1Pieces={this.state.player1Pieces}
+                <LeftPane setUp={this.handleSetUp} onSurrender={this.handleSurrender} onNewGame={this.handleNewGame}
+                          onPlay={this.handlePlay} winner={this.state.winner} player={this.state.player} customMode={this.state.customMode}
+                          className="leftPane" player1Pieces={this.state.player1Pieces}
                           player2Pieces={this.state.player2Pieces}/>
                 <div>
                     <h2 className="title">Stratego</h2>
@@ -421,23 +521,23 @@ export default class Game extends Component {
                         onClick={(index, e) => this.handleClick(index)}
                     />
                 </div>
-                <div>
-                    <div className="game-info">
-                        <h3>Turn</h3>
-                        <div className="player-turn-box" style={{backgroundColor: this.state.player === 1? 'red' : 'blue'}}/>
+                {/*<div>*/}
+                {/*    <div className="game-info">*/}
+                {/*        /!*<h4>Turn</h4>*!/*/}
+                {/*        /!*<div className="player-turn-box" style={{backgroundColor: this.state.player === 1? 'red' : 'blue'}}/>*!/*/}
 
-                        <div className="game-info">{this.state.info}</div>
+                {/*        /!*<div className="game-info">{this.state.info}</div>*!/*/}
 
-                        <div className="fallen-soldier-block">
+                {/*        <div className="fallen-soldier-block">*/}
 
-                            {<FallenPieces className="fallenPieces"
-                                           player1FallenPieces = {this.state.player1FallenPieces}
-                                           player2FallenPieces = {this.state.player2FallenPieces}
-                            />}
-                        </div>
+                {/*            {<FallenPieces className="fallenPieces"*/}
+                {/*                           player1FallenPieces = {this.state.player1FallenPieces}*/}
+                {/*                           player2FallenPieces = {this.state.player2FallenPieces}*/}
+                {/*            />}*/}
+                {/*        </div>*/}
 
-                    </div>
-                </div>
+                {/*    </div>*/}
+                {/*</div>*/}
             </div>
         )
     }

@@ -1,13 +1,14 @@
 .verify-Success-wrapper {
     position: relative;
     width: 100%;
-    height: auto;
+    height: 100%;
     min-height: 35rem;
-    padding: 15rem 0;
+    padding: 9rem 0;
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: scroll;
     background-size: cover;
+
 }
 
 .verify-Success-wrapper h1 {
@@ -22,31 +23,25 @@
     font-size: 1rem;
 }
 
-.btn {
-    box-shadow: 0 0.1875rem 0.1875rem 0 rgba(0, 0, 0, 0.1) !important;
-    padding: 1.25rem 2rem;
-    font-family: 'Varela Round';
-    font-size: 80%;
-    text-transform: uppercase;
-    letter-spacing: .15rem;
-    border: 0;
-}
-
-.btn-primary {
-    background-color: #64a19d;
-    border-radius: 25px;
-}
-
-.btn-primary:hover {
-    background-color: #4f837f;
-}
-
 .send-email-btn{
     height: 65px;
-    weight: 150px;
+    width: 150px;
 }
 
 .send-input-info{
-    weight: 200px;
+    width: 200px;
     height: 35px;
+}
+
+.verify-box{
+    width: 400px;
+}
+
+.send-verify-email{
+    letter-spacing: .15rem;
+    border-radius: 25px;
+}
+
+.send-email-wrapper{
+    background: url("../images/bg-mails.png");
 }
