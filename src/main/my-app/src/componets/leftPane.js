@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-
+import UserMenu from "./userMenu";
 export default class LeftPane extends Component {
   render() {
     const pane = [];
@@ -19,7 +19,7 @@ export default class LeftPane extends Component {
     ];
     for (let i = 0; i < 11; i++) {
       const row = (
-        <div>
+        <div key={i}>
           {pieces[i]} -- {this.props.player1Pieces[i]} -{" "}
           {this.props.player2Pieces[i]}
         </div>
@@ -27,6 +27,10 @@ export default class LeftPane extends Component {
       pane.push(row);
     }
 
-    return <div>{pane}</div>;
+    return (
+      <div>
+        {pane} <UserMenu setup={this.props.setup} onSurrender={this.props.onSurrender}/>
+      </div>
+    );
   }
 }

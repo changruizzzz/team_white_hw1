@@ -3,27 +3,95 @@ import "../stratego.css";
 import LeftPane from "./leftPane";
 import Board from "./board";
 import FallenPieces from "./fallenPieces";
-import boardInitialization from "./board-Initialization";
-
+import boardInitialization from "./boardInitialization";
 export default class Game extends Component {
-    constructor() {
-        super();
+
+    constructor(props) {
+        super(props);
+        this.initBoard = new boardInitialization()
+        this.initBoard.boardInit()
         this.state = {
-            squares: boardInitialization(),   // initialized with 100 squares, but only pieces are places.
+            squares: this.initBoard.squares,   // initialized with 100 squares, but only pieces are places.
                                               // Square style has not set yet.
             player1FallenPieces: [],          // used to store player1 defeated pieces
             player2FallenPieces: [],          // used to store player2 defeated pieces
-            player: 1,                        // tells which player's turn
+            player: 1,                        // tells player's turn
             info: "",                         // shows warning or instruction
             selectedObj: -1,                  // remains less than 0 when no piece is selected.
                                               // stores the selected piece index
 
             // Flag rank: 0 ; Bomb rank: 11; Total 12 pieces
-            player1Pieces: [1, 1, 8, 5, 4, 4, 4, 3, 2, 1, 1, 6],  //Record the number of each piece of player1 on the board;
+            player1Pieces: this.initBoard.player1Pieces,  //Record the number of each piece of player1 on the board;
                                                                   // Pieces are sorted by ranks
-            player2Pieces: [1, 1, 8, 5, 4, 4, 4, 3, 2, 1, 1, 6],  //Record the number of each piece of player2 on the board;
+            player2Pieces: this.initBoard.player2Pieces,  //Record the number of each piece of player2 on the board;
                                                                   // Pieces are sorted by ranks
+
+            winner: -1                                            // -1: No players win
+                                                                  // 1: player 1 wins
+                                                                  // 2: player 2 wins
+                                                                  // 3: tie
         };
+
+    }
+    /***************************************/
+    /*
+     * Fetch data from URL test
+     */
+    // componentDidMount() {
+    //     fetch('http://134.209.221.84:8080/api/games/1')
+    //         .then( resp => resp.json())
+    //         .then((data)=> {
+    //             console.log(data)
+    //         })
+    //
+    // }
+    /*****************************************/
+
+    checkWinner = () => {
+        const p1Pieces = this.state.player1Pieces
+        const p2Pieces = this.state.player2Pieces
+        let winner = -1
+        if (p1Pieces[0] == 0) {
+            winner = 2
+            this.setState({winner: winner}, () => this.checkMatch())
+            return
+        }else if (p2Pieces[0] == 0) {
+            winner = 1
+            this.setState({winner: winner}, () => this.checkMatch())
+            winner = this.state.winner
+            return
+        }
+        let movableP1ps = 0, movableP2ps = 0
+        for (let i = 1; i < p1Pieces.length - 1; i++) {
+            movableP1ps += p1Pieces[i]
+            movableP2ps += p2Pieces[i]
+        }
+        if (movableP1ps === 0 && movableP2ps !== 0) {
+            winner = 2
+        }else if (movableP1ps !== 0 && movableP2ps === 0) {
+            winner = 1
+        }else if (movableP1ps === 0 && movableP2ps === 0) {
+            winner = 3
+        }
+        this.setState({winner: winner}, () => this.checkMatch())
+    }
+
+    checkMatch = () => {
+        const winner = this.state.winner
+        if (winner === 1 || winner === 2) {
+            let meg = "Player " + winner + " wins!"
+            this.setState({info: meg})
+            this.setState({player: -1})
+        }else if (winner === 3) {
+            let meg = "Tie"
+            this.setState({info: meg})
+            this.setState({player: -1})
+        }
+    }
+
+    handleSurrender = () => {
+        const winner = 2
+        this.setState({ winner }, () => this.checkMatch())
     }
     /*
      * Move pieces on the board and change a piece
@@ -32,7 +100,10 @@ export default class Game extends Component {
      * @param { number } dest - index of clicked square on the board
      *
      */
-    handleClick(dest) {
+    handleClick = (dest) => {
+        if (this.state.player !== 1  && this.state.player !== 2) {
+            return
+        }
         const squares = this.state.squares.slice()
         const src = this.state.selectedObj
         //No piece has been selected
@@ -76,16 +147,13 @@ export default class Game extends Component {
                     selectedObj: -1
                 })
                 //There is no piece in the destination,
-                //or there is a piece which is in different team from the source piece
+                //or there is a piece which is from different team from the source piece
             } else {
                 const player1FallenPieces = this.state.player1FallenPieces.slice()
                 const player2FallenPieces = this.state.player2FallenPieces.slice()
                 const isMovable = this.isMovable(src, dest)
 
                 if (isMovable) {
-                    let rank1, //The player1's piece rank
-                        rank2 //The player2's piece rank
-
                     //Two pieces fight
                     if (squares[dest] !== null) {
                         const fight = this.fight(src, dest)
@@ -99,7 +167,7 @@ export default class Game extends Component {
                                     height: '50px', width: '50px'
                                 }
                                 player2FallenPieces.push(squares[src])                      //Push the defeated piece to fallen pieces array
-                                this.pieceAmountDecrement(2, squares[src].rank)      //The amount of the defeated piece decrease by one
+                                this.pieceAmountDecrement(2, squares[src].rank)      //The amount of the defeated piece decreases by one
                                 squares[src] = null                                         //Remove the defeated piece from the board
                             }else if (fight === 0) {
                                 squares[src].style = {
@@ -318,28 +386,33 @@ export default class Game extends Component {
             return 0
         }
         return -1
-
-
     }
-
-    pieceAmountDecrement(player, index){
-        console.log(index)
+    /*
+     * Update piece amount in left pane
+     */
+    pieceAmountDecrement = (player, index) => {
         let amounts;
         amounts = player === 1? this.state.player1Pieces.slice() : this.state.player2Pieces.slice()
-        console.log(amounts)
         amounts[index] -= 1
-        console.log(amounts[index])
         if (player === 1) {
-            this.setState({ player1Pieces: amounts })
+            this.setState({ player1Pieces: amounts }, () => this.checkWinner())
         }else {
-            this.setState({ player2Pieces: amounts })
+            this.setState({ player2Pieces: amounts }, () => this.checkWinner())
         }
 
+    }
+    handleSetup = () => {
+        let squares = this.state.squares.slice()
+        for (let i = 60; i < 100; i++) {
+            squares[i] = null
+        }
+        this.initBoard.setup(1, squares)
+        this.setState({squares: squares, player1Pieces: this.initBoard.player1Pieces})
     }
     render() {
         return (
             <div className="container">
-                <LeftPane className="leftPane" player1Pieces={this.state.player1Pieces}
+                <LeftPane setup={this.handleSetup}  onSurrender={this.handleSurrender} className="leftPane" player1Pieces={this.state.player1Pieces}
                           player2Pieces={this.state.player2Pieces}/>
                 <div>
                     <h2 className="title">Stratego</h2>
