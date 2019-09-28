@@ -16,7 +16,7 @@
 
 <body>
 
-<nav class=" mb-1 navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+<nav class="mb-1 navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
 
     <img id="logo" src="../static/resources/images/icon.png" th:src="@{/resources/images/icon.png}"/>
     <a class="navbar-brand txt" href="/">Stratego</a>
@@ -33,13 +33,9 @@
                         </span>
 
                     <div class="change-sign-in txt2">
-                            <span class="">
-                                New to Stratego?
-                            </span>
+                        <span class="">New to Stratego?</span>
 
-                        <a href="/signup" th:href="@{/signup}" class="txt3">
-                            Sign up
-                        </a>
+                        <a href="/signup" th:href="@{/signup}" class="txt3">Sign up</a>
                     </div>
                 </div>
 
@@ -48,11 +44,11 @@
             <div class="col">
                 <div class="login-social">
                     <div>
-                        <a href="#" class="btn-login-with row m-b-12 bg1">
-                            <img class="social-img" src="../static/resources/images/icon-fb5.png" th:src="@{/resources/images/icon-fb5.png}"/>
+                        <a href="http://localhost:8080/oauth2/authorization/fackbook" class="btn-login-with row m-b-12 bg1">
+                            <img id="fb" src="../static/resources/images/icon-fb5.png" th:src="@{/resources/images/icon-fb5.png}"/>
                             Login with Facebook
                         </a>
-                        <a href="#" class="btn-login-with row">
+                        <a href="http://localhost:8080/oauth2/authorization/google" class="btn-login-with row">
                             <img class="social-img" src="../static/resources/images/icon-google.png" th:src="@{/resources/images/icon-google.png}"/>
 
                             Login with Google

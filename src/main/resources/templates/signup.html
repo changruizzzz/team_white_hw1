@@ -12,6 +12,7 @@
     <link rel="stylesheet" type="text/css" href="../static/resources/css/styles.css" th:href="@{/resources/css/styles.css}"/>
     <link rel="stylesheet" type="text/css" href="../static/resources/css/index.css" th:href="@{/resources/css/index.css}">
     <link href="https://fonts.googleapis.com/css?family=Varela+Round&display=swap" rel="stylesheet">
+    <script th:src="@{../static/resources/js/verifyAjax.js}" type="text/javascript"></script>
 </head>
 
 <body>
@@ -45,11 +46,11 @@
         <div class="col">
             <div class="login-social">
                 <div>
-                    <a href="#" class="btn-login-with row bg1 m-b-12">
+                    <a href="http://localhost:8080:8080/oauth2/authorization/facebook" class="btn-login-with row bg1 m-b-12">
                         <img id="fb" src="../static/resources/images/icon-fb5.png" th:src="@{/resources/images/icon-fb5.png}"/>
                         Login with Facebook
                     </a>
-                    <a href="#" class="btn-login-with row bg2">
+                    <a href="http://localhost:8080:8080/oauth2/authorization/google" class="btn-login-with row bg2">
                         <img class="social-img" src="../static/resources/images/icon-google.png" th:src="@{/resources/images/icon-google.png}"/>
                         Login with Google
                     </a>
@@ -64,6 +65,7 @@
             <div class="input-info" >
                 <input type="text" placeholder="Email" name="email">
             </div>
+            <div id="sign-error" class="error-message"></div>
             <div class="input-info" >
                 <input type="password" placeholder="Password" name="password">
             </div>
@@ -71,7 +73,7 @@
                 <input type="password" placeholder="Please Input Password Again" name="passwordConfirm">
             </div>
             <div class="login-btn-wrap">
-                <button class="btn-primary btn">
+                <button id="signin-btn" class="btn-primary btn">
                     Submit
                 </button>
             </div>

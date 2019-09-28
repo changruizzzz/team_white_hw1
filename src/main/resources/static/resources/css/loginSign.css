@@ -39,20 +39,20 @@
     text-align: center;
 }
 
-@font-face {
-    font-family: Oswald-Regular;
-    src: url('../fonts/oswald/Oswald-Regular.ttf');
-}
+/*@font-face {*/
+    /*font-family: Oswald-Regular;*/
+    /*src: url('../fonts/oswald/Oswald-Regular.ttf');*/
+/*}*/
 
-@font-face {
-    font-family: Oswald-Medium;
-    src: url('../fonts/oswald/Oswald-Medium.ttf');
-}
+/*@font-face {*/
+    /*font-family: Oswald-Medium;*/
+    /*src: url('../fonts/oswald/Oswald-Medium.ttf');*/
+/*}*/
 
-@font-face {
-    font-family: Oswald-Bold;
-    src: url('../fonts/oswald/Oswald-Bold.ttf');
-}
+/*@font-face {*/
+    /*font-family: Oswald-Bold;*/
+    /*src: url('../fonts/oswald/Oswald-Bold.ttf');*/
+/*}*/
 
 body, html {
     height: 100%;
@@ -99,9 +99,6 @@ button {
     max-height: 9vh;
 }
 
-/* .centered-right-sign-in{
-  max-height: vh;
-} */
 .title {
     margin-top: 200px;
     margin-bottom: 50px;
@@ -111,7 +108,6 @@ button {
     height: 50px;
 }
 .login-title {
-    font-family: Oswald-Medium;
     font-size: 30px;
     text-align: center;
     display: block;
@@ -119,53 +115,20 @@ button {
 
 .login-btn{
     width: 60%;
-    /*align-items: center;*/
-    /*min-width: 170px;*/
-    /*height: 52px;*/
-    /*color: #fff;*/
-    /*text-transform: uppercase;*/
-    /*position: relative;*/
-    /*left:12%;*/
     cursor: pointer;
 }
 
-/*.login-btn::before {*/
-/*    content: "";*/
-/*    display: block;*/
-/*    position: absolute;*/
-/*    z-index: -1;*/
-/*    width: 100%;*/
-/*    height: 100%;*/
-/*    left: 50%;*/
-/*    -webkit-transform: translateX(-50%);*/
-/*    border-radius: 31px;*/
-/*    background-color: #333333;*/
-/*    transition: all 0.3s;*/
-/*    cursor: pointer;*/
-/*}*/
-
-/*.login-btn:hover:before {*/
-/*    background-color: #222222;*/
-/*    width: calc(100% + 18px);*/
-/*    cursor: pointer;*/
-/*}*/
-
 .btn-login-with {
-    font-family: Oswald-Medium;
     font-size: 16px;
     color: black;
     line-height: 1.2;
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -moz-box;
-    display: -ms-flexbox;
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 250px;
-    height: 50px;
+    width: 350px;
     border-radius: 25px;
     border-style:solid;
+    border-width: thin;
 }
 
 
@@ -174,23 +137,33 @@ button {
     margin-right: 10px;
 }
 
-
-
-
-
-
 .input-info {
     margin: 10px 0;
 }
 .input-info input {
-    font-family: Oswald-Medium;
     outline: none;
     border-radius: 25px;
     border-style: solid;
+    border-width: thin;
+    overflow: visible;
+    margin: 5px auto;
+    width: 350px;
+    padding: 0 10px;
+    font-size: 16px;
+    color: black;
+    display: block;
+    height: 50px;
+}
+
+.input-info-verify input{
+    outline: none;
+    border-radius: 25px;
+    border-style: solid;
+    border-width: thin;
     overflow: visible;
     margin: 5px auto;
     width: 250px;
-    padding: 0 88px;
+    padding: 0 10px;
     font-size: 16px;
     color: black;
     display: block;
@@ -232,3 +205,9 @@ button {
     text-align: center;
 
 }
+
+/*.container{*/
+    /*background: linear-gradient(to bottom, rgba(14, 60, 95, 0.3) 0%, rgba(20, 20, 20, 0.5) 75%, #161616 100%),*/
+    /*url("../images/game-header.png");*/
+
+/*}*/

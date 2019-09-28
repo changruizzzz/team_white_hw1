@@ -23,25 +23,22 @@ public class VerificationTokenService {
         this.sendingMailService = sendingMailService;
     }
 
-    public void createVerification(String email){
+    public User createVerification(String email){
         User user = userRepository.findByEmail(email);
-        if (user == null) {
-            user = new User();
-            user.setEmail(email);
-            userRepository.save(user);
-        }
+        if(user != null && !user.getIsActive()) {
+            List<VerificationToken> verificationTokens = verificationTokenRepository.findByUserEmail(email);
+            VerificationToken verificationToken;
+            if (verificationTokens.isEmpty()) {
+                verificationToken = new VerificationToken();
+                verificationToken.setUser(user);
+                verificationTokenRepository.save(verificationToken);
+            } else {
+                verificationToken = verificationTokens.get(0);
+            }
 
-        List<VerificationToken> verificationTokens = verificationTokenRepository.findByUserEmail(email);
-        VerificationToken verificationToken;
-        if (verificationTokens.isEmpty()) {
-            verificationToken = new VerificationToken();
-            verificationToken.setUser(user);
-            verificationTokenRepository.save(verificationToken);
-        } else {
-            verificationToken = verificationTokens.get(0);
+            sendingMailService.sendVerificationMail(email, verificationToken.getToken());
         }
-
-        sendingMailService.sendVerificationMail(email, verificationToken.getToken());
+        return user;
     }
 
     public ResponseEntity<String> verifyEmail(String token){
