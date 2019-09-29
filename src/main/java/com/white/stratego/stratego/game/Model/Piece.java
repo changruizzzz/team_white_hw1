@@ -1,20 +1,13 @@
-package com.white.stratego.stratego.game;
+package com.white.stratego.stratego.game.Model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import java.io.Serializable;
 
 public class Piece implements Comparable<Piece> , Serializable {
 
     private int rank;
     private boolean visible;
-    private int x;
-    private int y;
     private boolean isFlag;
     private boolean isBomb;
-    private boolean dead;
     private boolean movable;
 
 
@@ -26,47 +19,32 @@ public class Piece implements Comparable<Piece> , Serializable {
     public Piece(){
         this.rank = 0;
         this.visible = false;
-        x = -1;
-        y = -1;
-        this.dead = false;
         this.movable = false;
         this.isBomb = false;
         this.isFlag = false;
     }
 
-    public Piece(int rank, boolean visible, boolean dead, boolean moveable, boolean isBomb, boolean isFlag){
+    public Piece(int rank, boolean visible, boolean movable, boolean isBomb, boolean isFlag){
         this.rank = rank;
         this.visible = visible;
-        x = -1;
-        y = -1;
-        this.dead = dead;
-        this.movable = moveable;
+        this.movable = movable;
         this.isBomb = isBomb;
         this.isFlag = isFlag;
     }
 
-    public Piece(boolean visible, boolean dead, boolean isFlag){
+    public Piece(boolean visible, boolean isFlag){
         this.rank = 0;
         this.visible = visible;
-        x = -1;
-        y = -1;
-        this.dead = dead;
         this.isFlag = isFlag;
     }
 
-    public Piece(boolean visible, boolean dead, boolean isBomb, boolean isFlag){
+    public Piece(boolean visible, boolean isBomb, boolean isFlag){
         this.rank = 0;
         this.visible = visible;
-        x = -1;
-        y = -1;
-        this.dead = dead;
         this.isFlag = isFlag;
         this.isBomb = isBomb;
     }
-    public Piece emptyPiece() {
-        Piece emptyP = new Piece(0, false, false, false, false, false);
-        return emptyP;
-    }
+
     public boolean getIsFlag() {
         return isFlag;
     }
@@ -95,13 +73,7 @@ public class Piece implements Comparable<Piece> , Serializable {
         return rank;
     }
 
-    public boolean getDead() {
-        return dead;
-    }
 
-    public void setDead(boolean dead) {
-        this.dead = dead;
-    }
 
     public void setRank(int rank) {
         this.rank = rank;
@@ -113,44 +85,6 @@ public class Piece implements Comparable<Piece> , Serializable {
 
     public void setVisible(boolean visible) {
         this.visible = visible;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public void setXY(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-
-    public void setY(int y) {
-        this.y = y;
-    }
-
-
-    public void moveUp(){
-        x--;
-    }
-
-    public void moveLeft(){
-        y--;
-    }
-
-    public void moveRight(){
-        y++;
-    }
-    public void moveDown() {
-        x++;
     }
 
     public String skill(){
@@ -214,21 +148,15 @@ public class Piece implements Comparable<Piece> , Serializable {
             }
             int fight = compareTo(o);
             if (fight == 0) {
-                o.setDead(true);
-                this.setDead(true);
                 this.setVisible(true);
                 o.setVisible(true);
                 return 0;
             } else if (fight > 0) {
                 // attacker won the fight
-                this.x = o.x;
-                this.y = o.y;
-                o.setDead(true);
                 this.setVisible(true);
                 return 1;
             } else {
                 // attacker lost the fight
-                this.setDead(true);
                 o.setVisible(true);
                 return -1;
             }
@@ -262,5 +190,15 @@ public class Piece implements Comparable<Piece> , Serializable {
     @Override
     public String toString() {
         return topLine() + "\n" + bottomLine();
+    }
+
+    public Piece clone() {
+        Piece p = new Piece();
+        p.setRank(this.rank);
+        p.setVisible(this.visible);
+        p.setIsFlag(this.isFlag);
+        p.setIsBomb(this.isBomb);
+        p.setMovable(this.movable);
+        return p;
     }
 }

@@ -1,4 +1,4 @@
-package com.white.stratego.stratego.game;
+package com.white.stratego.stratego.game.Model;
 
 import com.white.stratego.stratego.market.model.User;
 import org.hibernate.annotations.Cascade;

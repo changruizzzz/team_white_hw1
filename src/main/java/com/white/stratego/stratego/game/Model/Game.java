@@ -1,11 +1,10 @@
-package com.white.stratego.stratego.game;
-import java.util.Scanner;
+package com.white.stratego.stratego.game.Model;
+import java.util.ArrayList;
+
 import com.white.stratego.stratego.market.model.MarketUnit;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
 
 @Entity(name="game")
 public class Game extends MarketUnit{
@@ -15,9 +14,11 @@ public class Game extends MarketUnit{
     private boolean compWin;
     private boolean humanTurn;
     private boolean started;
+    private boolean ended;
     @OneToOne
     private Board initialBoard;
 
+    private ArrayList<Movement> movements;
     public Game() {
         board = new Board();
         humanWin = false;
@@ -25,6 +26,8 @@ public class Game extends MarketUnit{
         humanTurn = true;
         started = false;
         initialBoard = new Board();
+        movements = new ArrayList<>();
+        ended = false;
     }
     public Board getBoard() {
         return board;
@@ -72,5 +75,21 @@ public class Game extends MarketUnit{
 
     public void setStarted(boolean started) {
         this.started = started;
+    }
+
+    public ArrayList<Movement> getMovements() {
+        return movements;
+    }
+
+    public void setMovements(ArrayList<Movement> movements) {
+        this.movements = movements;
+    }
+
+    public boolean getEnded() {
+        return ended;
+    }
+
+    public void setEnded(boolean end) {
+        this.ended = end;
     }
 }
