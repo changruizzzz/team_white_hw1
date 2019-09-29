@@ -163,3 +163,17 @@ a.link-disabled {
     width: 20px;
     height: 20px;
 }
+.send-email-wrapper{
+    background: url("../images/bg-mails.png");
+}
+
+#resend-prompt h6 {
+    width: 100%;
+    text-align: center;
+    color: #CC0000;
+}
+
+
+#resend-prompt h6 a:hover{
+    color: #CC0000;
+}
