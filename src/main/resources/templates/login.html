@@ -35,7 +35,7 @@
                     <div class="change-sign-in txt2">
                         <span class="">New to Stratego?</span>
 
-                        <a href="/signup" th:href="@{/signup}" class="txt3">Sign up</a>
+                        <a href="/signup" th:href="@{/signup}">Sign up</a>
                     </div>
                 </div>
 
@@ -44,22 +44,28 @@
             <div class="col">
                 <div class="login-social">
                     <div>
-                        <a href="http://localhost:8080/oauth2/authorization/fackbook" class="btn-login-with row m-b-12 bg1">
+                        <a th:href="@{/oauth2/authorization/google}" class="btn-login-with row">
+                            <img class="social-img" src="../static/resources/images/icon-google.png" th:src="@{/resources/images/icon-google.png}"/>
+                            Login with Google
+                        </a>
+
+                        <a th:href="@{/oauth2/authorization/fackbook}" class="btn-login-with row m-b-12 bg1">
                             <img id="fb" src="../static/resources/images/icon-fb5.png" th:src="@{/resources/images/icon-fb5.png}"/>
                             Login with Facebook
                         </a>
-                        <a href="http://localhost:8080/oauth2/authorization/google" class="btn-login-with row">
-                            <img class="social-img" src="../static/resources/images/icon-google.png" th:src="@{/resources/images/icon-google.png}"/>
 
-                            Login with Google
-                        </a>
                     </div>
                 </div>
 
             </div>
 
             <div class="divider divider mx-auto">&#8226</div>
-
+            <div class="error-prompt" th:if="${param.error}">
+                Invalid username and password.
+            </div>
+            <div class="error-prompt" th:if="${param.logout}">
+                You have been logged out.
+            </div>
             <form th:action="@{/login}" method="post" class="login-email col">
                 <div class="input-info" >
                     <input type="text" placeholder="Username" name="username">
@@ -69,7 +75,7 @@
                 </div>
                 <div class="login-btn-wrap">
                     <button class="btn-primary btn">
-                        Submit
+                        login
                     </button>
                 </div>
             </form>

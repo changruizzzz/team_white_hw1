@@ -28,7 +28,7 @@
     <div class="row title mb-4">
         <div class="col">
                     <span class="login-title txt1 row mb-3">
-                            Sign In
+                            Sign Up
                         </span>
 
             <div class="change-sign-in txt2">
@@ -46,13 +46,13 @@
         <div class="col">
             <div class="login-social">
                 <div>
-                    <a href="http://localhost:8080:8080/oauth2/authorization/facebook" class="btn-login-with row bg1 m-b-12">
-                        <img id="fb" src="../static/resources/images/icon-fb5.png" th:src="@{/resources/images/icon-fb5.png}"/>
-                        Login with Facebook
-                    </a>
-                    <a href="http://localhost:8080:8080/oauth2/authorization/google" class="btn-login-with row bg2">
+                    <a th:href="@{/oauth2/authorization/google}" class="btn-login-with row bg2">
                         <img class="social-img" src="../static/resources/images/icon-google.png" th:src="@{/resources/images/icon-google.png}"/>
                         Login with Google
+                    </a>
+                    <a th:href="@{/oauth2/authorization/facebook}" class="btn-login-with row bg1 m-b-12">
+                        <img id="fb" src="../static/resources/images/icon-fb5.png" th:src="@{/resources/images/icon-fb5.png}"/>
+                        Login with Facebook
                     </a>
                 </div>
             </div>
@@ -74,7 +74,7 @@
             </div>
             <div class="login-btn-wrap">
                 <button id="signin-btn" class="btn-primary btn">
-                    Submit
+                    Signup
                 </button>
             </div>
         </form>
