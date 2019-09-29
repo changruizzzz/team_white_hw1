@@ -23,7 +23,7 @@ public class VerificationTokenService {
         this.sendingMailService = sendingMailService;
     }
 
-    public User createVerification(String email){
+    public void createVerification(String email){
         User user = userRepository.findByEmail(email);
         if(user != null && !user.getIsActive()) {
             List<VerificationToken> verificationTokens = verificationTokenRepository.findByUserEmail(email);
@@ -38,7 +38,6 @@ public class VerificationTokenService {
 
             sendingMailService.sendVerificationMail(email, verificationToken.getToken());
         }
-        return user;
     }
 
     public ResponseEntity<String> verifyEmail(String token){

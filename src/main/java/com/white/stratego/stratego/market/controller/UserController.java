@@ -1,17 +1,21 @@
 package com.white.stratego.stratego.market.controller;
-import java.util.*;
 import com.white.stratego.stratego.market.service.UserServiceImpl;
 import com.white.stratego.stratego.market.service.VerificationTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import com.white.stratego.stratego.market.model.User;
 import com.white.stratego.stratego.market.service.SecurityService;
 import com.white.stratego.stratego.market.validator.UserValidator;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 @Controller
 public class UserController {
@@ -39,19 +43,28 @@ public class UserController {
         userValidator.validate(userForm, bindingResult);
 
         if(bindingResult.hasErrors()) {
-            System.err.println(bindingResult);
+            ArrayList<String> errors = new ArrayList<>();
+            for(Object e : bindingResult.getAllErrors()) {
+                String field = ((FieldError)e).getField();
+                if(field.equals("email")) {
+                    errors.add("Email already exist.");
+                }
+                if(field.equals("password")) {
+                    errors.add("Password length must between 8 and 32.");
+                }
+                if(field.equals("passwordConfirm")) {
+                    errors.add("Password doesn't match.");
+                }
+            }
+            model.addAttribute("errors", errors);
             return "signup";
         }
 
         userService.save(userForm);
 
-        User user = verificationTokenService.createVerification(userForm.getEmail());
-        if(user == null)
-            return "redirect:/verifyNeedSignUpEmail";
-        else if(user.getIsActive())
-            return "redirect:/verifyNeedLogInEmail";
-        else
-            return "redirect:/verify";
+        verificationTokenService.createVerification(userForm.getEmail());
+
+        return "redirect:/verify";
     }
 
     @RequestMapping("/login")
@@ -78,10 +91,10 @@ public class UserController {
 //        String email = user.getEmail();
 //        System.err.println(email);
 
-        return "verifySendEmail";
+        return "verify";
     }
 
-    @RequestMapping("/verifySendEmail/{token}")
+    @RequestMapping("/verify/{token}")
     public String verifyEmail(@PathVariable String token) {
         System.err.println("ok");
         ResponseEntity<String> response = verificationTokenService.verifyEmail(token);
@@ -89,11 +102,11 @@ public class UserController {
             System.err.println("1");
             User user = userService.findByToken(token);
             System.err.println("user");
-            return "verifySuccess";
+            return "redirect:/verifySuccess";
         }
         else {
             System.err.println(2);
-            return "verifySendEmail";
+            return "redirect:/verify";
         }
     }
 
@@ -107,25 +120,19 @@ public class UserController {
         return "verifySuccess";
     }
 
-    @RequestMapping("/verifySendEmail")
-    public String verifySendEmail(){
-        return "verifySendEmail";
-    }
-
-    @RequestMapping(value = "/verifyNeedSignUpEmail/", method = RequestMethod.POST)
-    public Map<String, String> verifySignUpEmail(){
+    @PostMapping("/verifyResend")
+    @ResponseBody
+    public HashMap<String, String> resend(@RequestParam String email) {
         HashMap<String, String> map = new HashMap<>();
-        map.put("message","success");
+        User u = userService.findByEmail(email);
+        if(u == null) {
+            map.put("message", "notExist");
+        } else if(u.getIsActive()) {
+            map.put("message", "active");
+        } else {
+            verificationTokenService.createVerification(email);
+            map.put("message", "success");
+        }
         return map;
     }
-
-    @RequestMapping(value = "/verifyNeedLogInEmail/", method = RequestMethod.POST)
-    public Map<String, String> verifyNeedLogInEmail(){
-        HashMap<String, String> map = new HashMap<>();
-        map.put("message","success");
-        return map;
-
-
-    }
-
 }
