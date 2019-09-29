@@ -1,9 +1,6 @@
 package com.white.stratego.stratego.game.service;
 
-import com.white.stratego.stratego.game.Board;
-import com.white.stratego.stratego.game.BoardSetups;
-import com.white.stratego.stratego.game.Game;
-import com.white.stratego.stratego.game.Piece;
+import com.white.stratego.stratego.game.*;
 import org.springframework.stereotype.Service;
 
 import java.util.Scanner;
@@ -25,25 +22,91 @@ public class GameService {
         game.getBoard().setupBoard(compSet, 'r');
         game.getBoard().setupMiddle();
         game.getBoard().setupBoard(userSet, 'b');
+        int[] flagRed = new int[2];
+        int[] flagBlue = new int[2];
         //Please fix this!!
         game.setBoard(game.getBoard());
 
+        // I think that should work as a deep copy for initial board
+        game.getInitialBoard().setupBoard(compSet, 'r');
+        game.getInitialBoard().setupMiddle();
+        game.getInitialBoard().setupBoard(userSet, 'b');
+        // maybe that line will do the same, but I haven't check
+//        game.setInitialBoard(game.getBoard());
 
-        System.out.print(game.getBoard());
+        // storing the coordinates of the flags in variables,
+        // so no need to search and easy to check after each move if flag was captured
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                if (game.getBoard().getPieces()[i][j].getRank() == 11){
+                    flagBlue[0] = i;
+                    flagBlue[1] = j;
+                } else if (game.getBoard().getPieces()[i][j].getRank() == -11) {
+                    flagRed[0] = i;
+                    flagRed[1] = j;
+                }
+            }
+        }
+        gameFlow(game, flagRed, flagBlue);
+    }
 
-//        for (int i = 0; i < 10; i++) {
-//            for (int j = 0; j < 10; j++) {
-//                System.out.printf("Piece %d %d rank = %d", i, j, board.getBoard()[i][j].getRank());
-//            }
-//        }
-
-        int finish = 0;
-        int c = 300;
+    private void gameFlow(Game game, int[] flagRed, int[] flagBlue) {
+        Movement move = new Movement();
+        int c = 300; // the parameter for speeding the game
         System.out.print(game.getBoard());
         while ((!game.getHumanWin() || !game.getCompWin()) && c > 0) {
             if (!game.getHumanTurn()) {
-                finish = game.getBoard().MakeMoveAI('b');
+                // here is the move that you can use for the front end it is in format xy1 = [x1,y1] xy2 = [x2,y2]
+                move = game.getBoard().MakeMoveAI('b');
                 System.out.print(game.getBoard());
+
+                if (checkBoardForMovablePieces('b', game) == 0) {
+                    System.out.println("Player has no more movable pieces, Computer won the game!");
+                    System.exit(0);
+                }
+                switchTurn(game);
+            } else {
+                // here is the move that you can use for the front end it is in format xy1 = [x1,y1] xy2 = [x2,y2]
+                move = game.getBoard().MakeMoveAI('r');
+                System.out.print(game.getBoard());
+                switchTurn(game);
+                if (checkBoardForMovablePieces('r', game) == 0) {
+                    System.out.println("Computer has no more movable pieces, Player won the game!");
+                    System.exit(0);
+                }
+            }
+            if (move.getXy2()[0] == flagRed[0] && move.getXy2()[1] == flagRed[1]) {
+                System.out.println("Player found computer's flag and won the game!");
+                System.exit(0);
+            } else if (move.getXy2()[0] == flagBlue[0] && move.getXy2()[1] == flagBlue[1]) {
+                System.out.println("Computer found players's flag and won the game!");
+                System.exit(0);
+            }
+            c--;
+        }
+    }
+
+    private int checkBoardForMovablePieces(char side, Game game) {
+        int r = side == 'r' ? -1 : 1;
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                Piece currentPiece = game.getBoard().getPieces()[i][j];
+                if (currentPiece.getRank() * r > 0) {
+                    if (currentPiece.getMovable()) {
+                        return 1;
+                    }
+                }
+            }
+        }
+        return 0;
+    }
+
+    private void switchTurn(Game game) {
+        game.setHumanTurn(game.getHumanWin());
+    }
+}
+
+
 //                System.out.println("Please make your move in format <x1 y1 dir step> \n" +
 //                        "dir = {'u','d','l','r'} step = 1 or more if it is scout");
 //                String s =in.nextLine();
@@ -59,50 +122,3 @@ public class GameService {
 //                    compWin = true;
 //                }
 //                System.out.print(board);
-                if (checkBoardForMovablePieces('b', game) == 0) {
-                    System.out.println("Player has no more movable pieces, Computer won the game!");
-                    System.exit(0);
-                }
-                switchTurn(game);
-            } else {
-                finish = game.getBoard().MakeMoveAI('r');
-                System.out.print(game.getBoard());
-                switchTurn(game);
-                if (checkBoardForMovablePieces('r', game) == 0) {
-                    System.out.println("Computer has no more movable pieces, Player won the game!");
-                    System.exit(0);
-                }
-            }
-            if (finish == 11) {
-                System.out.println("Player found computer's flag and won the game!");
-                System.exit(0);
-            } else if (finish == -11) {
-                System.out.println("Computer found players's flag and won the game!");
-                System.exit(0);
-            }
-            c--;
-
-        }
-        game.setInitialBoard(game.getBoard());
-
-    }
-
-    private int checkBoardForMovablePieces(char side, Game game) {
-        int r = side == 'r' ? -1 : 1;
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
-                Piece currentPiece = game.getBoard().getBoard()[i][j];
-                if (currentPiece.getRank() * r > 0) {
-                    if (currentPiece.getMovable()) {
-                        return 1;
-                    }
-                }
-            }
-        }
-        return 0;
-    }
-
-    private void switchTurn(Game game) {
-        game.setHumanTurn(game.getHumanWin());
-    }
-}

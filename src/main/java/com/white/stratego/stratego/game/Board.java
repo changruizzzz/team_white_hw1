@@ -116,63 +116,13 @@ public class Board {
         }
     }
 
-    //    public void makeMove(Piece p, char direction, int i) {
-//        int x1 = p.getX();
-//        int y1 = p.getY();
-//        int x2 = -1;
-//        int y2 = -1;
-//        switch (direction) {
-//            case 'u':
-//                x2 = x1;
-//                y2 = y1 + i;
-//                break;
-//            case 'd':
-//                x2 = x1;
-//                y2 = y1 - i;
-//                break;
-//            case 'l':
-//                x2 = x1 - i;
-//                y2 = y1;
-//                break;
-//            case 'r':
-//                x2 = x1 + i;
-//                y2 = y1;
-//                break;
-//        }
-//        if (isEmpty(x2,y2)) {
-//            // swap moving piece with empty space
-//            Piece tmp = board[x1][y1];
-//            board[x1][y1] = board[x2][y2];
-//            board[x2][y2] = tmp;
-//        } else {
-//            // make an attack - it will create either one or two extra empty spaces
-//            // if ranks are equal = 2 empty spaces, otherwise one extra
-//            board[x1][y1].attack(board[x2][y2]);
-//            setEmpty(x1,y1);
-//        }
-//    }
-    public int makeMove(int x1, int y1, char direction, int i) {
-        int x2 = -1;
-        int y2 = -1;
-        int result = 1;
-        switch (direction) {
-            case 'l':
-                x2 = x1;
-                y2 = y1 - i;
-                break;
-            case 'r':
-                x2 = x1;
-                y2 = y1 + i;
-                break;
-            case 'u':
-                x2 = x1 - i;
-                y2 = y1;
-                break;
-            case 'd':
-                x2 = x1 + i;
-                y2 = y1;
-                break;
-        }
+    // make move accepts Movement and proceeds it
+    public void makeMove(Movement move) {
+        int x1 = move.getXy1()[0];
+        int y1 = move.getXy1()[1];
+        int x2 = move.getXy2()[0];
+        int y2 = move.getXy2()[0];
+
         if (isEmpty(x2,y2)) {
             // swap moving piece with empty space
             Piece tmp = board[x1][y1];
@@ -194,19 +144,59 @@ public class Board {
                     board[x2][y2] = board[x1][y1];
                     board[x2][y2].setXY(x2,y2);
                     break;
-                case -1:
+            }
+            setEmpty(x1,y1);
+        }
+    }
+
+    public Movement makeMove(int x1, int y1, char direction, int i) {
+        int x2 = -1;
+        int y2 = -1;
+        switch (direction) {
+            case 'l':
+                x2 = x1;
+                y2 = y1 - i;
+                break;
+            case 'r':
+                x2 = x1;
+                y2 = y1 + i;
+                break;
+            case 'u':
+                x2 = x1 - i;
+                y2 = y1;
+                break;
+            case 'd':
+                x2 = x1 + i;
+                y2 = y1;
+                break;
+        }
+        Movement move = new Movement(x1, y1, x2, y2);
+        if (isEmpty(x2,y2)) {
+            // swap moving piece with empty space
+            Piece tmp = board[x1][y1];
+            board[x1][y1] = board[x2][y2];
+            board[x2][y2] = tmp;
+            board[x2][y2].setXY(x2,y2);
+        } else {
+            // make an attack - it will create either one or two extra empty spaces
+            // if ranks are equal = 2 empty spaces, otherwise one extra
+            int fight = board[x1][y1].attack(board[x2][y2]);
+            // after fight check the result of comparison and if it is 0 - set both fields to empty
+            // if it is positive then human player win
+            // if it is negative - computer win the fight and the field is updated accordingly
+            switch (fight) {
+                case 0:
+                    setEmpty(x2,y2);
                     break;
-                case 11:
-                    result = 11;
-                    break;
-                case -11:
-                    result = -11;
+                case 1:
+                    board[x2][y2] = board[x1][y1];
+                    board[x2][y2].setXY(x2,y2);
                     break;
             }
             setEmpty(x1,y1);
         }
 
-        return result;
+        return move;
     }
 
 
@@ -220,44 +210,10 @@ public class Board {
         return (board[x2][y2].getRank() == 0);
     }
 
-    @Override
-    public String toString() {
-        String row = "";
-        for (int i = 0; i < 10; i++) {
-            String row1;
-            if (i == 9) {
-                row1 = (i+1) + " |";
-            } else {
-                row1 = (i+1) + "  |";
-            }
-            String row2 = "   |";
-            for (int j = 0; j < 10; j++) {
-                if (i > 3 && i < 6 && (j == 2 || j == 6)) {
-                    row1 += board[i][j].topLine() + " ";
-                } else {
-                    row1 += board[i][j].topLine() + "|";
-                }
-                if (i > 3 && i < 6 && (j == 2 || j == 6)) {
-                    row2 += board[i][j].bottomLine() + " ";
-                } else {
-                    row2 += board[i][j].bottomLine() + "|";
-                }
-            }
-            System.out.println();
-            if (i == 4) {
-                row += row1 + "\n" + row2 + "\n   .-----.-----.           .-----.-----.           .-----.-----.\n";
-            } else {
-                row += row1 + "\n" + row2 + "\n   .-----.-----.-----.-----.-----.-----.-----.-----.-----.-----.\n";
-            }
-        }
 
-        return  "      1     2     3     4     5     6     7     8     9     10 \n"+
-                "   ._____._____._____._____._____._____._____._____._____._____.\n" + row;
-    }
-
-    public int MakeMoveAI(char side) {
+    public Movement MakeMoveAI(char side) {
         int r = side == 'r' ? -1 : 1;
-        int result = 1;
+        Movement result = new Movement();
         char myMove;
         if (r == 1) {
             for (int i = 0; i < 10; i+=1) {
@@ -340,7 +296,7 @@ public class Board {
             }
         }
         if (y1 != 9 && isEmpty(x1,y1+1)) {
-            if (!isLake(x1,y1-1)) {
+            if (!isLake(x1,y1+1)) {
                 moves += "r";
             }
         }
@@ -393,7 +349,7 @@ public class Board {
         return result;
     }
 
-    public Piece[][] getBoard() {
+    public Piece[][] getPieces() {
         return board;
     }
 
@@ -414,38 +370,76 @@ public class Board {
         return result;
     }
 
-/*
-       ._____._____._____._____._____._____._____._____._____._____.
-       |  10 |  9  | -9  | -10 |  8  | -8  |  10 |  10 |  10 |  10 |
-       |  vm |  vm |  vm |  v  |  v  |  vm |  v. |  v. |  v. |  v. |
-       .-----.-----.-----.-----.-----.-----.-----.-----.-----.-----.
-       | 10  |  F  |  10 |     |  10 |  10 |  10 |  10 |  10 |  10 |
-       | v.  |  v. |  v. |     |  v. |  v. |  v. |  v. |  v. |  v. |
-       .-----.-----.-----.-----.-----.-----.-----.-----.-----.-----.
-       | 10  |  10 |  10 |  10 |  10 |  10 |  10 |  10 |  10 |  10 |
-       | v.  |  v. |  v. |  v. |     |  v. |  v. |  v. |  v. |  v. |
-       .-----.-----.-----.-----.-----.-----.-----.-----.-----.-----.
-       | 10  |  10 |  10 |  10 |  10 |  10 |  10 |  10 |  10 |  10 |
-       | v.  |  v. |  v. |  v. |  v. |  v. |  v. |  v. |  v. |  v. |
-       .-----.-----.-----.-----.-----.-----.-----.-----.-----.-----.
-       | 10  |  10 |  10 |  10 |  10 |  10 |  10 |  10 |  10 |  10 |
-       | v.  |  v. |  v. |  v. |  v. |  v. |  v. |  v. |  v. |  v. |
-       .-----.-----.-----.-----.-----.-----.-----.-----.-----.-----.
-       | 10  |  10 |  10 |  10 |  10 |  10 |  10 |  10 |  10 |  10 |
-       | v.  |  v. |  v. |  v. |  v. |  v. |  v. |  v. |  v. |  v. |
-       .-----.-----.-----.-----.-----.-----.-----.-----.-----.-----.
-       | 10  |  10 |  10 |  10 |  10 |  10 |  10 |  10 |  10 |  10 |
-       | v.  |  v. |  v. |  v. |  v. |  v. |  v. |  v. |  v. |  v. |
-       .-----.-----.-----.-----.-----.-----.-----.-----.-----.-----.
-       | 10  |  10 |  10 |  10 |  10 |  10 |  10 |  10 |  10 |  10 |
-       | v.  |  v. |  v. |  v. |  v. |  v. |  v. |  v. |  v. |  v. |
-       .-----.-----.-----.-----.-----.-----.-----.-----.-----.-----.
-       | 10  |  10 |  10 |  10 |  10 |  10 |  10 |  10 |  10 |  10 |
-       | v.  |  v. |  v. |  v. |  v. |  v. |  v. |  v. |  v. |  v. |
-       .-----.-----.-----.-----.-----.-----.-----.-----.-----.-----.
-       | 10  |  10 |  10 |  10 |  10 |  10 |  10 |  10 |  10 |  10 |
-       | v.  |  v. |  v. |  v. |  v. |  v. |  v. |  v. |  v. |  v. |
-       .-----.-----.-----.-----.-----.-----.-----.-----.-----.-----.
+    @Override
+    public String toString() {
+        String row = "";
+        for (int i = 0; i < 10; i++) {
+            String row1;
+            if (i == 9) {
+                row1 = (i+1) + " |";
+            } else {
+                row1 = (i+1) + "  |";
+            }
+            String row2 = "   |";
+            for (int j = 0; j < 10; j++) {
+                if (i > 3 && i < 6 && (j == 2 || j == 6)) {
+                    row1 += board[i][j].topLine() + " ";
+                } else {
+                    row1 += board[i][j].topLine() + "|";
+                }
+                if (i > 3 && i < 6 && (j == 2 || j == 6)) {
+                    row2 += board[i][j].bottomLine() + " ";
+                } else {
+                    row2 += board[i][j].bottomLine() + "|";
+                }
+            }
+            System.out.println();
+            if (i == 4) {
+                row += row1 + "\n" + row2 + "\n   .-----.-----.           .-----.-----.           .-----.-----.\n";
+            } else {
+                row += row1 + "\n" + row2 + "\n   .-----.-----.-----.-----.-----.-----.-----.-----.-----.-----.\n";
+            }
+        }
 
-*/
+        return  "      1     2     3     4     5     6     7     8     9     10 \n"+
+                "   ._____._____._____._____._____._____._____._____._____._____.\n" + row;
+    }
 }
+
+
+
+//    public void makeMove(Piece p, char direction, int i) {
+//        int x1 = p.getX();
+//        int y1 = p.getY();
+//        int x2 = -1;
+//        int y2 = -1;
+//        switch (direction) {
+//            case 'u':
+//                x2 = x1;
+//                y2 = y1 + i;
+//                break;
+//            case 'd':
+//                x2 = x1;
+//                y2 = y1 - i;
+//                break;
+//            case 'l':
+//                x2 = x1 - i;
+//                y2 = y1;
+//                break;
+//            case 'r':
+//                x2 = x1 + i;
+//                y2 = y1;
+//                break;
+//        }
+//        if (isEmpty(x2,y2)) {
+//            // swap moving piece with empty space
+//            Piece tmp = board[x1][y1];
+//            board[x1][y1] = board[x2][y2];
+//            board[x2][y2] = tmp;
+//        } else {
+//            // make an attack - it will create either one or two extra empty spaces
+//            // if ranks are equal = 2 empty spaces, otherwise one extra
+//            board[x1][y1].attack(board[x2][y2]);
+//            setEmpty(x1,y1);
+//        }
+//    }

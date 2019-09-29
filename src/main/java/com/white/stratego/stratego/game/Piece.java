@@ -139,22 +139,64 @@ public class Piece implements Comparable<Piece> , Serializable {
 
 
     public void moveUp(){
-        //changeBoard();
+        x--;
     }
 
     public void moveLeft(){
-
+        y--;
     }
 
     public void moveRight(){
-
+        y++;
     }
     public void moveDown() {
-
+        x++;
     }
 
-    public void skill(){
-
+    public String skill(){
+        String skill = "";
+        switch(Math.abs(rank)){
+            case 0:
+                skill = "Empty field.";
+                break;
+            case 1:
+                skill = "Spy(1). He can capture Marshal(10) if attacks first.";
+                break;
+            case 2:
+                skill = "Scout(2). Can move an unlimited distance and attack on the same turn.";
+                break;
+            case 3:
+                skill = "Miners(3). Can disarm Bomb pieces.";
+                break;
+            case 4:
+                skill = "Sergeant(4).";
+                break;
+            case 5:
+                skill = "Lieutenant(5).";
+                break;
+            case 6:
+                skill = "Captain(6).";
+                break;
+            case 7:
+                skill = "Majors(7).";
+                break;
+            case 8:
+                skill = "Colonels(8).";
+                break;
+            case 9:
+                skill = "General(9).";
+                break;
+            case 10:
+                skill = "Marshall(10).";
+                break;
+            case 11:
+                skill = "Flag.";
+                break;
+            case 13:
+                skill = "Bomb.";
+                break;
+        }
+        return skill;
     }
 
     public int attack(Piece o){
@@ -163,8 +205,8 @@ public class Piece implements Comparable<Piece> , Serializable {
             // if current player attacks a bomb - current player wins,
             // return +/-11 will be a signal of the end of the game
             if (Math.abs(o.rank) == 11) {
-                int w = this.rank > 0 ? 11 : -11;
-                return w;
+//                int w = this.rank > 0 ? 11 : -11;
+                return 1;
             } else if (Math.abs(this.rank) == 1 && Math.abs(o.rank) == 10) {
                 return 1;
             } else if (Math.abs(this.rank) == 3 && Math.abs(o.rank) == 13) {
