@@ -23,12 +23,16 @@ public class Movement {
     }
 
     public Movement() {
+        xy1 = new int[2];
+        xy2 = new int[2];
         xy1[0] = -1;
         xy1[1] = -1;
         xy2[0] = -1;
         xy2[1] = -1;
     }
    public Movement(int x, int y, int x_end, int y_end) {
+       xy1 = new int[2];
+       xy2 = new int[2];
        xy1[0] = x;
        xy1[1] = y;
        xy2[0] = x_end;

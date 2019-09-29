@@ -1,21 +1,35 @@
 package com.white.stratego.stratego.game.service;
 
 import com.white.stratego.stratego.game.*;
+import com.white.stratego.stratego.game.repository.BoardRepository;
+import com.white.stratego.stratego.game.repository.GameRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Scanner;
+import com.white.stratego.stratego.market.model.User;
 
 @Service
 public class GameService {
 
+    @Autowired
+    BoardRepository boardRepository;
+    @Autowired
+    GameRepository gameRepository;
 
-    //    GameUser human = new GameUser();
-//    GameUser comp = new GameUser();
-
+    public Game newGame(User user) {
+        Game g = new Game();
+        boardRepository.save(g.getInitialBoard());
+        boardRepository.save(g.getBoard());
+        g.setIf_public(false);
+        g.setCreatedBy(user);
+        gameRepository.save(g);
+        gameStart(g);
+        boardRepository.save(g.getInitialBoard());
+        boardRepository.save(g.getBoard());
+        gameRepository.save(g);
+        return g;
+    }
 
     public void gameStart (Game game) {
-//        board.clearBoard();
-        Scanner in = new Scanner(System.in);
         BoardSetups tmpSet = new BoardSetups();
         int[] userSet = tmpSet.getSetup(0);
         int[] compSet = tmpSet.getSetup(0);
@@ -24,15 +38,12 @@ public class GameService {
         game.getBoard().setupBoard(userSet, 'b');
         int[] flagRed = new int[2];
         int[] flagBlue = new int[2];
-        //Please fix this!!
-        game.setBoard(game.getBoard());
 
         // I think that should work as a deep copy for initial board
         game.getInitialBoard().setupBoard(compSet, 'r');
         game.getInitialBoard().setupMiddle();
         game.getInitialBoard().setupBoard(userSet, 'b');
-        // maybe that line will do the same, but I haven't check
-//        game.setInitialBoard(game.getBoard());
+
 
         // storing the coordinates of the flags in variables,
         // so no need to search and easy to check after each move if flag was captured
@@ -47,7 +58,6 @@ public class GameService {
                 }
             }
         }
-        gameFlow(game, flagRed, flagBlue);
     }
 
     private void gameFlow(Game game, int[] flagRed, int[] flagBlue) {
@@ -104,21 +114,14 @@ public class GameService {
     private void switchTurn(Game game) {
         game.setHumanTurn(game.getHumanWin());
     }
+
+    public void processSetupSwap(long id, int x1, int y1, int x2, int y2) {
+        Game g = gameRepository.findById(id);
+        Board board = g.getBoard();
+        Piece[][] pieces = board.getPieces();
+        Piece temp = pieces[x1][y1];
+        pieces[x1][y1] = pieces[x2][y2];
+        pieces[x2][y2] = temp;
+        boardRepository.save(board);
+    }
 }
-
-
-//                System.out.println("Please make your move in format <x1 y1 dir step> \n" +
-//                        "dir = {'u','d','l','r'} step = 1 or more if it is scout");
-//                String s =in.nextLine();
-//                String[] coord = s.split("\\s+");
-//                if (coord[0] == "e") {
-//                    System.exit(0);
-//                }
-//                int a = board.makeMove(Integer.parseInt(coord[0]) - 1 ,Integer.parseInt(coord[1]) - 1,
-//                        coord[2].charAt(0),Integer.parseInt(coord[3]));
-//                if (a == 11) {
-//                    humanWin = true;
-//                } else if (a == -11) {
-//                    compWin = true;
-//                }
-//                System.out.print(board);

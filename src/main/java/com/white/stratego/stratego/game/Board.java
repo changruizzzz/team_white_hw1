@@ -6,7 +6,7 @@ import javax.persistence.Id;
 import java.lang.Math;
 
 @Entity(name="board")
-public class Board {
+public class Board implements Cloneable{
 
     private Piece[][] board = new Piece[10][10];
 
@@ -121,7 +121,7 @@ public class Board {
         int x1 = move.getXy1()[0];
         int y1 = move.getXy1()[1];
         int x2 = move.getXy2()[0];
-        int y2 = move.getXy2()[0];
+        int y2 = move.getXy2()[1];
 
         if (isEmpty(x2,y2)) {
             // swap moving piece with empty space
@@ -405,41 +405,3 @@ public class Board {
                 "   ._____._____._____._____._____._____._____._____._____._____.\n" + row;
     }
 }
-
-
-
-//    public void makeMove(Piece p, char direction, int i) {
-//        int x1 = p.getX();
-//        int y1 = p.getY();
-//        int x2 = -1;
-//        int y2 = -1;
-//        switch (direction) {
-//            case 'u':
-//                x2 = x1;
-//                y2 = y1 + i;
-//                break;
-//            case 'd':
-//                x2 = x1;
-//                y2 = y1 - i;
-//                break;
-//            case 'l':
-//                x2 = x1 - i;
-//                y2 = y1;
-//                break;
-//            case 'r':
-//                x2 = x1 + i;
-//                y2 = y1;
-//                break;
-//        }
-//        if (isEmpty(x2,y2)) {
-//            // swap moving piece with empty space
-//            Piece tmp = board[x1][y1];
-//            board[x1][y1] = board[x2][y2];
-//            board[x2][y2] = tmp;
-//        } else {
-//            // make an attack - it will create either one or two extra empty spaces
-//            // if ranks are equal = 2 empty spaces, otherwise one extra
-//            board[x1][y1].attack(board[x2][y2]);
-//            setEmpty(x1,y1);
-//        }
-//    }

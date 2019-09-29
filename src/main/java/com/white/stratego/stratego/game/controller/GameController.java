@@ -22,8 +22,6 @@ public class GameController {
     @Autowired
     private GameRepository gameRepository;
 
-    @Autowired
-    private UserRepository userRepository;
 
     @Autowired
     private StatisticsRepository statisticsRepository;
@@ -34,26 +32,13 @@ public class GameController {
     @Autowired
     private GameService gameService;
 
-    @Autowired
-    private BoardRepository boardRepository;
 
     @RequestMapping("/create")
     public String newGame(Authentication authentication) {
-        Game g = new Game();
-        gameService.gameStart(g);
-        //Save here?
-        System.err.println(g.getBoard());
-        System.out.println(boardRepository);
-        System.err.println(g.getInitialBoard());
-        boardRepository.save(g.getInitialBoard());
-        boardRepository.save(g.getBoard());
-        g.setIf_public(false);
 
-        User user = userService.findByAuthentication(authentication);
-        g.setCreatedBy(user);
-        gameRepository.save(g);
+        Game g = gameService.newGame(userService.findByAuthentication(authentication));
 
-        return "redirect:/dashboard";
+        return "redirect:/game/" + g.getId();
     }
 
     @RequestMapping("/delete/{id}")
@@ -89,6 +74,14 @@ public class GameController {
         return "dashboard";
     }
 
+    @PostMapping("/game/{id}/swap")
+    @ResponseBody
+    public Object setupSwap(@PathVariable long id, @RequestParam int x1, @RequestParam int y1,
+                                @RequestParam int x2, @RequestParam int y2) {
+        gameService.processSetupSwap(id, x1, y1, x2, y2);
+        return null;
+    }
+
     @PostMapping("/game/{id}/processMove")
     @ResponseBody
     public MoveResponse processMove(@RequestBody MoveRequest request, @PathVariable long id) {
@@ -106,5 +99,13 @@ public class GameController {
         return new MoveResponse();
 
     }
+
+    @RequestMapping("/game/{id}")
+    public String game(@PathVariable long id, Model model) {
+        Game game = gameRepository.findById(id);
+        model.addAttribute("game", game);
+        return "game";
+    }
+
 
 }

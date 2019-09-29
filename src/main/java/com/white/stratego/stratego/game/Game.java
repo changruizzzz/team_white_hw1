@@ -10,14 +10,22 @@ import javax.persistence.Table;
 @Entity(name="game")
 public class Game extends MarketUnit{
     @OneToOne
-    private Board board = new Board();
-    private boolean humanWin = false;
-    private boolean compWin = false;
-    private boolean humanTurn = true;
+    private Board board;
+    private boolean humanWin;
+    private boolean compWin;
+    private boolean humanTurn;
+    private boolean started;
     @OneToOne
     private Board initialBoard;
 
-
+    public Game() {
+        board = new Board();
+        humanWin = false;
+        compWin = false;
+        humanTurn = true;
+        started = false;
+        initialBoard = new Board();
+    }
     public Board getBoard() {
         return board;
     }
@@ -56,5 +64,13 @@ public class Game extends MarketUnit{
 
     public void setInitialBoard(Board initialBoard) {
         this.initialBoard = initialBoard;
+    }
+
+    public boolean getStarted() {
+        return started;
+    }
+
+    public void setStarted(boolean started) {
+        this.started = started;
     }
 }

@@ -3,6 +3,11 @@
     width: 50px;
     margin: 0;
     background-size: 100% 100%;
+    outline: none;
+}
+
+.btn:focus, .btn:active{
+    outline: none!important;
 }
 
 #board {
@@ -20,51 +25,51 @@
 }
 
 .spy {
-    background-image: url("http://vector.gissen.nl/stratego-spy.svg");
+    background-image: url("../images/stratego-spy.svg");
 }
 
 .flag {
-    background-image: url("http://vector.gissen.nl/stratego-flag.svg");
+    background-image: url("../images/stratego-flag.svg");
 }
 
 .bomb {
-    background-image: url("http://vector.gissen.nl/stratego-bomb.svg");
+    background-image: url("../images/stratego-bomb.svg");
 }
 
 .captain {
-    background-image: url("http://vector.gissen.nl/stratego-captain.svg");
+    background-image: url("../images/stratego-captain.svg");
 }
 
 .colonel {
-    background-image: url("http://vector.gissen.nl/stratego-colonel.svg");
+    background-image: url("../images/stratego-colonel.svg");
 }
 
 .general {
-    background-image: url("http://vector.gissen.nl/stratego-general.svg");
+    background-image: url("../images/stratego-general.svg");
 }
 
 .lieutenant {
-    background-image: url("http://vector.gissen.nl/stratego-lieutenant.svg");
+    background-image: url("../images/stratego-lieutenant.svg");
 }
 
 .major {
-    background-image: url("http://vector.gissen.nl/stratego-major.svg");
+    background-image: url("../images/stratego-major.svg");
 }
 
 .marshal {
-    background-image: url("http://vector.gissen.nl/stratego-marshal.svg");
+    background-image: url("../images/stratego-marshal.svg");
 }
 
 .miner {
-    background-image: url("http://vector.gissen.nl/stratego-miner.svg");
+    background-image: url("../images/stratego-miner.svg");
 }
 
 .scout {
-    background-image: url("http://vector.gissen.nl/stratego-scout.svg");
+    background-image: url("../images/stratego-scout.svg");
 }
 
 .sergeant {
-    background-image: url("http://vector.gissen.nl/stratego-sergeant.svg");
+    background-image: url("../images/stratego-sergeant.svg");
 }
 
 .cover {
