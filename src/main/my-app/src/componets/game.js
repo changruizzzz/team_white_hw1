@@ -19,8 +19,8 @@ export default class Game extends Component {
             player2FallenPieces: [],          // used to store player2 defeated pieces
             player: null,                        // tells player's turn
             info: "",                         // shows warning or instruction
-            selectedObj: -1,                  // remains less than 0 when no piece is selected.
-                                              // stores the selected piece index
+            selectedObj: -1,                  // stores the selected piece index.
+                                              // If no piece is selected, selectedObj = -1
 
             // Flag rank: 0 ; Bomb rank: 11; Total 12 pieces
             player1Pieces: Array(12).fill(0),  //Record the number of each piece of player1 on the board;
@@ -210,7 +210,6 @@ export default class Game extends Component {
                         " pieces."
                 });
                 if (squares[dest]) {
-                    console.log("change Style")
                     squares[dest].style = { ...squares[dest].style, backgroundColor: "" }
                 }
 
@@ -354,7 +353,7 @@ export default class Game extends Component {
      *
      * @param { number } src - The source index
      * @param { number } dest - The destination index
-     * @param { boolean } if the source piece can be moved to the destination
+     * @return { boolean } if the source piece can be moved to the destination
      */
     isMovable(src, dest) {
         const squares = this.state.squares.slice()

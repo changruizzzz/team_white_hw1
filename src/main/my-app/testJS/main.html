@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>React App</title>
+    <link rel="stylesheet" type="text/css" href="stratego.css">
+</head>
+<body>
+<div id="root"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react-dom.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.21.1/babel.min.js"></script>
+<script type="text/babel">
+    function Square(props) {
+        return (
+            <button
+                className={"square " + props.shade}
+                onClick={props.onClick}
+                style={props.style}
+            />
+        );
+    }
+    class Board extends React.Component {
+        renderSquare(index, squareShade) {
+            return (
+                <Square
+                    key={index}
+                    piece={this.props.squares[index]}
+                    style={
+                        this.props.squares[index] ? this.props.squares[index].style : null
+                    }
+                    shade={squareShade}
+                    onClick={() => this.props.onClick(index)}
+                />
+            );
+        }
+        render() {
+            const board = [];
+            // this.renderSquare(10, "player2-square")
+            //Push blue team squares
+            // for (let i = 0; i < 4; i++) {
+            //     const squareRow = [];
+            //     for (let j = 0; j < 10; j++) {
+            //         squareRow.push(this.renderSquare(i * 10 + j, "player2-square"));
+            //     }
+            //     board.push(
+            //         <div key={i} className="board-row">
+            //             {squareRow}
+            //         </div>
+            //     );
+            // }
+
+            // //Push the squares in the middle
+            // for (let i = 4; i < 6; i++) {
+            //     const squareRow = [];
+            //     for (let j = 0; j < 10; j++) {
+            //         if (j === 2 || j === 3 || j === 6 || j === 7) {
+            //             squareRow.push(this.renderSquare(i * 10 + j, "lake-square"));
+            //         } else {
+            //             squareRow.push(this.renderSquare(i * 10 + j, "mid-square"));
+            //         }
+            //     }
+            //     board.push(
+            //         <div key={i} className="board-row">
+            //             {squareRow}
+            //         </div>
+            //     );
+            // }
+            //
+            // //Push red team squares
+            // for (let i = 6; i < 10; i++) {
+            //     const squareRow = [];
+            //     for (let j = 0; j < 10; j++) {
+            //         squareRow.push(this.renderSquare(i * 10 + j, "player1-square"));
+            //     }
+            //     board.push(
+            //         <div key={i} className="board-row">
+            //             {squareRow}
+            //         </div>
+            //     );
+            // }
+            // return <div>{board}</div>;
+            return (
+                <button>Hi you</button>
+            )
+        }
+    }
+    class UserMenu extends React.Component{
+        render() {
+            return (
+                <button className="square">Hi</button>
+                // <div>
+                //     <button disabled={this.props.player || this.props.customMode} onClick={this.props.onNewGame}>New Game</button>
+                //     <button disabled={!this.props.customMode} onClick={this.props.onPlay}>Play</button>
+                //     <button disabled={!this.props.customMode} onClick={this.props.setUp}>Setup</button>
+                //     <button disabled={!this.props.player} onClick={this.props.onSurrender}>Surrender</button>
+                //     <button disabled={this.props.customMode || this.props.player}>Display Past Game</button>
+                //     <button disabled={!this.props.player} >Quick Auto Play</button>
+                // </div>
+            )
+        }
+    }
+    ReactDOM.render(<Board />, document.getElementById('root'));
+</script>
+</body>
+</html>
