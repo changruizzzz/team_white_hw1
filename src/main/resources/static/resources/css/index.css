@@ -77,6 +77,11 @@ body {
 .btn-primary {
     background-color: #64a19d;
     border-radius: 25px;
+}
+
+.btn-sign{
+    background-color: #64a19d;
+    border-radius: 25px;
     text-align: center;
     padding: 0 0 5px 0;
     width: 10%
@@ -93,12 +98,4 @@ body {
 #logo {
     height: 25px;
     width: 25px;
-}
-
-.team-logo-container {
-    text-align: center;
-}
-.team-logo {
-    display: inline-flex;
-    margin: 0px 0 -220px 0;
 }

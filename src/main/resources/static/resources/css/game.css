@@ -25,51 +25,51 @@
 }
 
 .spy {
-    background-image: url("../images/stratego-spy.svg");
+    background-image: url("../images/pieces/1spy.png");
 }
 
 .flag {
-    background-image: url("../images/stratego-flag.svg");
+    background-image: url("../images/pieces/Flag.png");
 }
 
 .bomb {
-    background-image: url("../images/stratego-bomb.svg");
+    background-image: url("../images/pieces/Bomb.png");
 }
 
 .captain {
-    background-image: url("../images/stratego-captain.svg");
+    background-image: url("../images/pieces/6Captain.png");
 }
 
 .colonel {
-    background-image: url("../images/stratego-colonel.svg");
+    background-image: url("../images/pieces/8Colonel.png");
 }
 
 .general {
-    background-image: url("../images/stratego-general.svg");
+    background-image: url("../images/pieces/9General.png");
 }
 
 .lieutenant {
-    background-image: url("../images/stratego-lieutenant.svg");
+    background-image: url("../images/pieces/5Lieutenant.png");
 }
 
 .major {
-    background-image: url("../images/stratego-major.svg");
+    background-image: url("../images/pieces/7Major.png");
 }
 
 .marshal {
-    background-image: url("../images/stratego-marshal.svg");
+    background-image: url("../images/pieces/10Marshall.png");
 }
 
 .miner {
-    background-image: url("../images/stratego-miner.svg");
+    background-image: url("../images/pieces/3Miner.png");
 }
 
 .scout {
-    background-image: url("../images/stratego-scout.svg");
+    background-image: url("../images/pieces/2scout.png");
 }
 
 .sergeant {
-    background-image: url("../images/stratego-sergeant.svg");
+    background-image: url("../images/pieces/4Sergeant.png");
 }
 
 .cover {
