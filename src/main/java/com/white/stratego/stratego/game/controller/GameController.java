@@ -107,20 +107,14 @@ public class GameController {
     }
 
     @RequestMapping("/game/{id}")
-    public String game(@PathVariable long id, Model model) {
+    public String game(@PathVariable long id, Model model, Authentication authentication) {
         Game game = gameService.findById(id);
+        User user = userService.findByAuthentication(authentication);
+        if(!user.equals(game.getCreatedBy())) {
+            return "redirect:/dashboard";
+        }
         model.addAttribute("game", game);
         return "game";
     }
-
-//    @RequestMapping("/game/{id}/replay")
-//    public String replay(@PathVariable long id, Model model) {
-//        Game game = gameService.findById(id);
-//        if(!game.getEnded()) {
-//            return "redirect:/game/" + id;
-//        }
-//        model.addAttribute("game", game);
-//        return "replay";
-//    }
 
 }

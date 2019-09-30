@@ -5,8 +5,13 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <script src="/webjars/jquery/3.1.0/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet">
+    <link rel="stylesheet" href="/webjars/bootstrap/4.1.0/css/bootstrap.min.css">
+    <script src="/webjars/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.10/css/mdb.min.css" rel="stylesheet">
+    <link href="https://cdn.materialdesignicons.com/4.4.95/css/materialdesignicons.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="../static/resources/css/game.css" th:href="@{/resources/css/game.css}">
+    <link rel="stylesheet" type="text/css" href="../static/resources/css/styles.css" th:href="@{/resources/css/styles.css}">
     <script type="text/javascript" th:inline="javascript">
         /*<![CDATA[*/
         let gameId = [[${game.id}]];
@@ -16,34 +21,125 @@
     </script>
 </head>
 <body>
+<nav class="mb-1 navbar navbar-expand-sm navbar-light">
+    <img id="logo" src="../static/resources/images/icon.png" th:src="@{/resources/images/icon.png}"/>
+    <a class="navbar-brand" href="/" th:href="@{/}">Stratego</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-555"
+            aria-controls="navbarSupportedContent-555" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent-555">
+        <ul class="navbar-nav ml-auto nav-flex-icons">
+            <li class="nav-item avatar dropdown">
+                <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-55" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">
+                    <img class="rounded-circle z-depth-0"
+                         th:src="${game.createdBy.avatar_url == null || game.createdBy.avatar_url.isEmpty()} ? '/resources/images/default.png':${game.createdBy.avatar_url}">
+                    <span th:text="${game.createdBy.getNickname()}"></span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right dropdown-secondary"
+                     aria-labelledby="navbarDropdownMenuLink-55">
+                    <a class="dropdown-item" href="#">game history</a>
+                    <a class="dropdown-item" id="logout-link" href="/logout" th:href="@{/logout}">logout</a>
 
-<div id="root" class="container">
-    <div class="row">
-        <div class="col">
-            <div class="card">
-                <div class="card-header">Remaining Pieces</div>
-                <div class="card-body"></div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="stratego-container">
+    <div class="stratego-col" style="width: 20%">
+        <div class="card">
+            <div class="card-header">Remaining Pieces</div>
+            <div class="card-body">
+                <ul id="piece-info-body">
+                    <li class="piece-info" id="marshal-left">
+                        <div class="rank">marshal</div><div class="left-count"><span class="alert alert-primary">0</span><span class="alert alert-danger">0</span></div>
+                    </li>
+                    <li class="piece-info" id="general-left">
+                        <div class="rank" >general</div><div class="left-count"><span class="alert alert-primary">0</span><span class="alert alert-danger">0</span></div>
+                    </li>
+                    <li class="piece-info" id="colonel-left">
+                        <div class="rank">colonel</div><div class="left-count"><span class="alert alert-primary">0</span><span class="alert alert-danger">0</span></div>
+                    </li>
+                    <li class="piece-info" id="major-left">
+                        <div class="rank">major</div><div class="left-count"><span class="alert alert-primary">0</span><span class="alert alert-danger">0</span></div>
+                    </li>
+                    <li class="piece-info" id="captain-left">
+                        <div class="rank">captain</div><div class="left-count"><span class="alert alert-primary">0</span><span class="alert alert-danger">0</span></div>
+                    </li>
+                    <li class="piece-info" id="lieutenant-left">
+                        <div class="rank">lieutenant</div><div class="left-count"><span class="alert alert-primary">0</span><span class="alert alert-danger">0</span></div>
+                    </li>
+                    <li class="piece-info" id="sergeant-left">
+                        <div class="rank">sergeant</div><div class="left-count"><span class="alert alert-primary">0</span><span class="alert alert-danger">0</span></div>
+                    </li>
+                    <li class="piece-info" id="miner-left">
+                        <div class="rank">miner</div><div class="left-count"><span class="alert alert-primary">0</span><span class="alert alert-danger">0</span></div>
+                    </li>
+                    <li class="piece-info" id="scout-left">
+                        <div class="rank">scout</div><div class="left-count"><span class="alert alert-primary">0</span><span class="alert alert-danger">0</span></div>
+                    </li>
+                    <li class="piece-info" id="spy-left">
+                        <div class="rank">spy</div><div class="left-count"><span class="alert alert-primary">0</span><span class="alert alert-danger">0</span></div>
+                    </li>
+                    <li class="piece-info" id="flag-left">
+                        <div class="rank">flag</div><div class="left-count"><span class="alert alert-primary">0</span><span class="alert alert-danger">0</span></div>
+                    </li>
+                    <li class="piece-info" id="bomb-left">
+                        <div class="rank">bomb</div><div class="left-count"><span class="alert alert-primary">0</span><span class="alert alert-danger">0</span></div>
+                    </li>
+                </ul>
             </div>
         </div>
-        <div class="col">
-            <table id="board"></table>
-        </div>
-        <div class="col">
+    </div>
+    <div class="stratego-col w-50">
             <div class="card">
-                <div class="card-header">Info</div>
-                <div class="card-body"></div>
+                <div class="card-header text-uppercase" id="stage-info">" "</div>
+                <div class="card-body stage">
+                    <div id="invalidMoveWrapper" class="alert alert-warning" role="alert">
+                        <span class="mdi mdi-alert-circle" aria-hidden="true"></span>
+                        <span id="invalidMoveInfo">Error place holder</span>
+                    </div>
+                    <table id="board"></table>
+                </div>
             </div>
-            <button id="startBtn" disabled>Start Game</button>
-            <button id="quickPlay" disabled>Quick Move</button>
-            <button id="replayBtn" disabled>Replay</button>
-            <button id="replayMoveBtn" disabled>Next Move</button>
+
+    </div>
+    <div class="stratego-col" style="width: 20%">
+
+        <div class="card">
+             <div class="card-header">What happened?</div>
+            <div class="card-body" id="response-body">
+
+            </div>
+        </div>
+
+        <div class="btn-toolbar" role="toolbar">
+            <div class="btn-group btn-group-lg">
+                <button id="startBtn" disabled type="button" class="btn btn-default" aria-label="Left Align" data-toggle="tooltip" title="Start Game">
+                    <i class="mdi mdi-sword-cross" aria-hidden="true"></i>
+                </button>
+
+                <button id="quickPlay" disabled type="button" class="btn btn-default" aria-label="Left Align" data-toggle="tooltip" title="Make Quick Move">
+                    <i class="mdi mdi-robot" aria-hidden="true"></i>
+                </button>
+
+                <button id="replayBtn" disabled type="button" class="btn btn-default" aria-label="Left Align" data-toggle="tooltip" title="Replay">
+                    <i class="mdi mdi-replay" aria-hidden="true"></i>
+                </button>
+
+                <button id="replayMoveBtn" disabled type="button" class="btn btn-default" aria-label="Left Align" data-toggle="tooltip" title="Next Move">
+                    <i class="mdi mdi-skip-next" aria-hidden="true"></i>
+                </button>
+
+            </div>
         </div>
 
     </div>
 </div>
 
-
-<!-- Load our React component. -->
 <script src="../static/resources/js/game.js" th:src="@{/resources/js/game.js}" ></script>
 </body>
 </html>

@@ -7,32 +7,52 @@ function loadAll(data) {
             let c = classes[Math.abs(r)];
             let btn = tr.cells[j].firstChild;
             let visible = data['pieces'][i][j]['visible'];
+            let selector = '#' + c + "-left";
             if(r > 0) {
-                btn.className += ' blue';
+                btn.setAttribute("data-toggle", "tooltip");
+                btn.className += ' bluePiece';
                 btn.className += " " + c;
+                btn.setAttribute("title", c);
             }
             if(r < 0) {
-                btn.className += ' red';
+                btn.className += ' redPiece';
                 if(visible) {
                     btn.className += " " + c;
+                    btn.setAttribute("data-toggle", "tooltip");
+                    btn.setAttribute("title", c);
                 }
             }
+            updateCountByRank(r, 1);
         }
     }
 }
 
+function updateCountByRank(r, n) {
+    let c = classes[Math.abs(r)];
+    let selector = '#' + c + "-left";
+    if(r > 0) {
+        let info = $(selector).find(".alert-primary");
+        info.text(parseInt(info.text()) + n);
+    }
+    if(r < 0) {
+        let info = $(selector).find(".alert-danger");
+        info.text(parseInt(info.text()) + n);
+    }
+}
 function creatPiece(piece, otherClass) {
     let r = piece['rank'];
     let visible = piece['visible'];
-    let base = "piece btn " + otherClass;
+    let base = "piece " + otherClass;
     let c = classes[Math.abs(r)];
     if(r > 0) {
-        base += ' blue ' + c;
+        base += ' bluePiece ' + c;
+        return $("<button>", {"class": base, "date-toggle":"tooltip", "title":c});
     }
     if(r < 0) {
-        base += ' red ';
+        base += ' redPiece ';
         if(visible) {
             base += c;
+            return $("<button>", {"class": base, "date-toggle":"tooltip", "title":c});
         }
     }
     return $("<button>", {"class": base});
@@ -40,10 +60,12 @@ function creatPiece(piece, otherClass) {
 
 function fetchAndLoadAll(id, code) {
     board.empty();
+    $("#response-body").empty();
+    $('.piece-info .alert').text(0);
     for(let i = 0; i < 10; i++) {
         let tr = $("<tr></tr>").appendTo(board);
         for(let j = 0; j < 10; j++) {
-            $("<td><button class='piece btn'></button></td>").appendTo(tr);
+            $("<td><button class='piece '></button></td>").appendTo(tr);
         }
     }
     $.ajax({
@@ -95,6 +117,34 @@ function askMove(side) {
     });
 }
 
+function handleMessage(message, response) {
+    let div = $("<div>", {"class": "game-response"});
+
+    if (message === 'empty') {
+        let tarPiece = response['piece'];
+        console.log(div);
+    } else {
+        let r1 = response['rank1'];
+        let r2 = response['rank2'];
+        $(getClassSpanFromRank(r1)).appendTo(div);
+        $("<span> vs </span>").appendTo(div);
+        $(getClassSpanFromRank(r2)).appendTo(div);
+        if(message === 'win') {
+            updateCountByRank(r2, -1);
+            $("<span class='alert alert-success'>win</span>").appendTo(div);
+        } else if(message === 'draw') {
+            updateCountByRank(r1, -1);
+            updateCountByRank(r2, -1);
+            $("<span class='alert alert-primary'>draw</span>").appendTo(div);
+        } else {
+            updateCountByRank(r1, -1);
+            $("<span class='alert alert-danger'>loss</span>").appendTo(div);
+        }
+        div.appendTo($("#response-body"));
+    }
+
+}
+
 function processResponse(response) {
     console.log(response);
     let success = response["success"];
@@ -102,27 +152,23 @@ function processResponse(response) {
     let tarPiece = response['piece'];
 
     if(success) {
-        if(message === 'draw') {
-            //alert("draw");
-        } else if(message === 'loss') {
-            //alert("loss");
-        } else {
-            //alert("win or empty");
-        }
+        invalidWrapper.css("visibility", "hidden");
+        handleMessage(message, response);
         let x1 = response['x'];
         let y1 = response['y'];
         let x2 = tarPiece['x'];
         let y2 = tarPiece['y'];
         renderFromResponse(tarPiece, x1, y1, x2, y2);
         if(response['gameEnd']) {
-            //alert("Game end");
+            stageInfo.text("game end");
             disableBtn($('.pieces'));
             disableBtn(quickPlayBtn);
             enableBtn(replayBtn);
         }
         return true;
     } else {
-        //alert(response["message"]);
+        invalidMessageSpan.text(message);
+        invalidWrapper.css("visibility", "visible");
     }
     return false;
 }
@@ -136,7 +182,8 @@ function renderFromResponse(tarPiece, x1, y1, x2, y2) {
     let btn1 = findBtn(x1, y1);
     let btn2 = findBtn(x2, y2);
     btn2.replaceWith(creatPiece(tarPiece, "game-stage"));
-    btn1.replaceWith("<button class='piece btn game-stage'></button>");
+    btn1.replaceWith("<button class='piece game-stage'></button>");
+    // enableTooltip();
 }
 function swap(selected) {
 
@@ -180,6 +227,16 @@ function gameStart() {
     });
 }
 
+function getClassSpanFromRank(r) {
+    console.log(r);
+    let c = classes[Math.abs(r)];
+    let side;
+    if(r > 0)
+        side = 'blueInfo';
+    if(r < 0)
+        side = 'redInfo';
+    return '<div class="' + side + '">' + c + "</div>";
+}
 function addLake(cor) {
     let btn = findBtn(cor[0], cor[1]);
     btn.addClass("lake");
@@ -199,11 +256,14 @@ let classes = ['', 'spy', 'scout', 'miner', 'sergeant', 'lieutenant',
                 'captain', 'major', 'colonel', 'general', 'marshal',
                 'flag', '', 'bomb'];
 
+let stageInfo = $("#stage-info");
 let startGameBtn = $("#startBtn");
 let quickPlayBtn = $("#quickPlay");
 let replayBtn = $("#replayBtn");
 let replayMoveBtn = $('#replayMoveBtn');
 let selected = [];
+let invalidWrapper = $("#invalidMoveWrapper");
+let invalidMessageSpan = $("#invalidMoveInfo");
 
 let lakes = [[4,2],[4,3],[5,2],[5,3],[4,6],[4,7],[5,6],[5,7]];
 
@@ -214,13 +274,16 @@ fetchAndLoadAll(gameId, "current");
 if(ended) {
     disableBtn($('.pieces'));
     enableBtn(replayBtn);
+    stageInfo.text("game end");
 } else {
     let pieces = $(".piece");
     if (started) {
         pieces.addClass("game-stage");
+        stageInfo.text("game stage");
         enableBtn(quickPlayBtn);
     } else {
         enableBtn(startGameBtn);
+        stageInfo.text("setup stage");
         pieces.addClass("setup-stage");
     }
 }
@@ -239,10 +302,10 @@ $(document).on('click', '.setup-stage', function () {
 });
 
 $(document).on('click', '.game-stage', function () {
-    if(selected.length === 0 && !$(this).hasClass("blue")) {
+    if(selected.length === 0 && !$(this).hasClass("bluePiece")) {
         return;
     }
-    if(selected.length === 1 && ($(this).hasClass("blue") || $(this) === selected[0])) {
+    if(selected.length === 1 && ($(this).hasClass("bluePiece") || $(this) === selected[0])) {
         selected = [];
     }
     selected.push($(this));
@@ -258,6 +321,7 @@ startGameBtn.click(function () {
     gameStart();
     enableBtn(quickPlayBtn);
     disableBtn(startGameBtn);
+    stageInfo.text("game stage");
 });
 
 quickPlayBtn.click(function () {
@@ -266,8 +330,10 @@ quickPlayBtn.click(function () {
     askMove('r');
     enableBtn(quickPlayBtn)
 });
+
 let move = [];
 replayBtn.click(function () {
+    stageInfo.text("replay");
     fetchAndLoadAll(gameId,"initial");
     enableBtn(replayMoveBtn);
     $.ajax({
@@ -289,7 +355,9 @@ replayMoveBtn.click(function () {
     let x2 = tarPiece['x'];
     let y2 = tarPiece['y'];
     renderFromResponse(tarPiece, x1, y1, x2, y2);
+    processResponse(response);
     if(response['gameEnd']) {
+        stageInfo.text("replay end");
         disableBtn($('.pieces'));
         disableBtn(replayMoveBtn);
     }

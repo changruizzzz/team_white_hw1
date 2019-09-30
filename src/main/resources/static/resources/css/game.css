@@ -1,23 +1,22 @@
 .piece {
-    height: 50px;
-    width: 50px;
+    display: block;
+    padding: 0;
+    height: 60px;
+    width: 60px;
     margin: 0;
     background-size: 100% 100%;
     outline: none;
-}
-
-.btn:focus, .btn:active{
-    outline: none!important;
+    border: none;
 }
 
 #board {
     border-collapse: collapse;
-    table-layout: fixed;
+    margin: 0 auto;
 }
 
 #board td {
-    border: 1px gray solid;
-    padding: 3px;
+    padding: 2px;
+    border: 1px #c0c0c0 solid;
 }
 
 .container {
@@ -72,21 +71,89 @@
     background-image: url("../images/stratego-sergeant.svg");
 }
 
-.cover {
-    height: 100%;
-    width: 100%;
+
+.redPiece {
+    background-color: #f8d7da;
 }
 
-.red {
-    background-color: rgba(255, 0, 0, 0.2);
-}
-
-.blue {
-    background-color: rgba(0, 110, 255, 0.2);
+.bluePiece {
+    background-color: #cce5ff;
 }
 
 .lake {
-    background-color: rgb(0, 110, 255);
+    background-color: rgba(0, 110, 255, 0.2);
     border: none;
 }
 
+.card-header {
+    text-align: center;
+}
+
+#piece-info-body {
+    list-style: none;
+}
+
+.left-count {
+    float: right;
+}
+
+#response-body {
+    height: 500px;
+    overflow: scroll;
+}
+
+.piece-info .alert {
+    padding: 0.5rem 0.75rem!important;
+    margin-left: 10px;
+}
+
+.piece-info {
+    display: flex;
+    flex-direction: row;
+    height: 50px;
+}
+
+.piece-info .rank {
+    height: 100%;
+    min-width: 80px;
+}
+
+.game-response .alert {
+    margin-left: 5%;
+    font-size: 14px;
+    padding: 2px 2px 2px 2px!important;
+    text-align: center;
+}
+
+.game-response {
+    padding-left: 8%;
+    margin-bottom: 5px;
+}
+
+.redInfo, .blueInfo {
+    text-align: center;
+    width: 80px;
+    display: inline-block;
+}
+
+.redInfo {
+    color: #721c24;
+}
+
+.blueInfo {
+    color: #004085;
+}
+
+.stage {
+    padding-top: 0 !important;
+    padding-bottom: 40px !important;
+}
+
+.stage .alert{
+    font-size: 14px;
+    text-align: center;
+    width: 50%;
+    margin: 10px auto;
+    padding: 0.5rem 0.75rem !important;
+    visibility: hidden;
+}

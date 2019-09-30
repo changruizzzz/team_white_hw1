@@ -195,9 +195,8 @@ public class GameService {
 
             } else {
                 if(distance > 1 && !checkPath(pieces, x1, y1, x2, y2)) {
-                    System.err.println("cant move");
                     response.setSuccess(false);
-                    response.setMessage("There is no pass.");
+                    response.setMessage("There is no path.");
                     return response;
                 }
 
@@ -208,10 +207,13 @@ public class GameService {
                     tmp.setX(x2);
                     tmp.setY(y2);
                     pieces[x2][y2] = tmp;
+                    response.setMessage("empty");
                 } else {
                     // make an attack - it will create either one or two extra empty spaces
                     // if ranks are equal = 2 empty spaces, otherwise one extra
                     int fight = pieces[x1][y1].attack(pieces[x2][y2]);
+                    response.setRank1(pieces[x1][y1].getRank());
+                    response.setRank2(pieces[x2][y2].getRank());
                     // after fight check the result of comparison and if it is 0 - set both fields to empty
                     // if it is positive then human player win
                     // if it is negative - computer win the fight and the field is updated accordingly
