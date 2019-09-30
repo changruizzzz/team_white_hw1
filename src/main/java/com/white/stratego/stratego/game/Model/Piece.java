@@ -9,7 +9,24 @@ public class Piece implements Comparable<Piece> , Serializable {
     private boolean isFlag;
     private boolean isBomb;
     private boolean movable;
+    private int x;
+    private int y;
 
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
 
     /**
      * if the user choose put chess by themselves
@@ -22,6 +39,8 @@ public class Piece implements Comparable<Piece> , Serializable {
         this.movable = false;
         this.isBomb = false;
         this.isFlag = false;
+        this.x = -1;
+        this.y = -1;
     }
 
     public Piece(int rank, boolean visible, boolean movable, boolean isBomb, boolean isFlag){

@@ -27,4 +27,10 @@ public class AppRestController {
         Game currentGame = gameRepository.findById(id);
         return currentGame.getBoard();
     }
+    @RequestMapping("/api/games/{id}/moves")
+    public Object getMoves(@PathVariable long id) {
+        System.err.println("Fetching game data!");
+        Game currentGame = gameRepository.findById(id);
+        return currentGame.getMovements();
+    }
 }

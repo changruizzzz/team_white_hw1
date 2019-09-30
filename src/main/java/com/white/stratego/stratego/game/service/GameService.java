@@ -188,14 +188,22 @@ public class GameService {
         } else {
             int distance = x1 == x2 ? Math.abs(y1 - y2) : Math.abs(x1 - x2);
             if(distance > 1 && p1.getRank() != 2) {
-                response.setSuccess(false);
-                response.setMessage("Only scout can move more than 1 cell.");
+                    response.setSuccess(false);
+                    response.setMessage("Only scout can move more than 1 cell.");
+
             } else {
+                if(distance > 1 && !checkPath(pieces, x1, y1, x2, y2)) {
+                        response.setSuccess(false);
+                        response.setMessage("There is no pass.");
+                        return response;
+                }
                 g.getMovements().add(move);
                 response.setSuccess(true);
                 if (board.isEmpty(x2,y2)) {
                     // swap moving piece with empty space
                     Piece tmp = pieces[x1][y1].clone();
+                    tmp.setX(x2);
+                    tmp.setY(y2);
                     pieces[x2][y2] = tmp;
                 } else {
                     // make an attack - it will create either one or two extra empty spaces
@@ -231,18 +239,75 @@ public class GameService {
                             }
 
                             pieces[x2][y2] = pieces[x1][y1].clone();
+                            pieces[x2][y2].setY(y2);
+                            pieces[x2][y2].setX(x2);
                             response.setMessage("win");
                             break;
                         default:
                             response.setMessage("loss");
                     }
+                    pieces[x2][y2].setVisible(true);
                 }
                 board.setEmpty(x1,y1);
-                pieces[x2][y2].setVisible(true);
                 response.setPiece(pieces[x2][y2]);
+                response.setX(x1);
+                response.setY(y1);
                 boardRepository.save(g.getBoard());
             }
         }
         return response;
+    }
+
+    public Movement askMove(long id, char side) {
+        Game g = gameRepository.findById(id);
+        Board b = g.getBoard();
+        return b.MakeMoveAI(side);
+    }
+
+    //assume this is straight
+    private boolean checkPath(Piece[][] pieces, int x1, int y1, int x2, int y2) {
+        int start;
+        int end;
+        if(x1 == x2) {
+            if(x1 == 4 || x1 == 5) {
+                return false;
+            }
+            if(y1 < y2) {
+                start = y1 + 1;
+                end = y2;
+            } else {
+                end = y1;
+                start = y2 + 1;
+            }
+            while(start < end) {
+                if(pieces[x1][start].getRank() != 0)
+                    return false;
+                start++;
+            }
+        } else {
+            if(x1 < x2) {
+                start = x1;
+                end = x2;
+            } else {
+                end = x1;
+                start = x2;
+            }
+            if(y1 == 2 || y1 == 3 || y1 == 6 || y1 ==7) {
+                System.out.println(start +" " +end);
+                System.out.println(!(end < 4));
+                System.out.println(!(start >6));
+                if(!(end < 4) && !(start >6)) {
+                    return false;
+                }
+
+            }
+            while(start + 1 < end) {
+                if(pieces[start][y1].getRank() != 0)
+                    return false;
+                start++;
+            }
+
+        }
+        return true;
     }
 }

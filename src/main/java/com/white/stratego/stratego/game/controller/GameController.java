@@ -98,14 +98,14 @@ public class GameController {
         return gameService.processMove(id, new Movement(x1, y1, x2, y2));
 
     }
-//
-//    @PostMapping("/game/{id}/askMove")
-//    @ResponseBody
-//    public MoveResponse askMove(@PathVariable long id) {
-//        Game game = gameRepository.findById(id);
-//        return new MoveResponse();
 
-//    }
+    @PostMapping("/game/{id}/askMove")
+    @ResponseBody
+    public MoveResponse askMove(@PathVariable long id, @RequestParam char side) {
+        System.err.println(side);
+        return gameService.processMove(id, gameService.askMove(id, side));
+
+    }
 
     @RequestMapping("/game/{id}")
     public String game(@PathVariable long id, Model model) {

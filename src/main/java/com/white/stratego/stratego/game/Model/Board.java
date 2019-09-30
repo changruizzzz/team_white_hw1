@@ -61,7 +61,8 @@ public class Board implements Cloneable{
                         }
                         Piece newPiece = new Piece(setup[s]*(-1), false, movable, isBomb, isFlag);
                         // set x and y for the Piece
-
+                        newPiece.setX(i);
+                        newPiece.setY(j);
                         board[i][j] = newPiece;
                         s++;
                     }
@@ -86,7 +87,8 @@ public class Board implements Cloneable{
                         }
                         Piece newPiece = new Piece(setup[s], false, movable, isBomb, isFlag);
                         // set x and y for the Piece
-
+                        newPiece.setX(i);
+                        newPiece.setY(j);
                         board[i][j] = newPiece;
                         s++;
                     }
@@ -100,6 +102,8 @@ public class Board implements Cloneable{
         for (int i = 4; i < 6; i++) {
             for (int j = 0; j < 10; j++) {
                 board[i][j] = new Piece();
+                board[i][j].setX(i);
+                board[i][j].setY(j);
             }
         }
     }
@@ -108,6 +112,8 @@ public class Board implements Cloneable{
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
                 board[i][j] = new Piece();
+                board[i][j].setX(i);
+                board[i][j].setY(j);
             }
         }
     }
@@ -134,16 +140,16 @@ public class Board implements Cloneable{
                 y2 = y1;
                 break;
         }
-        Movement move = new Movement(x1, y1, x2, y2);
 
-
-        return move;
+        return new Movement(x1, y1, x2, y2);
     }
 
 
     public void setEmpty(int x1, int y1) {
         Piece emptyP = new Piece();
         board[x1][y1] = emptyP;
+        emptyP.setX(x1);
+        emptyP.setY(y1);
     }
 
     public boolean isEmpty(int x2, int y2) {
@@ -151,122 +157,122 @@ public class Board implements Cloneable{
     }
 
 
-//    public Movement MakeMoveAI(char side) {
-//        int r = side == 'r' ? -1 : 1;
-//        Movement result = new Movement();
-//        char myMove;
-//        if (r == 1) {
-//            for (int i = 0; i < 10; i+=1) {
-//                for (int j = 0; j < 10; j+=1) {
-//                    Piece myP = board[i][j];
-//                    if ((myP.getRank() * r > 0) && myP.getMovable()) {
-//                        String attackFirst = immediateAttack(myP, side);
-//                        String attack = checkAvailAttack(myP, side);
-//                        String moves = checkAvailMoves(myP);
-//
-//                        if (attackFirst.length() != 0) {
-//                            myMove = attackFirst.charAt((int)(Math.random() * attackFirst.length()));
-//                            result = makeMove(myP.getX(), myP.getY(), myMove, 1);
-//                            return result;
-//                        }
-//                        if (attack.length() != 0) {
-//                            myMove = attack.charAt((int)(Math.random() * attack.length()));
-//                            result = makeMove(myP.getX(), myP.getY(), myMove, 1);
-//                            return result;
-//                        }
-//                        if (moves.length() != 0) {
-//                            int m = (int)(Math.random() * moves.length());
-//                            myMove = moves.charAt(m);
-//                            result = makeMove(myP.getX(), myP.getY(), myMove, 1);
-//                            return result;
-//                        }
-//                    }
-//                }
-//            }
-//        } else {
-//            for (int i = 9; i > 0; i-=1) {
-//                for (int j = 0; j < 10; j+=1) {
-//                    Piece myP = board[i][j];
-//                    if ((myP.getRank() * r > 0) && myP.getMovable()) {
-//                        String attackFirst = immediateAttack(myP, side);
-//                        String attack = checkAvailAttack(myP, side);
-//                        String moves = checkAvailMoves(myP);
-//
-//                        if (attackFirst.length() != 0) {
-//                            myMove = attackFirst.charAt((int)(Math.random() * attackFirst.length()));
-//                            result = makeMove(myP.getX(), myP.getY(), myMove, 1);
-//                            return result;
-//                        }
-//                        if (attack.length() != 0) {
-//                            myMove = attack.charAt((int)(Math.random() * attack.length()));
-//                            result = makeMove(myP.getX(), myP.getY(), myMove, 1);
-//                            return result;
-//                        }
-//                        if (moves.length() != 0) {
-//                            int m = (int)(Math.random() * moves.length());
-//                            myMove = moves.charAt(m);
-//                            result = makeMove(myP.getX(), myP.getY(), myMove, 1);
-//                            return result;
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//        return result;
-//    }
+    public Movement MakeMoveAI(char side) {
+        int r = side == 'r' ? -1 : 1;
+        Movement result = new Movement();
+        char myMove;
+        if (r == 1) {
+            for (int i = 0; i < 10; i+=1) {
+                for (int j = 0; j < 10; j+=1) {
+                    Piece myP = board[i][j];
+                    if ((myP.getRank() * r > 0) && myP.getMovable()) {
+                        String attackFirst = immediateAttack(myP, side);
+                        String attack = checkAvailAttack(myP, side);
+                        String moves = checkAvailMoves(myP);
 
-    // checking neighbors if there are available empty fields to move
-//    private String checkAvailMoves(Piece p) {
-//        int x1 = p.getX();
-//        int y1 = p.getY();
-//        String moves = "";
-//        if (x1 != 0 && isEmpty(x1-1,y1)) {
-//            if (!isLake(x1-1,y1)) {
-//                moves += "u";
-//            }
-//        }
-//        if (x1 != 9 && isEmpty(x1+1,y1)) {
-//            if (!isLake(x1+1,y1)) {
-//                moves += "d";
-//            }
-//        }
-//        if (y1 != 0 && isEmpty(x1,y1-1)) {
-//            if (!isLake(x1,y1-1)) {
-//                moves += "l";
-//            }
-//        }
-//        if (y1 != 9 && isEmpty(x1,y1+1)) {
-//            if (!isLake(x1,y1+1)) {
-//                moves += "r";
-//            }
-//        }
-//        return moves;
-//    }
+                        if (attackFirst.length() != 0) {
+                            myMove = attackFirst.charAt((int)(Math.random() * attackFirst.length()));
+                            result = makeMove(myP.getX(), myP.getY(), myMove, 1);
+                            return result;
+                        }
+                        if (attack.length() != 0) {
+                            myMove = attack.charAt((int)(Math.random() * attack.length()));
+                            result = makeMove(myP.getX(), myP.getY(), myMove, 1);
+                            return result;
+                        }
+                        if (moves.length() != 0) {
+                            int m = (int)(Math.random() * moves.length());
+                            myMove = moves.charAt(m);
+                            result = makeMove(myP.getX(), myP.getY(), myMove, 1);
+                            return result;
+                        }
+                    }
+                }
+            }
+        } else {
+            for (int i = 9; i > 0; i-=1) {
+                for (int j = 0; j < 10; j+=1) {
+                    Piece myP = board[i][j];
+                    if ((myP.getRank() * r > 0) && myP.getMovable()) {
+                        String attackFirst = immediateAttack(myP, side);
+                        String attack = checkAvailAttack(myP, side);
+                        String moves = checkAvailMoves(myP);
+
+                        if (attackFirst.length() != 0) {
+                            myMove = attackFirst.charAt((int)(Math.random() * attackFirst.length()));
+                            result = makeMove(myP.getX(), myP.getY(), myMove, 1);
+                            return result;
+                        }
+                        if (attack.length() != 0) {
+                            myMove = attack.charAt((int)(Math.random() * attack.length()));
+                            result = makeMove(myP.getX(), myP.getY(), myMove, 1);
+                            return result;
+                        }
+                        if (moves.length() != 0) {
+                            int m = (int)(Math.random() * moves.length());
+                            myMove = moves.charAt(m);
+                            result = makeMove(myP.getX(), myP.getY(), myMove, 1);
+                            return result;
+                        }
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+//     checking neighbors if there are available empty fields to move
+    private String checkAvailMoves(Piece p) {
+        int x1 = p.getX();
+        int y1 = p.getY();
+        String moves = "";
+        if (x1 != 0 && isEmpty(x1-1,y1)) {
+            if (!isLake(x1-1,y1)) {
+                moves += "u";
+            }
+        }
+        if (x1 != 9 && isEmpty(x1+1,y1)) {
+            if (!isLake(x1+1,y1)) {
+                moves += "d";
+            }
+        }
+        if (y1 != 0 && isEmpty(x1,y1-1)) {
+            if (!isLake(x1,y1-1)) {
+                moves += "l";
+            }
+        }
+        if (y1 != 9 && isEmpty(x1,y1+1)) {
+            if (!isLake(x1,y1+1)) {
+                moves += "r";
+            }
+        }
+        return moves;
+    }
 
     private boolean isLake(int x, int y) {
         return (((y > 1 && y < 4) || (y > 5 && y < 8)) && (x > 3 && x < 6));
     }
 
     // checking neighbors if there are unknown enemies pieces
-//    private String checkAvailAttack(Piece p, char side) {
-//        int x1 = p.getX();
-//        int y1 = p.getY();
-//        int r = side == 'r' ? -1 : 1;
-//        // checking only invisible neighbors
-//        String attack = checkNeighbors(x1, y1, r, p, false);
-//
-//        return attack;
-//    }
+    private String checkAvailAttack(Piece p, char side) {
+        int x1 = p.getX();
+        int y1 = p.getY();
+        int r = side == 'r' ? -1 : 1;
+        // checking only invisible neighbors
+        String attack = checkNeighbors(x1, y1, r, p, false);
+
+        return attack;
+    }
     // checking neighbors if there are visible enemies pieces
-//    private String immediateAttack(Piece p, char side) {
-//        int x1 = p.getX();
-//        int y1 = p.getY();
-//        int r = side == 'r' ? -1 : 1;
-//        // checking only visible neighbors
-//        String attackFirst = checkNeighbors(x1, y1, r, p, true);
-//
-//        return attackFirst;
-//    }
+    private String immediateAttack(Piece p, char side) {
+        int x1 = p.getX();
+        int y1 = p.getY();
+        int r = side == 'r' ? -1 : 1;
+        // checking only visible neighbors
+        String attackFirst = checkNeighbors(x1, y1, r, p, true);
+
+        return attackFirst;
+    }
 
     // iterating through left, right, up, down and calling helper function to check fields
     private String checkNeighbors(int x1, int y1, int r, Piece p, boolean visible) {
