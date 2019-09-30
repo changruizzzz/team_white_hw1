@@ -45,17 +45,14 @@ public class UserServiceImpl implements UserService{
     public User findByAuthentication(Authentication authentication) {
         User user;
         Object principal = authentication.getPrincipal();
-        System.err.println(principal);
         if (principal instanceof org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser) {
             Map attributes =  ((DefaultOidcUser) principal).getAttributes();
-            System.err.println(((DefaultOidcUser) principal).getAttributes());
             user = userByAttributes(attributes);
             String new_avatar = (String)attributes.get("picture");
             saveAvatar(new_avatar, user);
         }
         else {
             if(principal instanceof org.springframework.security.oauth2.core.user.DefaultOAuth2User) {
-                System.err.println(authentication);
                 Map attributes = ((DefaultOAuth2User) principal).getAttributes();
                 user = userByAttributes(attributes);
                 String newAvatar = (String)((Map)((Map)attributes.get("picture")).get("data")).get("url");

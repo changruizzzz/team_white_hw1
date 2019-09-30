@@ -2,6 +2,7 @@ package com.white.stratego.stratego.market.model;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import javax.persistence.*;
+import java.util.Date;
 import java.util.Set;
 
 
@@ -18,6 +19,8 @@ public abstract class MarketUnit {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User createdBy;
 
+//    @Temporal(TemporalType.TIMESTAMP)
+//    private Date creationDateTime;
 
     @ManyToMany(mappedBy = "saved_units")
     private Set<User> savedBy;
@@ -63,4 +66,12 @@ public abstract class MarketUnit {
     public void setIf_public(boolean if_public) {
         this.if_public = if_public;
     }
+
+//    public Date getCreationDateTime() {
+//        return creationDateTime;
+//    }
+//
+//    public void setCreationDateTime(Date creationDateTime) {
+//        this.creationDateTime = creationDateTime;
+//    }
 }

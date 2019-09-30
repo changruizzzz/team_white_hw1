@@ -36,24 +36,17 @@ public class SecurityServiceImpl implements SecurityService{
 
     @Override
     public void autoLogin(String username, String password) {
-        System.err.println("in here");
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
-        System.err.println("in here2");
         try {
             authenticationManager.authenticate(usernamePasswordAuthenticationToken);
         }catch (AuthenticationException a) {
-            System.err.println(usernamePasswordAuthenticationToken);
             a.printStackTrace();
         }
-        System.err.println(usernamePasswordAuthenticationToken);
-        System.err.println(usernamePasswordAuthenticationToken.isAuthenticated());
 
         if (usernamePasswordAuthenticationToken.isAuthenticated()) {
             SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-            System.err.println(String.format("Auto login %s successfully!", username));
         } else {
-            System.out.println("??");
         }
     }
 }

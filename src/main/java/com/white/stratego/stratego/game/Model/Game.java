@@ -1,13 +1,11 @@
 package com.white.stratego.stratego.game.Model;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.white.stratego.stratego.market.model.MarketUnit;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+
+import javax.persistence.*;
 
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity(name="game")
@@ -19,6 +17,9 @@ public class Game extends MarketUnit{
     private boolean humanTurn;
     private boolean started;
     private boolean ended;
+
+
+
     @OneToOne
     private Board initialBoard;
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)

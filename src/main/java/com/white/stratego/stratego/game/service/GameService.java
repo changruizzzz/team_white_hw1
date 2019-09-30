@@ -126,7 +126,6 @@ public class GameService {
 //    }
 
     public void processSetupSwap(long id, int x1, int y1, int x2, int y2) {
-        System.err.println(x1 + " " + y1 + " " + x2 + " " + y2);
         Game g = gameRepository.findById(id);
         Board board = g.getBoard();
         Piece[][] pieces = board.getPieces();
@@ -317,5 +316,17 @@ public class GameService {
 
         }
         return true;
+    }
+
+    public void surrender(long id) {
+        Game g = gameRepository.findById(id);
+        Statistics statistics = statisticsRepository.findByUser(g.getCreatedBy());
+        g.setEnded(true);
+        g.setCompWin(true);
+        g.setHumanWin(false);
+        statistics.setLoss(statistics.getLoss() + 1);
+        statistics.setTotal(statistics.getTotal() + 1);
+        gameRepository.save(g);
+        statisticsRepository.save(statistics);
     }
 }

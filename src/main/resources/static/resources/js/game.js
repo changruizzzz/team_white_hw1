@@ -113,6 +113,14 @@ function askMove(side) {
         },
         success : function(response){
             processResponse(response);
+            if(side === 'b') {
+                askMove('r');
+            } else {
+                if(askUser) {
+                    enableBtn(quickPlayBtn);
+                    askUser = false;
+                }
+            }
         }
     });
 }
@@ -163,6 +171,7 @@ function processResponse(response) {
             stageInfo.text("game end");
             disableBtn($('.pieces'));
             disableBtn(quickPlayBtn);
+            disableBtn(surrenderBtn);
             enableBtn(replayBtn);
         }
         return true;
@@ -227,6 +236,20 @@ function gameStart() {
     });
 }
 
+function surrender() {
+    $.ajax({
+        type:"POST",
+        url:'/game/' + gameId + "/surrender",
+        success : function(data){
+            disableBtn($(".piece"));
+            disableBtn(quickPlayBtn);
+            disableBtn(surrenderBtn);
+            enableBtn(replayBtn);
+            stageInfo.text("game end");
+        }
+    });
+}
+
 function getClassSpanFromRank(r) {
     console.log(r);
     let c = classes[Math.abs(r)];
@@ -256,6 +279,7 @@ let classes = ['', 'spy', 'scout', 'miner', 'sergeant', 'lieutenant',
                 'captain', 'major', 'colonel', 'general', 'marshal',
                 'flag', '', 'bomb'];
 
+let surrenderBtn = $("#surrenderBtn");
 let stageInfo = $("#stage-info");
 let startGameBtn = $("#startBtn");
 let quickPlayBtn = $("#quickPlay");
@@ -281,6 +305,7 @@ if(ended) {
         pieces.addClass("game-stage");
         stageInfo.text("game stage");
         enableBtn(quickPlayBtn);
+        enableBtn(surrenderBtn);
     } else {
         enableBtn(startGameBtn);
         stageInfo.text("setup stage");
@@ -320,15 +345,17 @@ $(document).on('click', '.game-stage', function () {
 startGameBtn.click(function () {
     gameStart();
     enableBtn(quickPlayBtn);
+    enableBtn(surrenderBtn);
     disableBtn(startGameBtn);
     stageInfo.text("game stage");
 });
 
+let askUser = false;
+
 quickPlayBtn.click(function () {
+    askUser = true;
     disableBtn(quickPlayBtn);
     askMove('b');
-    askMove('r');
-    enableBtn(quickPlayBtn)
 });
 
 let move = [];
@@ -347,6 +374,7 @@ replayBtn.click(function () {
     });
 });
 
+
 replayMoveBtn.click(function () {
     let response = move.shift();
     let tarPiece = response['piece'];
@@ -361,4 +389,8 @@ replayMoveBtn.click(function () {
         disableBtn($('.pieces'));
         disableBtn(replayMoveBtn);
     }
+});
+
+surrenderBtn.click(function () {
+    surrender();
 });

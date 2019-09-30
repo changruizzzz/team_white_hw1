@@ -62,6 +62,7 @@ public class GameController {
         if(!user.getIsActive())
             return "redirect:/verify";
         Set<Game> games = gameService.findByCreatedBy(user);
+
         Statistics stats = statisticsRepository.findByUser(user);
         if(stats == null) {
             stats = new Statistics();
@@ -89,6 +90,13 @@ public class GameController {
         return null;
     }
 
+    @PostMapping("/game/{id}/surrender")
+    @ResponseBody
+    public Object surrender(@PathVariable long id) {
+        gameService.surrender(id);
+        return null;
+    }
+
     @PostMapping("/game/{id}/processMove")
     @ResponseBody
     public MoveResponse processMove(@PathVariable long id, @RequestParam int x1, @RequestParam int y1,
@@ -101,7 +109,6 @@ public class GameController {
     @PostMapping("/game/{id}/askMove")
     @ResponseBody
     public MoveResponse askMove(@PathVariable long id, @RequestParam char side) {
-        System.err.println(side);
         return gameService.processMove(id, gameService.askMove(id, side));
 
     }

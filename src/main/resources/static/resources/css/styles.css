@@ -91,7 +91,7 @@ svg > g > g:last-child { pointer-events: none }
 
 #game-history-card {
     width: 100%;
-    height: 80%;
+    height: 90%;
 }
 
 #game-history-card .card-subtitle {
@@ -177,3 +177,68 @@ a.link-disabled {
 #resend-prompt h6 a:hover{
     color: #CC0000;
 }
+
+.game-record a {
+    padding: 10px 15px;
+    height:50px;
+}
+.game-record {
+    margin-bottom: 10px;
+}
+
+.game-record a:hover{
+    text-decoration: none;
+}
+
+.game-record div {
+    display: inline-block;
+}
+
+.game-record .alert {
+    font-size: 14px;
+    padding: 2px 6px !important;
+    vertical-align: middle;
+    float: right;
+}
+
+#history ul {
+    list-style: none;
+    margin: 20px auto 0 auto;
+    padding: 0;
+    height: 550px;
+    overflow-y:scroll;
+}
+
+#contact li {
+    font-size: 14px;
+}
+
+#team-toggle {
+    width: 100%;
+    text-align: center;
+    border-width: 0 0 1px 0;
+    border-color: rgb(223,223,223);
+    border-style: solid;
+}
+#team {
+    color: #004085 !important;
+}
+#team a {
+    text-decoration: none;
+}
+
+#teammates ul {
+    list-style: none;
+    background-color: transparent;
+    padding: 0;
+}
+
+#teammates li {
+    width: 100%;
+    text-align: center;
+    margin: 0 auto;
+    font-size: 14px;
+}
+/*#history {*/
+/*    overflow: scroll;*/
+/*}*/

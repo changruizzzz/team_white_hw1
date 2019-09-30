@@ -86,25 +86,17 @@ public class UserController {
 
     @RequestMapping("/verify")
     public String sendVerify(Authentication authentication) {
-//        User user = userService.findByAuthentication(authentication);
-//        String email = user.getEmail();
-//        System.err.println(email);
 
         return "verify";
     }
 
     @RequestMapping("/verify/{token}")
     public String verifyEmail(@PathVariable String token) {
-        System.err.println("ok");
         ResponseEntity<String> response = verificationTokenService.verifyEmail(token);
         if (response.getStatusCode().is2xxSuccessful()) {
-            System.err.println("1");
-            User user = userService.findByToken(token);
-            System.err.println("user");
             return "redirect:/verifySuccess";
         }
         else {
-            System.err.println(2);
             return "redirect:/verify";
         }
     }

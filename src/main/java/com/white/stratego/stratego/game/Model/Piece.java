@@ -153,7 +153,7 @@ public class Piece implements Comparable<Piece> , Serializable {
     }
 
     public int attack(Piece o){
-        System.out.printf("%d attacks %d\n",this.rank,o.rank);
+//        System.out.printf("%d attacks %d\n",this.rank,o.rank);
         if(!(this.isFlag || this.isBomb)) {
             // if current player attacks a bomb - current player wins,
             // return +/-11 will be a signal of the end of the game

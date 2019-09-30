@@ -72,7 +72,7 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-right dropdown-secondary"
                          aria-labelledby="navbarDropdownMenuLink-55">
-                        <a class="dropdown-item" href="#">game history</a>
+<!--                        <a class="dropdown-item" href="#">game history</a>-->
                         <a class="dropdown-item" id="logout-link" href="/logout" th:href="@{/logout}">logout</a>
 
                     </div>
@@ -108,23 +108,12 @@
                     </div>
                 </div>
             </div>
-            <div class="card">
-                <div class="card-header">
-                    No use
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">Special title treatment</h5>
-                    <p class="card-text">With supporting text below as a h.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
-            </div>
         </div>
         <div class="stratego-col w-50">
 
             <div class="card" id="game-history-card">
                 <div class="card-header">
                     Game History
-                    <a href="#">view all</a>
                 </div>
 
                 <div class="card-body">
@@ -133,15 +122,25 @@
                         <h6 class="text-muted text-center w-100">You have no game records. Play one!</h6>
                     </div>
                     <div id="history" th:classappend="${games.isEmpty()} ? 'd-none' : ''">
-                        <h6 class="card-subtitle text-muted"><small>Showing 20 most recent games.</small></h6>
-                        <ul>
+<!--                        <h6 class="card-subtitle text-muted"><small>Showing 20 most recent games.</small></h6>-->
+                        <ul style="list-style: none;">
                         <li th:each="game: ${games}">
-                            <a th:href="@{/game/{id}(id=${game.id})}">
-                                <span th:text="${game.id}"></span>
-                                <span th:text="${user.username}"></span>
-                                <span><a th:href="@{/delete/{id}(id=${game.id})}">delete</a></span>
-                            </a>
+                            <div class="card game-record">
+                                <a class="card-body" th:href="@{/game/{id}(id=${game.id})}">
+                                    <div th:text="${game.id}"></div>
 
+                                    <div th:if="${not game.getEnded()}" class="alert alert-primary">
+                                        unfinished
+                                    </div>
+                                    <div th:if="${game.getEnded() && game.getHumanWin()}" class="alert alert-success">
+                                        win
+                                    </div>
+                                    <div th:if="${game.getEnded() && game.getCompWin()}" class="alert alert-danger">
+                                        loss
+                                    </div>
+
+                                </a>
+                            </div>
                         </li>
                         </ul>
                     </div>
@@ -158,6 +157,19 @@
                     <ul class="list-group">
                         <li class="list-group-item"><a href="/create" th:href="@{/create}">versus A.I.</a></li>
                         <li class="list-group-item"><a href="/create" th:href="@{/create}" class="link-disabled">versus People<span>(Coming Soon)</span></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div id="team">
+                <div id="team-toggle"><a   data-toggle="collapse" href="#teammates" aria-expanded="false" aria-controls="collapseExample">
+                    Know our team
+                </a></div>
+                <div id="teammates" class="collapse">
+                    <ul>
+                        <li><a href="https://changruizzzz.wixsite.com/website">Lead Programmer: Changrui Zhou</a></li>
+                        <li><a href="https://github.com/x1991x">Project Manager: Jie Dai</a></li>
+                        <li><a href="https://github.com/ciaoxiaoxiao">Lead Designer: Xiaoxiao Liu</a></li>
+                        <li><a href="https://github.com/baabochka">Data Designer: Valentina Pogudina</a></li>
                     </ul>
                 </div>
             </div>

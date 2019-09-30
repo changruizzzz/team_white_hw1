@@ -11,5 +11,4 @@ public interface MarketUnitRepository<T extends MarketUnit> extends JpaRepositor
     Set<T> findByCreatedBy(User user);
     void deleteMarketUnitsById(long id);
     T findById(long id);
-
 }
