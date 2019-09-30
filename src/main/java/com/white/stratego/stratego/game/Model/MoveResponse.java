@@ -1,8 +1,16 @@
-package com.white.stratego.stratego.game;
+package com.white.stratego.stratego.game.Model;
 
-import com.white.stratego.stratego.game.Model.Piece;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
+import javax.persistence.*;
+
+@Entity
 public class MoveResponse {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
     private boolean success;
 
@@ -62,5 +70,13 @@ public class MoveResponse {
 
     public void setGameEnd(boolean gameEnd) {
         this.gameEnd = gameEnd;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }

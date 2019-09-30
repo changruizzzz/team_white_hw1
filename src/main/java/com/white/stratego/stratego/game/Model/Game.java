@@ -1,11 +1,15 @@
 package com.white.stratego.stratego.game.Model;
 import java.util.ArrayList;
+import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.white.stratego.stratego.market.model.MarketUnit;
-
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity(name="game")
 public class Game extends MarketUnit{
     @OneToOne
@@ -17,8 +21,8 @@ public class Game extends MarketUnit{
     private boolean ended;
     @OneToOne
     private Board initialBoard;
-
-    private ArrayList<Movement> movements;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MoveResponse> moves;
     public Game() {
         board = new Board();
         humanWin = false;
@@ -26,7 +30,7 @@ public class Game extends MarketUnit{
         humanTurn = true;
         started = false;
         initialBoard = new Board();
-        movements = new ArrayList<>();
+        moves = new ArrayList<>();
         ended = false;
     }
     public Board getBoard() {
@@ -77,19 +81,19 @@ public class Game extends MarketUnit{
         this.started = started;
     }
 
-    public ArrayList<Movement> getMovements() {
-        return movements;
-    }
-
-    public void setMovements(ArrayList<Movement> movements) {
-        this.movements = movements;
-    }
-
     public boolean getEnded() {
         return ended;
     }
 
     public void setEnded(boolean end) {
         this.ended = end;
+    }
+
+    public List<MoveResponse> getMoves() {
+        return moves;
+    }
+
+    public void setMoves(ArrayList<MoveResponse> moves) {
+        this.moves = moves;
     }
 }

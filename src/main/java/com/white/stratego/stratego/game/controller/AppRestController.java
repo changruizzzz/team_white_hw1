@@ -25,12 +25,26 @@ public class AppRestController {
     public Object getGame(@PathVariable long id) {
         System.err.println("Fetching game data!");
         Game currentGame = gameRepository.findById(id);
+        return currentGame;
+    }
+    @RequestMapping("/api/games/{id}/current")
+    public Object getGameCurrent(@PathVariable long id) {
+        System.err.println("Fetching game data!");
+        Game currentGame = gameRepository.findById(id);
         return currentGame.getBoard();
     }
+
+    @RequestMapping("/api/games/{id}/initial")
+    public Object getGameInitial(@PathVariable long id) {
+        System.err.println("Fetching game data!");
+        Game currentGame = gameRepository.findById(id);
+        return currentGame.getInitialBoard();
+    }
+
     @RequestMapping("/api/games/{id}/moves")
     public Object getMoves(@PathVariable long id) {
         System.err.println("Fetching game data!");
         Game currentGame = gameRepository.findById(id);
-        return currentGame.getMovements();
+        return currentGame.getMoves();
     }
 }

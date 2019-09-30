@@ -3,7 +3,7 @@ package com.white.stratego.stratego.game.controller;
 import com.white.stratego.stratego.game.Model.Game;
 import com.white.stratego.stratego.game.Model.Movement;
 import com.white.stratego.stratego.game.Model.Statistics;
-import com.white.stratego.stratego.game.MoveResponse;
+import com.white.stratego.stratego.game.Model.MoveResponse;
 import com.white.stratego.stratego.game.repository.StatisticsRepository;
 import com.white.stratego.stratego.game.service.GameService;
 import com.white.stratego.stratego.market.model.User;
@@ -14,7 +14,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.Set;
 
 @Controller
@@ -114,5 +113,14 @@ public class GameController {
         return "game";
     }
 
+//    @RequestMapping("/game/{id}/replay")
+//    public String replay(@PathVariable long id, Model model) {
+//        Game game = gameService.findById(id);
+//        if(!game.getEnded()) {
+//            return "redirect:/game/" + id;
+//        }
+//        model.addAttribute("game", game);
+//        return "replay";
+//    }
 
 }

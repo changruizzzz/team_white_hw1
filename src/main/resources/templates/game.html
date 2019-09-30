@@ -10,6 +10,7 @@
     <script type="text/javascript" th:inline="javascript">
         /*<![CDATA[*/
         let gameId = [[${game.id}]];
+        let ended = [[${game.ended}]];
         let started = [[${game.started}]];
         /*]]>*/
     </script>
@@ -32,8 +33,10 @@
                 <div class="card-header">Info</div>
                 <div class="card-body"></div>
             </div>
-            <button id="startBtn">Start Game</button>
-            <button id="quickPlay">Quick Move</button>
+            <button id="startBtn" disabled>Start Game</button>
+            <button id="quickPlay" disabled>Quick Move</button>
+            <button id="replayBtn" disabled>Replay</button>
+            <button id="replayMoveBtn" disabled>Next Move</button>
         </div>
 
     </div>

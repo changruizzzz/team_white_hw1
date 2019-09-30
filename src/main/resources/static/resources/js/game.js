@@ -38,16 +38,24 @@ function creatPiece(piece, otherClass) {
     return $("<button>", {"class": base});
 }
 
-function fetchAndLoadAll(id) {
+function fetchAndLoadAll(id, code) {
+    board.empty();
+    for(let i = 0; i < 10; i++) {
+        let tr = $("<tr></tr>").appendTo(board);
+        for(let j = 0; j < 10; j++) {
+            $("<td><button class='piece btn'></button></td>").appendTo(tr);
+        }
+    }
     $.ajax({
         type:"POST",
-        url:'/api/games/' + id,
+        url:'/api/games/' + id + "/" + code,
         data:{
         },
         success : function(data){
             loadAll(data);
         }
     });
+    lakes.forEach(addLake);
 }
 
 function userMove(selected) {
@@ -95,11 +103,11 @@ function processResponse(response) {
 
     if(success) {
         if(message === 'draw') {
-            alert("draw");
+            //alert("draw");
         } else if(message === 'loss') {
-            alert("loss");
+            //alert("loss");
         } else {
-            alert("win or empty");
+            //alert("win or empty");
         }
         let x1 = response['x'];
         let y1 = response['y'];
@@ -107,12 +115,14 @@ function processResponse(response) {
         let y2 = tarPiece['y'];
         renderFromResponse(tarPiece, x1, y1, x2, y2);
         if(response['gameEnd']) {
-            alert("Game end");
-            $(".btn").attr("disabled", true);
+            //alert("Game end");
+            disableBtn($('.pieces'));
+            disableBtn(quickPlayBtn);
+            enableBtn(replayBtn);
         }
         return true;
     } else {
-        alert(response["message"]);
+        //alert(response["message"]);
     }
     return false;
 }
@@ -176,33 +186,43 @@ function addLake(cor) {
     btn.attr("disabled", true);
 }
 
+function disableBtn(btn) {
+    btn.attr("disabled", true);
+}
+
+function enableBtn(btn) {
+    btn.attr("disabled", false);
+}
 
 let board = $("#board");
 let classes = ['', 'spy', 'scout', 'miner', 'sergeant', 'lieutenant',
                 'captain', 'major', 'colonel', 'general', 'marshal',
                 'flag', '', 'bomb'];
 
+let startGameBtn = $("#startBtn");
+let quickPlayBtn = $("#quickPlay");
+let replayBtn = $("#replayBtn");
+let replayMoveBtn = $('#replayMoveBtn');
 let selected = [];
 
 let lakes = [[4,2],[4,3],[5,2],[5,3],[4,6],[4,7],[5,6],[5,7]];
 
-for(let i = 0; i < 10; i++) {
-    let tr = $("<tr></tr>").appendTo(board);
-    for(let j = 0; j < 10; j++) {
-        $("<td><button class='piece btn'></button></td>").appendTo(tr);
-    }
-}
+fetchAndLoadAll(gameId, "current");
 
-fetchAndLoadAll(gameId);
 
-lakes.forEach(addLake);
 
-let pieces = $(".piece");
-
-if(!started) {
-    pieces.addClass("setup-stage");
+if(ended) {
+    disableBtn($('.pieces'));
+    enableBtn(replayBtn);
 } else {
-    pieces.addClass("game-stage");
+    let pieces = $(".piece");
+    if (started) {
+        pieces.addClass("game-stage");
+        enableBtn(quickPlayBtn);
+    } else {
+        enableBtn(startGameBtn);
+        pieces.addClass("setup-stage");
+    }
 }
 
 $(document).on('click', '.setup-stage', function () {
@@ -227,7 +247,6 @@ $(document).on('click', '.game-stage', function () {
     }
     selected.push($(this));
     if(selected.length === 2) {
-        // alert("move");
         userMove(selected);
         selected = []
     }
@@ -235,18 +254,43 @@ $(document).on('click', '.game-stage', function () {
 });
 
 
-
-$("#quickPlay").attr('disabled', true);
-$("#startBtn").click(function () {
+startGameBtn.click(function () {
     gameStart();
-    $("#quickPlay").attr('disabled', false);
+    enableBtn(quickPlayBtn);
+    disableBtn(startGameBtn);
 });
 
-
-
-$("#quickPlay").click(function () {
-    $(this).attr('disabled', true);
+quickPlayBtn.click(function () {
+    disableBtn(quickPlayBtn);
     askMove('b');
     askMove('r');
-    $(this).attr('disabled', false);
+    enableBtn(quickPlayBtn)
+});
+let move = [];
+replayBtn.click(function () {
+    fetchAndLoadAll(gameId,"initial");
+    enableBtn(replayMoveBtn);
+    $.ajax({
+        type:"POST",
+        url:'/api/games/' + gameId + "/moves",
+        data:{
+        },
+        success : function(data){
+            move = data;
+        }
+    });
+});
+
+replayMoveBtn.click(function () {
+    let response = move.shift();
+    let tarPiece = response['piece'];
+    let x1 = response['x'];
+    let y1 = response['y'];
+    let x2 = tarPiece['x'];
+    let y2 = tarPiece['y'];
+    renderFromResponse(tarPiece, x1, y1, x2, y2);
+    if(response['gameEnd']) {
+        disableBtn($('.pieces'));
+        disableBtn(replayMoveBtn);
+    }
 });

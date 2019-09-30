@@ -2,12 +2,12 @@ package com.white.stratego.stratego.game.service;
 
 import com.white.stratego.stratego.game.*;
 import com.white.stratego.stratego.game.Model.*;
-import com.white.stratego.stratego.game.MoveResponse;
+import com.white.stratego.stratego.game.Model.MoveResponse;
 import com.white.stratego.stratego.game.repository.BoardRepository;
 import com.white.stratego.stratego.game.repository.GameRepository;
+import com.white.stratego.stratego.game.repository.MoveResponseRepository;
 import com.white.stratego.stratego.game.repository.StatisticsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import com.white.stratego.stratego.market.model.User;
 
@@ -18,7 +18,8 @@ public class GameService {
 
     @Autowired
     StatisticsRepository statisticsRepository;
-
+    @Autowired
+    MoveResponseRepository moveResponseRepository;
     @Autowired
     BoardRepository boardRepository;
     @Autowired
@@ -188,16 +189,18 @@ public class GameService {
         } else {
             int distance = x1 == x2 ? Math.abs(y1 - y2) : Math.abs(x1 - x2);
             if(distance > 1 && p1.getRank() != 2) {
+
                     response.setSuccess(false);
                     response.setMessage("Only scout can move more than 1 cell.");
 
             } else {
                 if(distance > 1 && !checkPath(pieces, x1, y1, x2, y2)) {
-                        response.setSuccess(false);
-                        response.setMessage("There is no pass.");
-                        return response;
+                    System.err.println("cant move");
+                    response.setSuccess(false);
+                    response.setMessage("There is no pass.");
+                    return response;
                 }
-                g.getMovements().add(move);
+
                 response.setSuccess(true);
                 if (board.isEmpty(x2,y2)) {
                     // swap moving piece with empty space
@@ -219,7 +222,7 @@ public class GameService {
                             break;
                         case 1:
                             if(pieces[x2][y2].getIsFlag()) {
-                                g.setEnded(false);
+                                g.setEnded(true);
                                 response.setGameEnd(true);
                                 Statistics stats = statisticsRepository.findByUser(g.getCreatedBy());
                                 if(pieces[x2][y2].getRank() < 0) {
@@ -253,6 +256,9 @@ public class GameService {
                 response.setX(x1);
                 response.setY(y1);
                 boardRepository.save(g.getBoard());
+                g.getMoves().add(response);
+                moveResponseRepository.save(response);
+
             }
         }
         return response;
@@ -302,7 +308,7 @@ public class GameService {
 
             }
             while(start + 1 < end) {
-                if(pieces[start][y1].getRank() != 0)
+                if(pieces[start + 1][y1].getRank() != 0)
                     return false;
                 start++;
             }
