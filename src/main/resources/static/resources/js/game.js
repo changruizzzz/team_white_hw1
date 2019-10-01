@@ -7,7 +7,6 @@ function loadAll(data) {
             let c = classes[Math.abs(r)];
             let btn = tr.cells[j].firstChild;
             let visible = data['pieces'][i][j]['visible'];
-            let selector = '#' + c + "-left";
             if(r > 0) {
                 btn.setAttribute("data-toggle", "tooltip");
                 btn.className += ' bluePiece';
@@ -112,8 +111,8 @@ function askMove(side) {
             side: side
         },
         success : function(response){
-            processResponse(response);
-            if(side === 'b') {
+            processResponse(response, false);
+            if(side === 'b' && !response['gameEnd']) {
                 askMove('r');
             } else {
                 if(askUser) {
@@ -129,8 +128,7 @@ function handleMessage(message, response) {
     let div = $("<div>", {"class": "game-response"});
 
     if (message === 'empty') {
-        let tarPiece = response['piece'];
-        console.log(div);
+
     } else {
         let r1 = response['rank1'];
         let r2 = response['rank2'];
@@ -153,7 +151,7 @@ function handleMessage(message, response) {
 
 }
 
-function processResponse(response) {
+function processResponse(response, isReplay) {
     console.log(response);
     let success = response["success"];
     let message = response["message"];
@@ -166,18 +164,18 @@ function processResponse(response) {
         let y1 = response['y'];
         let x2 = tarPiece['x'];
         let y2 = tarPiece['y'];
-        renderFromResponse(tarPiece, x1, y1, x2, y2);
+        renderFromResponse(tarPiece, x1, y1, x2, y2, isReplay);
         if(response['gameEnd']) {
-            stageInfo.text("game end");
-            disableBtn($('.pieces'));
-            disableBtn(quickPlayBtn);
-            disableBtn(surrenderBtn);
-            enableBtn(replayBtn);
+            endGame();
         }
         return true;
     } else {
-        invalidMessageSpan.text(message);
-        invalidWrapper.css("visibility", "visible");
+        if(response['gameEnd']) {
+            endGame();
+        } else {
+            invalidMessageSpan.text(message);
+            invalidWrapper.css("visibility", "visible");
+        }
     }
     return false;
 }
@@ -187,13 +185,18 @@ function findBtn(x, y) {
 }
 
 
-function renderFromResponse(tarPiece, x1, y1, x2, y2) {
+function renderFromResponse(tarPiece, x1, y1, x2, y2, isReplay) {
     let btn1 = findBtn(x1, y1);
     let btn2 = findBtn(x2, y2);
-    btn2.replaceWith(creatPiece(tarPiece, "game-stage"));
-    btn1.replaceWith("<button class='piece game-stage'></button>");
-    // enableTooltip();
+    if(isReplay) {
+        btn2.replaceWith(creatPiece(tarPiece, ""));
+        btn1.replaceWith("<button class='piece'></button>");
+    } else {
+        btn2.replaceWith(creatPiece(tarPiece, "game-stage"));
+        btn1.replaceWith("<button class='piece game-stage'></button>");
+    }
 }
+
 function swap(selected) {
 
     let col0 = $(selected[0]).closest('td').index();
@@ -225,15 +228,27 @@ function swap(selected) {
 }
 
 function gameStart() {
+    disableBtn(startGameBtn);
     $.ajax({
         type:"POST",
         url:'/game/' + gameId + "/start",
         success : function(data){
             $(".setup-stage").removeClass("setup-stage");
-            $("#startBtn").attr("disabled",true);
             $(".piece").addClass("game-stage");
+            enableBtn(quickPlayBtn);
+            enableBtn(surrenderBtn);
+            enableBtn(playAgainBtn);
+            stageInfo.text("game stage");
         }
     });
+}
+
+function endGame() {
+    $(".piece").removeClass("game-stage");
+    disableBtn(quickPlayBtn);
+    disableBtn(surrenderBtn);
+    enableBtn(replayBtn);
+    stageInfo.text("game end");
 }
 
 function surrender() {
@@ -241,11 +256,7 @@ function surrender() {
         type:"POST",
         url:'/game/' + gameId + "/surrender",
         success : function(data){
-            disableBtn($(".piece"));
-            disableBtn(quickPlayBtn);
-            disableBtn(surrenderBtn);
-            enableBtn(replayBtn);
-            stageInfo.text("game end");
+            endGame();
         }
     });
 }
@@ -285,6 +296,8 @@ let startGameBtn = $("#startBtn");
 let quickPlayBtn = $("#quickPlay");
 let replayBtn = $("#replayBtn");
 let replayMoveBtn = $('#replayMoveBtn');
+let stopReplayBtn = $("#stopReplayBtn");
+let playAgainBtn = $("#playAgainBtn");
 let selected = [];
 let invalidWrapper = $("#invalidMoveWrapper");
 let invalidMessageSpan = $("#invalidMoveInfo");
@@ -296,9 +309,9 @@ fetchAndLoadAll(gameId, "current");
 
 
 if(ended) {
-    disableBtn($('.pieces'));
     enableBtn(replayBtn);
     stageInfo.text("game end");
+    enableBtn(playAgainBtn);
 } else {
     let pieces = $(".piece");
     if (started) {
@@ -306,6 +319,7 @@ if(ended) {
         stageInfo.text("game stage");
         enableBtn(quickPlayBtn);
         enableBtn(surrenderBtn);
+        enableBtn(playAgainBtn);
     } else {
         enableBtn(startGameBtn);
         stageInfo.text("setup stage");
@@ -344,10 +358,6 @@ $(document).on('click', '.game-stage', function () {
 
 startGameBtn.click(function () {
     gameStart();
-    enableBtn(quickPlayBtn);
-    enableBtn(surrenderBtn);
-    disableBtn(startGameBtn);
-    stageInfo.text("game stage");
 });
 
 let askUser = false;
@@ -359,10 +369,10 @@ quickPlayBtn.click(function () {
 });
 
 let move = [];
+
 replayBtn.click(function () {
     stageInfo.text("replay");
     fetchAndLoadAll(gameId,"initial");
-    enableBtn(replayMoveBtn);
     $.ajax({
         type:"POST",
         url:'/api/games/' + gameId + "/moves",
@@ -370,6 +380,14 @@ replayBtn.click(function () {
         },
         success : function(data){
             move = data;
+            if(move.length === 0) {
+                stageInfo.text("replay end");
+                disableBtn(replayMoveBtn);
+            }
+            else {
+                enableBtn(replayMoveBtn);
+                enableBtn(stopReplayBtn);
+            }
         }
     });
 });
@@ -378,19 +396,29 @@ replayBtn.click(function () {
 replayMoveBtn.click(function () {
     let response = move.shift();
     let tarPiece = response['piece'];
-    let x1 = response['x'];
-    let y1 = response['y'];
-    let x2 = tarPiece['x'];
-    let y2 = tarPiece['y'];
-    renderFromResponse(tarPiece, x1, y1, x2, y2);
-    processResponse(response);
-    if(response['gameEnd']) {
+    processResponse(response, true);
+    if(move.length === 0) {
         stageInfo.text("replay end");
-        disableBtn($('.pieces'));
         disableBtn(replayMoveBtn);
+        disableBtn(stopReplayBtn);
     }
 });
 
 surrenderBtn.click(function () {
     surrender();
+});
+
+stopReplayBtn.click(function () {
+    location.reload();
+});
+
+playAgainBtn.click(function () {
+    $.ajax({
+        type:"POST",
+        url:'/game/' + gameId + "/playAgain",
+        success : function(data){
+            console.log(data);
+            window.location.href = "/game/" + data;
+        }
+    });
 });

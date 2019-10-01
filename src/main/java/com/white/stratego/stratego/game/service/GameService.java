@@ -1,17 +1,16 @@
 package com.white.stratego.stratego.game.service;
 
-import com.white.stratego.stratego.game.*;
+import com.white.stratego.stratego.game.BoardSetups;
 import com.white.stratego.stratego.game.Model.*;
-import com.white.stratego.stratego.game.Model.MoveResponse;
 import com.white.stratego.stratego.game.repository.BoardRepository;
 import com.white.stratego.stratego.game.repository.GameRepository;
 import com.white.stratego.stratego.game.repository.MoveResponseRepository;
 import com.white.stratego.stratego.game.repository.StatisticsRepository;
+import com.white.stratego.stratego.market.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.white.stratego.stratego.market.model.User;
 
-import java.util.Set;
+import java.util.List;
 
 @Service
 public class GameService {
@@ -70,61 +69,6 @@ public class GameService {
         }
     }
 
-//    private void gameFlow(Game game, int[] flagRed, int[] flagBlue) {
-//        Movement move;
-//        int c = 300; // the parameter for speeding the game
-//        System.out.print(game.getBoard());
-//        while ((!game.getHumanWin() || !game.getCompWin()) && c > 0) {
-//            if (!game.getHumanTurn()) {
-//                // here is the move that you can use for the front end it is in format xy1 = [x1,y1] xy2 = [x2,y2]
-//                move = game.getBoard().MakeMoveAI('b');
-//                System.out.print(game.getBoard());
-//
-//                if (checkBoardForMovablePieces('b', game) == 0) {
-//                    System.out.println("Player has no more movable pieces, Computer won the game!");
-//                    System.exit(0);
-//                }
-//                switchTurn(game);
-//            } else {
-//                // here is the move that you can use for the front end it is in format xy1 = [x1,y1] xy2 = [x2,y2]
-//                move = game.getBoard().MakeMoveAI('r');
-//                System.out.print(game.getBoard());
-//                switchTurn(game);
-//                if (checkBoardForMovablePieces('r', game) == 0) {
-//                    System.out.println("Computer has no more movable pieces, Player won the game!");
-//                    System.exit(0);
-//                }
-//            }
-//            if (move.getX2() == flagRed[0] && move.getY2() == flagRed[1]) {
-//                System.out.println("Player found computer's flag and won the game!");
-//                System.exit(0);
-//            } else if (move.getX2() == flagBlue[0] && move.getY2() == flagBlue[1]) {
-//                System.out.println("Computer found players's flag and won the game!");
-//                System.exit(0);
-//            }
-//            c--;
-//        }
-//    }
-//
-//    private int checkBoardForMovablePieces(char side, Game game) {
-//        int r = side == 'r' ? -1 : 1;
-//        for (int i = 0; i < 10; i++) {
-//            for (int j = 0; j < 10; j++) {
-//                Piece currentPiece = game.getBoard().getPieces()[i][j];
-//                if (currentPiece.getRank() * r > 0) {
-//                    if (currentPiece.getMovable()) {
-//                        return 1;
-//                    }
-//                }
-//            }
-//        }
-//        return 0;
-//    }
-//
-//    private void switchTurn(Game game) {
-//        game.setHumanTurn(game.getHumanWin());
-//    }
-
     public void processSetupSwap(long id, int x1, int y1, int x2, int y2) {
         Game g = gameRepository.findById(id);
         Board board = g.getBoard();
@@ -147,7 +91,7 @@ public class GameService {
         gameRepository.deleteById(id);
     }
 
-    public Set<Game> findByCreatedBy(User user) {
+    public List<Game> findByCreatedBy(User user) {
         return gameRepository.findByCreatedBy(user);
     }
 
@@ -170,6 +114,11 @@ public class GameService {
         Game g = gameRepository.findById(id);
         Board board = g.getBoard();
         MoveResponse response = new MoveResponse();
+        if(g.getEnded()) {
+            response.setGameEnd(true);
+            response.setSuccess(false);
+            return response;
+        }
 
         int x1 = move.getX1();
         int y1 = move.getY1();
@@ -300,10 +249,7 @@ public class GameService {
                 start = x2;
             }
             if(y1 == 2 || y1 == 3 || y1 == 6 || y1 ==7) {
-                System.out.println(start +" " +end);
-                System.out.println(!(end < 4));
-                System.out.println(!(start >6));
-                if(!(end < 4) && !(start >6)) {
+                if(!(end <= 4) && !(start >= 6)) {
                     return false;
                 }
 
@@ -328,5 +274,25 @@ public class GameService {
         statistics.setTotal(statistics.getTotal() + 1);
         gameRepository.save(g);
         statisticsRepository.save(statistics);
+    }
+
+    public long playAgain(long id, User user) {
+        Game fromGame = gameRepository.findById(id);
+        Game g = new Game();
+        copyBoard(g.getBoard(), fromGame.getInitialBoard());
+        for(int i = 0; i < 10; i++) {
+            for(int j = 0; j < 10; j++) {
+                Piece p = g.getBoard().getPieces()[i][j];
+                p.setY(j);
+                p.setX(i);
+            }
+        }
+        copyBoard(g.getInitialBoard(), g.getBoard());
+        g.setIf_public(false);
+        g.setCreatedBy(user);
+        boardRepository.save(g.getInitialBoard());
+        boardRepository.save(g.getBoard());
+        gameRepository.save(g);
+        return g.getId();
     }
 }

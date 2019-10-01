@@ -3,7 +3,8 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Stratego</title>
+    <link rel="icon" href="../static/resources/images/icon.png" th:href="@{/resources/images/icon.png}">
     <script src="/webjars/jquery/3.1.0/jquery.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet">
     <link rel="stylesheet" href="/webjars/bootstrap/4.1.0/css/bootstrap.min.css">
@@ -39,7 +40,7 @@
                 </a>
                 <div class="dropdown-menu dropdown-menu-right dropdown-secondary"
                      aria-labelledby="navbarDropdownMenuLink-55">
-<!--                    <a class="dropdown-item" href="#">game history</a>-->
+                    <a class="dropdown-item" href="/" th:href="@{/dashboard}">dashboard</a>
                     <a class="dropdown-item" id="logout-link" href="/logout" th:href="@{/logout}">logout</a>
 
                 </div>
@@ -123,21 +124,34 @@
                 </button>
 
                 <button id="quickPlay" disabled type="button" class="btn btn-default" aria-label="Left Align" data-toggle="tooltip" title="Make Quick Move">
-                    <i class="mdi mdi-robot" aria-hidden="true"></i>
+                    <i class="mdi mdi-sword" aria-hidden="true"></i>
                 </button>
 
                 <button id="surrenderBtn" disabled type="button" class="btn btn-default" aria-label="Left Align" data-toggle="tooltip" title="Surrender">
                     <i class="mdi mdi-flag-outline" aria-hidden="true"></i>
                 </button>
 
-                <button id="replayBtn" disabled type="button" class="btn btn-default" aria-label="Left Align" data-toggle="tooltip" title="Replay">
+                <button id="playAgainBtn" disabled type="button" class="btn btn-default" aria-label="Left Align" data-toggle="tooltip" title="New Game with Same Setup">
                     <i class="mdi mdi-replay" aria-hidden="true"></i>
                 </button>
 
-                <button id="replayMoveBtn" disabled type="button" class="btn btn-default" aria-label="Left Align" data-toggle="tooltip" title="Next Move">
-                    <i class="mdi mdi-skip-next" aria-hidden="true"></i>
+
+            </div>
+        </div>
+
+        <div class="btn-toolbar" role="toolbar">
+            <div class="btn-group btn-group-lg">
+                <button id="replayBtn" disabled type="button" class="btn btn-default" aria-label="Left Align" data-toggle="tooltip" title="Watch Replay">
+                    <i class="mdi mdi-play-circle-outline" aria-hidden="true"></i>
                 </button>
 
+                <button id="replayMoveBtn" disabled type="button" class="btn btn-default" aria-label="Left Align" data-toggle="tooltip" title="Next Move">
+                    <i class="mdi mdi-skip-next-circle-outline" aria-hidden="true"></i>
+                </button>
+
+                <button id="stopReplayBtn" disabled type="button" class="btn btn-default" aria-label="Left Align" data-toggle="tooltip" title="Stop Replay">
+                    <i class="mdi mdi-stop-circle-outline" aria-hidden="true"></i>
+                </button>
             </div>
         </div>
 

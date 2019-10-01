@@ -218,6 +218,8 @@ public class Piece implements Comparable<Piece> , Serializable {
         p.setIsFlag(this.isFlag);
         p.setIsBomb(this.isBomb);
         p.setMovable(this.movable);
+        p.setX(this.x);
+        p.setY(this.y);
         return p;
     }
 }

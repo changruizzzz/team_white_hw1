@@ -14,14 +14,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Set;
+import java.util.List;
 
 @Controller
 public class GameController {
-
-//    @Autowired
-//    private GameRepository gameRepository;
-
 
     @Autowired
     private StatisticsRepository statisticsRepository;
@@ -61,8 +57,8 @@ public class GameController {
         User user = userService.findByAuthentication(authentication);
         if(!user.getIsActive())
             return "redirect:/verify";
-        Set<Game> games = gameService.findByCreatedBy(user);
-
+        List<Game> games = gameService.findByCreatedBy(user);
+        games.sort(((o1, o2) -> Long.compare(o2.getId(), o1.getId())));
         Statistics stats = statisticsRepository.findByUser(user);
         if(stats == null) {
             stats = new Statistics();
@@ -110,6 +106,13 @@ public class GameController {
     @ResponseBody
     public MoveResponse askMove(@PathVariable long id, @RequestParam char side) {
         return gameService.processMove(id, gameService.askMove(id, side));
+
+    }
+
+    @PostMapping("/game/{id}/playAgain")
+    @ResponseBody
+    public long playAgain(@PathVariable long id, Authentication authentication) {
+        return gameService.playAgain(id, userService.findByAuthentication(authentication));
 
     }
 
